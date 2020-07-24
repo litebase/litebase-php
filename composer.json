@@ -1,0 +1,43 @@
+{
+    "name": "spacestudio/litebase",
+    "authors": [
+        {
+            "name": "Thiery Laverdure",
+            "email": "thiery@spacestud.io"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "SpaceStudio\\Litebase\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "SpaceStudio\\Litebase\\Tests\\": "tests"
+        }
+    },
+    "require": {
+        "php": "^7.4",
+        "guzzlehttp/guzzle": "^7.0"
+    },
+    "require-dev": {
+        "illuminate/database": "^7.21",
+        "illuminate/support": "^7.21",
+        "orchestra/testbench": "^5.3",
+        "phpunit/phpunit": "^8.0"
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit",
+        "test-coverage": "vendor/bin/phpunit --coverage-html coverage"
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "SpaceStudio\\Litebase\\LitebaseServiceProvider"
+            ]
+        }
+    }
+}

@@ -1,0 +1,33 @@
+<?php
+
+namespace SpaceStudio\Litebase;
+
+use Illuminate\Database\Connection;
+use Illuminate\Support\ServiceProvider;
+
+class LitebaseServiceProvider extends ServiceProvider
+{
+    /**
+     * Register any application services.
+     *
+     * @return void
+     */
+    public function register()
+    {
+        $this->app->bind('db.connector.litebase', function ($app) {
+            return new LitebaseConnector;
+        });
+    }
+
+    /**
+     * Bootstrap any application services.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        Connection::resolverFor('litebase', function ($connection, $database, $prefix, $config) {
+            return new LitebaseConnection($database, $config);
+        });
+    }
+}
