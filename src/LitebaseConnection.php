@@ -23,6 +23,7 @@ class LitebaseConnection extends Connection
     {
         $this->config = $config;
         $this->pdo = new LitebasePDO($database, $config['username'], $config['password']);
+        parent::__construct($this->pdo, $database, '', $this->config);
     }
 
     /**

@@ -10,7 +10,7 @@ class LitebaseClient
     /**
      * The base uri of the client.
      */
-    const BASE_URI = 'http://litebase.test/database';
+    const BASE_URI = 'http://litebase.test/databases';
 
     /**
      * The Http client.
@@ -61,7 +61,7 @@ class LitebaseClient
         $this->database = $attributes['database'];
 
         $this->client = new Client([
-            'base_uri' => "{$baseUri}/{$this->database}",
+            'base_uri' => "{$baseUri}/{$this->database}/",
             'timeout'  => 30,
         ] + $clientConfig);
     }

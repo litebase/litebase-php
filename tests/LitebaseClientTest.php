@@ -59,7 +59,7 @@ class LitebaseClientTest extends TestCase
 
         $this->assertEquals(
             $baseUri,
-            LitebaseClient::BASE_URI . "/{$this->client->database()}"
+            LitebaseClient::BASE_URI . "/{$this->client->database()}/"
         );
     }
 
