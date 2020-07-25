@@ -7,6 +7,8 @@ use PDO;
 
 class LitebasePDO extends PDO
 {
+    protected $client;
+
     public function __construct($database, $username, $password)
     {
         // $dsn = "sqlite:host=litebase.test;dbname=$database";
@@ -15,7 +17,7 @@ class LitebasePDO extends PDO
         // 	PDO::ATTR_STATEMENT_CLASS => [LitebaseStatement::class, [$this]],
         // ]);
 
-        if (preg_match('/[\'^£$%&*()}{@#~?><>,|=_+¬-]/', $database)) {
+        if (!ctype_alnum($database)) {
             throw new Exception('The database identifier contains illegal characters.');
         }
 
@@ -48,20 +50,16 @@ class LitebasePDO extends PDO
 
     public function exec($statement)
     {
-        $result = $this->client->exec([
-            ["statement" => $statement, "includeStats" => true]
+        return $this->client->exec([
+            'statement' => $statement
         ]);
-
-        $stats = $result['results'][0]['stats'];
-
-        return $stats['nodes_created'] + $stats['nodes_deleted'] + $stats['properties_set']
-            + $stats['relationships_created'] + $stats['relationship_deleted']
-            + $stats['labels_added'] + $stats['labels_removed'];
     }
 
-    public function getAttribute($attribute)
+    public function getClient()
     {
+        return $this->client;
     }
+
 
     public function inTransaction()
     {
@@ -90,7 +88,10 @@ class LitebasePDO extends PDO
         return $this->client->rollback();
     }
 
-    public function setAttribute($attribute, $value)
+    public function setClient(LitebaseClient $client)
     {
+        $this->client = $client;
+
+        return $this;
     }
 }
