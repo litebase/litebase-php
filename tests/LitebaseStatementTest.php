@@ -1,10 +1,11 @@
 <?php
 
-namespace SpaceStudio\Litebase\Tests;
+namespace Litebase\Tests;
 
 use PDO;
-use SpaceStudio\Litebase\LitebaseClient;
-use SpaceStudio\Litebase\LitebaseStatement;
+use Litebase\LitebaseClient;
+use Litebase\LitebaseStatement;
+use Mockery;
 
 class LitebaseStatementTest extends TestCase
 {
@@ -38,7 +39,7 @@ class LitebaseStatementTest extends TestCase
     public function test_it_can_bind_values_with_keys()
     {
         $statement = $this->createStatement();
-        $this->assertTrue($statement->bindValue(':id', '1', PDO::PARAM_));
+        $this->assertTrue($statement->bindValue(':id', '1', PDO::PARAM_INT));
         $this->assertTrue($statement->bindValue(':name', 'John'));
         $this->assertCount(2, $statement->getBoundParams());
         $this->assertEquals($statement->getBoundParams()[':id'], '1');
@@ -48,6 +49,7 @@ class LitebaseStatementTest extends TestCase
     public function test_it_can_return_a_column_count()
     {
         $statement = $this->createStatement();
+        $this->client->shouldReceive('errorCode')->andReturn(null);
         $this->client->shouldReceive('exec')->andReturn([
             'data' => [
                 [
@@ -91,7 +93,9 @@ class LitebaseStatementTest extends TestCase
     public function test_it_can_return_the_row_count()
     {
         $statement = $this->createStatement();
+        $this->client->shouldReceive('errorCode')->andReturn(null);
         $this->client->shouldReceive('exec')->andReturn([
+            'status' => 'success',
             'data' => [
                 [
                     'id' => '1',
@@ -102,6 +106,7 @@ class LitebaseStatementTest extends TestCase
                     'name' => 'Jane',
                 ],
             ],
+            'row_count' => 2,
         ]);
 
         $statement->execute();
@@ -117,7 +122,7 @@ class LitebaseStatementTest extends TestCase
     protected function createStatement()
     {
         /**  @var LitebaseClient */
-        $this->client = $this->mock(LitebaseClient::class);
+        $this->client = Mockery::mock(LitebaseClient::class);
         $query = 'SELECT * FROM users';
         return new LitebaseStatement($this->client, $query);
     }

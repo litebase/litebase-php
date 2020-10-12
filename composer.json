@@ -1,5 +1,5 @@
 {
-    "name": "spacestudio/litebase",
+    "name": "litebase/litebase-php",
     "authors": [
         {
             "name": "Thiery Laverdure",
@@ -8,36 +8,41 @@
     ],
     "autoload": {
         "psr-4": {
-            "SpaceStudio\\Litebase\\": "src"
+            "Litebase\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "SpaceStudio\\Litebase\\Tests\\": "tests"
+            "Litebase\\Tests\\": "tests"
         }
     },
+    "config": {
+        "optimize-autoloader": true,
+        "preferred-install": "dist",
+        "sort-packages": true
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "repositories": [
+        {
+            "type": "path",
+            "url": "../process"
+        }
+    ],
     "require": {
         "php": "^7.4",
-        "guzzlehttp/guzzle": "^7.0"
+        "guzzlehttp/guzzle": "^7.0",
+        "mockery/mockery": "^1.4",
+        "react/event-loop": "^1.1",
+        "react/http": "^1.0",
+        "react/stream": "^1.1",
+        "spacestudio/process": "dev-master"
     },
     "require-dev": {
-        "illuminate/database": "^7.21",
-        "illuminate/support": "^7.21",
-        "orchestra/testbench": "^5.3",
         "phpunit/phpunit": "^8.0"
     },
     "scripts": {
         "test": "vendor/bin/phpunit",
         "test-coverage": "vendor/bin/phpunit --coverage-html coverage"
-    },
-    "config": {
-        "sort-packages": true
-    },
-    "extra": {
-        "laravel": {
-            "providers": [
-                "SpaceStudio\\Litebase\\LitebaseServiceProvider"
-            ]
-        }
     }
 }

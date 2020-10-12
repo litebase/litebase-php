@@ -1,13 +1,13 @@
 <?php
 
-namespace SpaceStudio\Litebase\Tests;
+namespace Litebase\Tests;
 
 use Exception;
 use GuzzleHttp\Client;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Response;
-use SpaceStudio\Litebase\LitebaseClient;
+use Litebase\LitebaseClient;
 
 class LitebaseClientTest extends TestCase
 {
@@ -66,7 +66,7 @@ class LitebaseClientTest extends TestCase
     public function test_it_can_begin_a_transaction()
     {
         $this->mock->append(
-            new Response(200, [], json_encode(['data' => ['id' => '1']]))
+            new Response(200, [], json_encode(['status' => 'success', 'data' => ['id' => '1']]))
         );
 
         $this->assertTrue($this->client->beginTransaction());
@@ -87,11 +87,11 @@ class LitebaseClientTest extends TestCase
     public function test_it_can_commit_a_transaction()
     {
         $this->mock->append(
-            new Response(200, [], json_encode(['data' => ['id' => 'test']]))
+            new Response(200, [], json_encode(['status' => 'success', 'data' => ['id' => 'test']]))
         );
 
         $this->mock->append(
-            new Response(200, [], json_encode(['data' => ['id' => 'test']]))
+            new Response(200, [], json_encode(['status' => 'success', 'data' => ['id' => 'test']]))
         );
 
         $this->assertTrue($this->client->beginTransaction());
@@ -135,6 +135,7 @@ class LitebaseClientTest extends TestCase
     {
         $this->mock->append(
             new Response(200, [], json_encode([
+                'status' => 'success',
                 'data' => ['id' => 1],
                 'last_insert_id' => 1,
             ]))
@@ -153,7 +154,7 @@ class LitebaseClientTest extends TestCase
     public function test_it_indicates_if_a_transaction_is_in_progress()
     {
         $this->mock->append(
-            new Response(200, [], json_encode(['data' => ['id' => 'test']]))
+            new Response(200, [], json_encode(['status' => 'success', 'data' => ['id' => 'test']]))
         );
 
         $this->assertFalse($this->client->inTransaction());
@@ -165,6 +166,7 @@ class LitebaseClientTest extends TestCase
     {
         $this->mock->append(
             new Response(200, [], json_encode([
+                'status' => 'success',
                 'data' => ['id' => 'test'],
                 'last_insert_id' => '1',
             ]))
@@ -180,8 +182,8 @@ class LitebaseClientTest extends TestCase
 
     public function test_it_can_rollback_a_transaction()
     {
-        $this->mock->append(new Response(200, [], json_encode(['data' => ['id' => '1']])));
-        $this->mock->append(new Response(200, [], json_encode(['data' => ['id' => '1']])));
+        $this->mock->append(new Response(200, [], json_encode(['status' => 'success', 'data' => ['id' => '1']])));
+        $this->mock->append(new Response(200, [], json_encode(['status' => 'success', 'data' => ['id' => '1']])));
 
         $this->assertTrue($this->client->beginTransaction());
         $this->assertTrue($this->client->rollback());

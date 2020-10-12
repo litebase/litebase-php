@@ -1,49 +1,42 @@
 <?php
 
-namespace SpaceStudio\Litebase\Tests;
+namespace Litebase\Tests;
 
-use Orchestra\Testbench\TestCase as TestbenchTestCase;
-use SpaceStudio\Litebase\LitebaseServiceProvider;
+use Mockery;
+use PHPUnit\Framework\TestCase as FrameworkTestCase;
 
-class TestCase extends TestbenchTestCase
+class TestCase extends FrameworkTestCase
 {
-
-    public function afterSetup()
+    /**
+     * Run code after test setup.
+     */
+    public function afterSetup(): void
+    {
+        # code...
+    }
+    /**
+     * Run code after test setup.
+     */
+    public function afterTest(): void
     {
         # code...
     }
 
-    public function afterTest()
-    {
-        # code...
-    }
-
-    public function getEnvironmentSetup($app)
-    {
-        parent::getEnvironmentSetUp($app);
-
-        $app['config']->set('database.connections.litebase', [
-            'driver'   => 'litebase',
-            'database' => 'testdatabase',
-            'username' => 'test',
-            'password' => 'password',
-        ]);
-    }
-
-    protected function getPackageProviders($app)
-    {
-        return [LitebaseServiceProvider::class];
-    }
-
+    /**
+     * Setup the test.
+     */
     public function setUp(): void
     {
         parent::setUp();
         $this->afterSetup();
     }
 
+    /**
+     * Tear down the test.
+     */
     public function tearDown(): void
     {
-        parent::tearDown();
+        Mockery::close();
         $this->afterTest();
     }
 }

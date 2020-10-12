@@ -1,6 +1,6 @@
 <?php
 
-namespace SpaceStudio\Litebase;
+namespace Litebase;
 
 use Exception;
 use GuzzleHttp\Client;
@@ -10,7 +10,7 @@ class LitebaseClient
     /**
      * The base uri of the client.
      */
-    const BASE_URI = 'http://litebase.test/databases';
+    const BASE_URI = 'http://0.0.0.0:8000/databases';
 
     /**
      * The Http client.
@@ -20,6 +20,13 @@ class LitebaseClient
     protected $client;
 
     /**
+     * The database connection of the client.
+     *
+     * @var DatabaseConnection
+     */
+    protected $connection;
+
+    /**
      * The database identifier of the client.
      *
      * @var string
@@ -27,11 +34,33 @@ class LitebaseClient
     protected $database;
 
     /**
+     * An error code received from a request.
+     *
+     * @var int
+     */
+    protected $errorCode = null;
+
+    /**
+     * Error info received from a request.
+     *
+     * @var string
+     */
+    protected $errorInfo;
+
+    /**
      * The id of the last instered record.
      *
      * @var null|string
      */
     protected $lastInsertId = null;
+
+    /**
+     * Indicates if the client should create a connection before executing
+     * any queries.
+     *
+     * @var bool
+     */
+    protected $shouldCreateConnection = false;
 
     /**
      * An active transaction id.
@@ -57,13 +86,34 @@ class LitebaseClient
             throw new Exception('The Litebase database connection cannot be created without a password.');
         }
 
-        $baseUri = static::BASE_URI;
         $this->database = $attributes['database'];
 
-        $this->client = new Client([
-            'base_uri' => "{$baseUri}/{$this->database}/",
+        $this->client = new Client(array_merge([
+            'base_uri' => "{$this->baseURI()}/{$this->database}/",
             'timeout'  => 30,
-        ] + $clientConfig);
+            'verify' => false,
+            // 'debug' => 'true',
+            'version' => '2',
+            'headers' => []
+        ], $clientConfig));
+    }
+
+    /**
+     * Destroy the instance of the client.
+     */
+    public function __destruct()
+    {
+        if ($this->connection) {
+            $this->closeConnection();
+        }
+    }
+
+    /**
+     * Return the base uri for the client.
+     */
+    public function baseURI()
+    {
+        return static::BASE_URI;
     }
 
     /**
@@ -87,6 +137,14 @@ class LitebaseClient
         }
 
         return true;
+    }
+
+    /**
+     * Close the database connection.
+     */
+    public function closeConnection()
+    {
+        $this->connection->close();
     }
 
     /**
@@ -131,7 +189,11 @@ class LitebaseClient
      */
     public function exec(array $input = [])
     {
-        $result = $this->send('POST', 'exec', $input);
+        // if ($this->connection || $this->waitForConnection()) {
+        //     $result = $this->connection->send($input);
+        // } else {
+        $result = $this->send('POST', 'stream', $input);
+        // }
 
         if (isset($result['last_insert_id'])) {
             $this->lastInsertId = $result['last_insert_id'];
@@ -162,6 +224,25 @@ class LitebaseClient
     }
 
     /**
+     * Open a database connection.
+     */
+    public function openConnection()
+    {
+        if ($this->connection) {
+            return true;
+        }
+
+        try {
+            $this->connection = new DatabaseConnection($this);
+            return true;
+        } catch (\Throwable $th) {
+            //TODO: Store code and message
+            throw $th;
+            return false;
+        }
+    }
+
+    /**
      * Rollbacka transaction.
      */
     public function rollback()
@@ -169,7 +250,7 @@ class LitebaseClient
         if (!$this->transactionId) {
             return false;
         }
-
+        // TODO: transform to query
         $this->send('DELETE', 'transaction',  [
             'transaction' => $this->transactionId,
         ]);
@@ -182,17 +263,58 @@ class LitebaseClient
     /**
      * Set a request to the data api.
      */
-    public function send(string $method, string $path, $data)
+    public function send(string $method, string $path, $data = [])
     {
         try {
             $response = $this->client->request($method, $path, ['json' => $data]);
 
-            return json_decode((string) $response->getBody(), true);
+            $result = json_decode((string) $response->getBody(), true);
+
+            if (isset($result['status']) && $result['status'] === 'error') {
+                $this->errorCode = $result['code'] ?? null;
+                $this->errorInfo = $result['message'] ?? null;
+            }
+
+            return $result;
         } catch (Exception $e) {
             $this->errorCode = $e->getCode();
             $this->errorInfo = $e->getMessage();
 
             throw $e;
+        }
+    }
+
+    /**
+     * Set a request to the data api.
+     */
+    public function sendAsync(string $method, string $path, $data = [])
+    {
+        try {
+            $this->client->requestAsync($method, $path, ['json' => $data]);
+            return true;
+        } catch (Exception $e) {
+            $this->errorCode = $e->getCode();
+            $this->errorInfo = $e->getMessage();
+
+            throw $e;
+        }
+    }
+
+    public function shouldConnect(): void
+    {
+        $this->shouldCreateConnection = true;
+    }
+
+    public function shouldWaitForConnection(): bool
+    {
+        return $this->shouldCreateConnection;
+    }
+
+    public function waitForConnection()
+    {
+        if ($this->shouldWaitForConnection()) {
+            $this->openConnection();
+            return true;
         }
     }
 }

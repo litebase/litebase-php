@@ -1,6 +1,6 @@
 <?php
 
-namespace SpaceStudio\Litebase;
+namespace Litebase;
 
 use Closure;
 use Illuminate\Database\Connection;
@@ -24,6 +24,14 @@ class LitebaseConnection extends Connection
         $this->config = $config;
         $this->pdo = new LitebasePDO($database, $config['username'], $config['password']);
         parent::__construct($this->pdo, $database, '', $this->config);
+    }
+
+    /**
+     * Get the current PDO connection.
+     */
+    public function getPdo(): LitebasePDO
+    {
+        return $this->pdo;
     }
 
     /**

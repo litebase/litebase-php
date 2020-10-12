@@ -1,6 +1,7 @@
 build
 composer.lock
 docs
+reports/
 vendor
 coverage
 .phpunit.result.cache

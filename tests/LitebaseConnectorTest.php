@@ -1,13 +1,13 @@
 <?php
 
-namespace SpaceStudio\Litebase\Tests;
+namespace Litebase\Tests;
 
 use Exception;
 use Illuminate\Database\Query\Processors\SQLiteProcessor;
-use SpaceStudio\Litebase\LitebaseConnection;
+use Litebase\LitebaseConnection;
 use Illuminate\Database\Schema\Grammars\SQLiteGrammar;
-use SpaceStudio\Litebase\LitebaseConnector;
-use SpaceStudio\Litebase\LitebasePDO;
+use Litebase\LitebaseConnector;
+use Litebase\LitebasePDO;
 
 class LitebaseConnectorTest extends TestCase
 {

@@ -1,9 +1,9 @@
 <?php
 
-namespace SpaceStudio\Litebase\Tests;
+namespace Litebase\Tests;
 
 use Illuminate\Database\Query\Processors\SQLiteProcessor;
-use SpaceStudio\Litebase\LitebaseConnection;
+use Litebase\LitebaseConnection;
 use Illuminate\Database\Schema\Grammars\SQLiteGrammar;
 use Illuminate\Database\Schema\SQLiteBuilder;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace SpaceStudio\Litebase;
+namespace Litebase;
 
 use Exception;
 use Illuminate\Database\Connectors\Connector;

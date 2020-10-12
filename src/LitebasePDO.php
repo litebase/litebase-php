@@ -1,6 +1,6 @@
 <?php
 
-namespace SpaceStudio\Litebase;
+namespace Litebase;
 
 use Exception;
 use PDO;
@@ -11,12 +11,6 @@ class LitebasePDO extends PDO
 
     public function __construct($database, $username, $password)
     {
-        // $dsn = "sqlite:host=litebase.test;dbname=$database";
-
-        // parent::__construct($dsn, $username, $password, [
-        // 	PDO::ATTR_STATEMENT_CLASS => [LitebaseStatement::class, [$this]],
-        // ]);
-
         if (!ctype_alnum($database)) {
             throw new Exception('The database identifier contains illegal characters.');
         }
@@ -36,6 +30,16 @@ class LitebasePDO extends PDO
     public function commit()
     {
         return $this->client->commit();
+    }
+
+    public function connect()
+    {
+        return $this->client->openConnection();
+    }
+
+    public function disconnect()
+    {
+        return $this->client->closeConnection();
     }
 
     public function errorCode()
@@ -60,6 +64,16 @@ class LitebasePDO extends PDO
         return $this->client;
     }
 
+    public function hasError()
+    {
+        $code = $this->errorCode();
+
+        if (is_null($code)) {
+            return false;
+        }
+
+        return  $code >= 0;
+    }
 
     public function inTransaction()
     {
@@ -71,6 +85,11 @@ class LitebasePDO extends PDO
         return $this->client->lastInsertId();
     }
 
+    public function pendingConnection()
+    {
+        $this->client->shouldConnect();
+    }
+
     public function prepare($query, $options = null)
     {
         return new LitebaseStatement($this->client, $query);
@@ -78,9 +97,11 @@ class LitebasePDO extends PDO
 
     public function query($statement)
     {
-        return tap($this->prepare($statement), function ($statement) {
-            $statement->execute();
-        });
+        $statement = $this->prepare($statement);
+
+        $statement->execute();
+
+        return $statement;
     }
 
     public function rollBack()

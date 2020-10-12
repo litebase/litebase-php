@@ -1,11 +1,12 @@
 <?php
 
-namespace SpaceStudio\Litebase\Tests;
+namespace Litebase\Tests;
 
 use Exception;
-use SpaceStudio\Litebase\LitebaseClient;
-use SpaceStudio\Litebase\LitebasePDO;
-use SpaceStudio\Litebase\LitebaseStatement;
+use Litebase\LitebaseClient;
+use Litebase\LitebasePDO;
+use Litebase\LitebaseStatement;
+use Mockery;
 
 class LitebasePDOTest extends TestCase
 {
@@ -77,6 +78,14 @@ class LitebasePDOTest extends TestCase
         $this->assertInstanceOf(LitebaseClient::class, $this->createPDO()->getClient());
     }
 
+    public function test_it_can_return_if_it_has_error()
+    {
+        $pdo = $this->createPDO();
+        $this->client->shouldReceive('errorCode')->andReturn(null, 500);
+        $this->assertFalse($pdo->hasError());
+        $this->assertTrue($pdo->hasError());
+    }
+
     public function test_it_indicates_if_it_has_a_transaction()
     {
         $pdo = $this->createPDO();
@@ -108,7 +117,8 @@ class LitebasePDOTest extends TestCase
 
         $query = 'SELECT * from users';
         $pdo = $this->createPDO();
-        $this->client->shouldReceive('exec'); //->andReturn($statement);
+        $this->client->shouldReceive('exec');
+        $this->client->shouldReceive('errorCode')->andReturn(null);
         $statement = $pdo->query($query);
 
         $this->assertNotNull($statement);
@@ -131,7 +141,8 @@ class LitebasePDOTest extends TestCase
 
     protected function createPDO()
     {
-        $this->client = $this->mock(LitebaseClient::class);
+        $this->client = Mockery::mock(LitebaseClient::class);
+
         $pdo = new LitebasePDO('database', 'username', 'password');
 
         return $pdo->setClient($this->client);

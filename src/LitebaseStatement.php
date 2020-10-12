@@ -1,6 +1,6 @@
 <?php
 
-namespace SpaceStudio\Litebase;
+namespace Litebase;
 
 use PDO;
 use PDOStatement;
@@ -8,7 +8,14 @@ use PDOStatement;
 class LitebaseStatement extends PDOStatement
 {
     protected $boundParams = [];
+    /**
+     * Undocumented variable
+     *
+     * @var LitebaseClient
+     */
+    protected $client;
     protected $query = '';
+    protected $rows;
     protected $rowCount;
 
     public function __construct(LitebaseClient $client, $query)
@@ -65,12 +72,24 @@ class LitebaseStatement extends PDOStatement
             "parameters" => array_merge($this->boundParams, $params),
         ]);
 
+        if (!empty($this->errorCode())) {
+            return false;
+        }
+
+        if (isset($result['data'])) {
+            $this->rows = $result['data'];
+        }
+
         if (isset($result['data'][0])) {
             $this->columns = array_keys($result['data'][0]);
-            $this->rows = $result['data'];
-            $this->rowCount = count($this->rows);
             $this->cursor = 0;
         }
+
+        if (isset($result['row_count'])) {
+            $this->rowCount = $result['row_count'];
+        }
+
+        return true;
     }
 
     public function fetch(
@@ -86,13 +105,13 @@ class LitebaseStatement extends PDOStatement
         $fetchArgument = 0,
         $ctorArgs = null
     ) {
-        if ($fetchStyle === PDO::ATTR_DEFAULT_FETCH_MODE) {
-            $fetchStyle = $this->fetchMode;
-        }
+        // if ($fetchStyle === PDO::ATTR_DEFAULT_FETCH_MODE) {
+        //     $fetchStyle = $this->fetchMode;
+        // }
 
-        switch ($fetchStyle) {
-            case PDO::FETCH_BOTH:
-        }
+        // switch ($fetchStyle) {
+        //     case PDO::FETCH_BOTH:
+        // }
 
         return $this->rows;
     }
