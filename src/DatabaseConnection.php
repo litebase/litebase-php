@@ -2,17 +2,13 @@
 
 namespace Litebase;
 
-use GuzzleHttp\Client;
+use Exception;
+use React\Datagram\Factory as DatagramFactory;
+use React\Datagram\Socket;
+use React\EventLoop\Factory;
 
 class DatabaseConnection
 {
-    /**
-     * The Guzzle client of the connection.
-     *
-     * @var \GuzzleHttp\Client
-     */
-    protected $client;
-
     /**
      * The id of the database connection.
      *
@@ -32,12 +28,6 @@ class DatabaseConnection
      */
     public function __construct()
     {
-        $this->client = new Client([
-            'base_uri' => $this->url(),
-            'timeout'  => 30,
-            'headers' => [],
-        ]);
-
         $this->open();
     }
 
@@ -59,9 +49,8 @@ class DatabaseConnection
     public function open()
     {
         try {
-            $response = $this->client->post('connections', []);
-            $result = json_decode($response->getBody(), true);
-            $this->id = $result['data']['id'];
+            $response = $this->transmit(['type' => 'connection']);
+            $this->id = $response['id'];
             $this->opened = true;
         } catch (\Throwable $th) {
             throw $th;
@@ -69,26 +58,59 @@ class DatabaseConnection
     }
 
     /**
+     * The url to the proxy server.
+     */
+    public function port()
+    {
+        // @todo: implement configuration
+        return 8081;
+    }
+
+    /**
      * Send a query request to the proxy.
      */
     public function send(array $data)
     {
-        $response = $this->client->post('query', [
-            'form_params' => [
-                'connection_id' => $this->id,
-                'data' => $data,
-            ],
+        $response = $this->transmit([
+            'type' => 'query',
+            'connection_id' => $this->id,
+            'data' => $data,
         ]);
 
-        return json_decode($response->getBody(), true);
+        return json_decode($response, true);
     }
 
     /**
-     * The url to the proxy server.
+     * Transit a message to the query proxy server.
      */
-    public function url()
+    public function transmit(array $message)
     {
-        // @todo: implement
-        return 'http://localhost:8081';
+        $response = null;
+        $loop = Factory::create();
+        $factory = new DatagramFactory($loop);
+
+        $factory->createClient("localhost:{$this->port()}")
+            ->then(function (Socket $client) use ($loop, $message, &$response) {
+                $client->send(json_encode($message));
+
+                $client->on('message', function ($message, $serverAddress, $client) use ($loop, &$response) {
+                    $response = json_decode($message, true);
+                    $loop->stop();
+                });
+
+                $loop->addTimer(1, function () use ($loop) {
+                    $loop->stop();
+                });
+
+                $client->on('error', function ($error) {
+                    throw new Exception($error);
+                });
+            }, function ($error) {
+                throw $error;
+            });
+
+        $loop->run();
+
+        return $response;
     }
 }

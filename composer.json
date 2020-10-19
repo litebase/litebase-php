@@ -33,6 +33,7 @@
         "php": "^7.4",
         "guzzlehttp/guzzle": "^7.0",
         "mockery/mockery": "^1.4",
+        "react/datagram": "^1.5",
         "react/http": "^1.0",
         "spacestudio/process": "dev-master"
     },

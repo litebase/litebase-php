@@ -2,35 +2,22 @@
 
 namespace Litebase;
 
-use Exception;
-use Psr\Http\Message\RequestInterface;
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
+use React\Datagram\Factory as DatagramFactory;
+use React\Datagram\Socket;
 use React\EventLoop\Factory;
 use React\EventLoop\LoopInterface;
-use React\Http\Browser;
 use React\Http\Message\Response;
-use React\Http\Server;
 use React\Promise\Promise;
-use React\Socket\Server as SocketServer;
-use React\Stream\ReadableStreamInterface;
-use React\Stream\ThroughStream;
 
 class QueryProxyServer
 {
-    /**
-     * The React PHP Http Browser instnace of the server.
-     *
-     * @var  \React\Http\Browser
-     */
-    protected $browser;
-
     /**
      * The connections of the server.
      *
      * @var array<string, \Litebase\ProxyConnection>
      */
     protected $connections = [];
+
     /**
      * The loop of the service.
      *
@@ -39,79 +26,62 @@ class QueryProxyServer
     protected $loop;
 
     /**
-     * The React PHP Http Server instance.
-     *
-     * @var \React\Http\Server
-     */
-    protected $server;
-
-    /**
      * Create the React PHP Http server.
      */
-    public function createServer(LoopInterface $loop): Server
+    public function createServer(LoopInterface $loop)
     {
-        $this->server = new Server($loop, function (ServerRequestInterface $request) {
-            return $this->handleRequest($request);
-        });
+        $factory = new DatagramFactory($loop);
 
-        return $this->server;
+        $factory->createServer('localhost:8081')
+            ->then(function (Socket $server) {
+                $server->on('message', function ($message, $address, $server) {
+                    $this->handleRequest($message)->then(
+                        fn ($response) => $server->send(
+                            json_encode($response),
+                            $address
+                        )
+                    );
+                });
+            });
     }
 
-    public function forwardQuery(ServerRequestInterface $request): Promise
+    public function forwardQuery(array $request): Promise
     {
         return new Promise(function ($resolve) use ($request) {
-            $data = $request->getParsedBody();
-            $connection = $this->connections[$data['connection_id']];
-
-            $connection->on('data', function ($data) use ($resolve) {
-                $resolve($data);
-            });
-
-            $connection->send($data['data']);
+            $connection = $this->connections[$request['connection_id']];
+            $connection->on('data', fn ($data) => $resolve($data));
+            $connection->send($request['data']);
         });
     }
 
     /**
      * Handle the incoming request.
      */
-    public function handleRequest(ServerRequestInterface $request): Promise
+    public function handleRequest($request): Promise
     {
-        return new Promise(function ($resolve) use ($request) {
-            if ($request->getMethod() === 'POST' && $request->getUri()->getPath() === '/connections') {
-                $response = $this->openConnection();
+        $request = json_decode($request, true);
 
-                return $resolve(
-                    new Response(
-                        200,
-                        ['Content-Type' => 'application/json'],
-                        json_encode($response)
-                    )
+        return new Promise(function ($resolve) use ($request) {
+            if ($request['type'] === 'connection') {
+                return $resolve($this->openConnection());
+            }
+
+            if ($request['type'] === 'query') {
+                return $this->forwardQuery($request)->then(
+                    fn ($response) => $resolve($response)
                 );
             }
-
-            if ($request->getMethod() === 'POST' && $request->getUri()->getPath() === '/query') {
-                return $this->forwardQuery($request)->then(function ($response) use ($resolve) {
-                    $resolve(new Response(200, [], $response));
-                });
-            }
-
-            $resolve(
-                new Response(404, ['Content-Type' => 'application/json'], 'Not found')
-            );
         });
     }
 
     public function openConnection(): array
     {
-        $this->connections[$id = uniqid(time())] = $connection = new ProxyConnection($this->loop, $id);
-
+        $id = uniqid(time());
+        $connection = new ProxyConnection($this->loop, $id);
+        $this->connections[$id] = $connection;
         $connection->openRequest();
 
-        return [
-            'data' => [
-                'id' => $id,
-            ],
-        ];
+        return ['id' => $id];
     }
 
     /**
@@ -121,9 +91,7 @@ class QueryProxyServer
     {
         $instance = new static;
         $instance->loop = Factory::create();
-        $server = $instance->createServer($instance->loop);
-        $socket = new SocketServer(8081, $instance->loop);
-        $server->listen($socket);
+        $instance->createServer($instance->loop);
         $instance->loop->run();
     }
 }
