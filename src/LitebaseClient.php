@@ -4,13 +4,15 @@ namespace Litebase;
 
 use Exception;
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\ConnectException;
+use Litebase\Exceptions\LitebaseConnectionException;
 
 class LitebaseClient
 {
     /**
      * The base uri of the client.
      */
-    const BASE_URI = 'http://0.0.0.0:8000/databases';
+    const BASE_URI = 'http://localhost:8000/databases';
 
     /**
      * The Http client.
@@ -91,8 +93,6 @@ class LitebaseClient
         $this->client = new Client(array_merge([
             'base_uri' => "{$this->baseURI()}/{$this->database}/",
             'timeout'  => 30,
-            'verify' => false,
-            // 'debug' => 'true',
             'version' => '2',
             'headers' => []
         ], $clientConfig));
@@ -131,12 +131,11 @@ class LitebaseClient
                 'database' => $this->database,
             ]);
 
-            $this->transactionId = $response['data']['id'] ?? null;
+            $this->transactionId = $response['data']['rows'][0]['id'] ?? null;
+            return true;
         } catch (Exception $e) {
             return false;
         }
-
-        return true;
     }
 
     /**
@@ -144,7 +143,7 @@ class LitebaseClient
      */
     public function closeConnection()
     {
-        $this->connection->close();
+        // $this->connection->close();
     }
 
     /**
@@ -192,11 +191,11 @@ class LitebaseClient
         // if ($this->connection || $this->waitForConnection()) {
         //     $result = $this->connection->send($input);
         // } else {
-        $result = $this->send('POST', 'stream', $input);
+        $result = $this->send('POST', 'query', $input);
         // }
 
-        if (isset($result['last_insert_id'])) {
-            $this->lastInsertId = $result['last_insert_id'];
+        if (isset($result['data']['lastID'])) {
+            $this->lastInsertId = $result['data']['lastID'];
         }
 
         return $result;
@@ -234,10 +233,12 @@ class LitebaseClient
 
         try {
             $this->connection = new DatabaseConnection($this);
+
             return true;
         } catch (\Throwable $th) {
             //TODO: Store code and message
             throw $th;
+
             return false;
         }
     }
@@ -267,7 +268,6 @@ class LitebaseClient
     {
         try {
             $response = $this->client->request($method, $path, ['json' => $data]);
-
             $result = json_decode((string) $response->getBody(), true);
 
             if (isset($result['status']) && $result['status'] === 'error') {
@@ -277,10 +277,14 @@ class LitebaseClient
 
             return $result;
         } catch (Exception $e) {
+            if ($e instanceof ConnectException) {
+                throw new LitebaseConnectionException($e->getMessage());
+            }
+
             $this->errorCode = $e->getCode();
             $this->errorInfo = $e->getMessage();
 
-            throw $e;
+            // throw $e;
         }
     }
 

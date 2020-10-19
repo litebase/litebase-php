@@ -66,7 +66,7 @@ class LitebaseClientTest extends TestCase
     public function test_it_can_begin_a_transaction()
     {
         $this->mock->append(
-            new Response(200, [], json_encode(['status' => 'success', 'data' => ['id' => '1']]))
+            new Response(200, [], json_encode(['status' => 'success', 'data' => ['rows' => [['id' => '1']]]]))
         );
 
         $this->assertTrue($this->client->beginTransaction());
@@ -76,7 +76,7 @@ class LitebaseClientTest extends TestCase
     public function test_it_cant_begin_a_transaction_if_one_is_active()
     {
         $this->mock->append(
-            new Response(200, [], json_encode(['data' => ['id' => '1']]))
+            new Response(200, [], json_encode(['data' => ['rows' => [['id' => '1']]]]))
         );
 
         $this->client->beginTransaction();
@@ -87,11 +87,11 @@ class LitebaseClientTest extends TestCase
     public function test_it_can_commit_a_transaction()
     {
         $this->mock->append(
-            new Response(200, [], json_encode(['status' => 'success', 'data' => ['id' => 'test']]))
+            new Response(200, [], json_encode(['status' => 'success', 'data' => ['rows' => [['id' => 'test']]]]))
         );
 
         $this->mock->append(
-            new Response(200, [], json_encode(['status' => 'success', 'data' => ['id' => 'test']]))
+            new Response(200, [], json_encode(['status' => 'success', 'data' => ['rows' => [['id' => 'test']]]]))
         );
 
         $this->assertTrue($this->client->beginTransaction());
@@ -136,8 +136,10 @@ class LitebaseClientTest extends TestCase
         $this->mock->append(
             new Response(200, [], json_encode([
                 'status' => 'success',
-                'data' => ['id' => 1],
-                'last_insert_id' => 1,
+                'data' => [
+                    'lastID' => 1,
+                    'rows' => [['id' => 1]]
+                ],
             ]))
         );
 
@@ -154,7 +156,7 @@ class LitebaseClientTest extends TestCase
     public function test_it_indicates_if_a_transaction_is_in_progress()
     {
         $this->mock->append(
-            new Response(200, [], json_encode(['status' => 'success', 'data' => ['id' => 'test']]))
+            new Response(200, [], json_encode(['status' => 'success', 'data' => ['rows' => [['id' => 'test']]]]))
         );
 
         $this->assertFalse($this->client->inTransaction());
@@ -167,8 +169,9 @@ class LitebaseClientTest extends TestCase
         $this->mock->append(
             new Response(200, [], json_encode([
                 'status' => 'success',
-                'data' => ['id' => 'test'],
-                'last_insert_id' => '1',
+                'data' => [
+                    'lastID' => '1',
+                ],
             ]))
         );
 
@@ -182,8 +185,8 @@ class LitebaseClientTest extends TestCase
 
     public function test_it_can_rollback_a_transaction()
     {
-        $this->mock->append(new Response(200, [], json_encode(['status' => 'success', 'data' => ['id' => '1']])));
-        $this->mock->append(new Response(200, [], json_encode(['status' => 'success', 'data' => ['id' => '1']])));
+        $this->mock->append(new Response(200, [], json_encode(['status' => 'success', 'data' => ['rows' => [['id' => '1']]]])));
+        $this->mock->append(new Response(200, [], json_encode(['status' => 'success', 'data' => ['rows' => [['id' => '1']]]])));
 
         $this->assertTrue($this->client->beginTransaction());
         $this->assertTrue($this->client->rollback());
@@ -203,10 +206,11 @@ class LitebaseClientTest extends TestCase
 
     public function test_it_captures_errors_when_sending_api_calls()
     {
-        $this->expectException(Exception::class);
-        $this->expectExceptionMessage('Test Error');
+        // $this->expectException(Exception::class);
+        // $this->expectExceptionMessage('Test Error');
         $this->mock->append(new Response(500, [], 'Test Error'));
 
-        $this->assertEquals([], $this->client->send('POST', '', []));
+        $this->assertEquals(null, $this->client->send('POST', '', []));
+        $this->assertEquals(500, $this->client->errorCode());
     }
 }

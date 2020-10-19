@@ -2,20 +2,26 @@
 
 namespace Litebase;
 
+use Iterator;
+use IteratorAggregate;
 use PDO;
 use PDOStatement;
 
-class LitebaseStatement extends PDOStatement
+class LitebaseStatement extends PDOStatement implements IteratorAggregate
 {
     protected $boundParams = [];
+
     /**
      * Undocumented variable
      *
      * @var LitebaseClient
      */
     protected $client;
+    protected $columns;
+    protected $fetchMode;
     protected $query = '';
-    protected $rows;
+    protected $result;
+    protected $rows = [];
     protected $rowCount;
 
     public function __construct(LitebaseClient $client, $query)
@@ -45,9 +51,21 @@ class LitebaseStatement extends PDOStatement
         return true;
     }
 
+    /**
+     * @inheritDoc
+     */
+    public function closeCursor(): bool
+    {
+        if (isset($this->result['records'])) {
+            $this->result['records'] = null;
+        }
+
+        return true;
+    }
+
     public function columnCount()
     {
-        return count($this->columns);
+        return $this->columns ? count($this->columns) : 0;
     }
 
     public function debugDumpParams()
@@ -67,68 +85,99 @@ class LitebaseStatement extends PDOStatement
 
     public function execute($params = [])
     {
-        $result = $this->client->exec([
+        $response = $this->client->exec([
             "statement" => $this->query,
             "parameters" => array_merge($this->boundParams, $params),
         ]);
+        // dd($response);
+
+        $this->result = $response['data'];
 
         if (!empty($this->errorCode())) {
             return false;
         }
 
-        if (isset($result['data'])) {
-            $this->rows = $result['data'];
+        if (isset($this->result['rows'])) {
+            $this->rows = $this->result['rows'];
         }
 
-        if (isset($result['data'][0])) {
-            $this->columns = array_keys($result['data'][0]);
+        if (isset($this->result['rows'][0])) {
+            $this->columns = array_keys($this->result['rows'][0]);
             $this->cursor = 0;
         }
 
-        if (isset($result['row_count'])) {
-            $this->rowCount = $result['row_count'];
+        if (isset($result['rowCount'])) {
+            $this->rowCount = $this->result['rowCount'];
         }
 
         return true;
     }
 
     public function fetch(
-        $fetchStyle = PDO::ATTR_DEFAULT_FETCH_MODE,
+        $fetchMode = PDO::ATTR_DEFAULT_FETCH_MODE,
         $cursorOrientation = PDO::FETCH_ORI_NEXT,
         $cursorOffset = 0
     ) {
-        //
+        if ($cursorOrientation !== PDO::FETCH_ORI_NEXT) {
+            throw new \RuntimeException("Cursor direction not implemented");
+        }
+
+        $result = current($this->rows);
+
+        if (!is_array($result)) {
+            return $result;
+        }
+
+        $fetchMode = $fetchMode !== null ? [$fetchMode, null] : $this->fetchMode;
+
+        // advance the pointer and return
+        next($this->rows);
+
+        return $result;
     }
 
     public function fetchAll(
-        $fetchStyle = PDO::ATTR_DEFAULT_FETCH_MODE,
+        $fetchMode = PDO::ATTR_DEFAULT_FETCH_MODE,
         $fetchArgument = 0,
         $ctorArgs = null
     ) {
-        // if ($fetchStyle === PDO::ATTR_DEFAULT_FETCH_MODE) {
-        //     $fetchStyle = $this->fetchMode;
-        // }
+        $previousFetchMode =  $this->fetchMode;
 
-        // switch ($fetchStyle) {
-        //     case PDO::FETCH_BOTH:
-        // }
-
-        return $this->rows;
-    }
-
-    public function fetchColumn($columnNo = 0)
-    {
-        $column = array();
-        for ($i = 0; $i < $this->rowCount; $i++) {
-            $column[$i] = $this->rows[$i]['row'][$columnNo];
+        if ($fetchMode !== null) {
+            $this->setFetchMode($fetchMode, $fetchArgument, $ctorArgs);
         }
 
-        return $column;
+        $result = iterator_to_array($this);
+
+        // $this->setFetchMode($previousFetchMode);
+
+        return $result;
+    }
+
+    public function fetchColumn($columnIndex = 0)
+    {
+        $row = $this->fetch();
+
+        if (!is_array($row)) {
+            return false;
+        }
+
+        return array_search($columnIndex, array_keys($row)) ?? false;
     }
 
     public function getBoundParams()
     {
         return $this->boundParams;
+    }
+
+    /**
+     * @return \Iterator
+     */
+    public function getIterator(): Iterator
+    {
+        while (($row = $this->fetch()) !== false) {
+            yield $row;
+        }
     }
 
     public function rowCount()
@@ -138,7 +187,6 @@ class LitebaseStatement extends PDOStatement
 
     public function setFetchMode($mode, $params = NULL)
     {
-        //TODO: How does this impact the statement?
         $this->fetchMode = $mode;
 
         return true;

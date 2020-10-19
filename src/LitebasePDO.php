@@ -90,9 +90,9 @@ class LitebasePDO extends PDO
         $this->client->shouldConnect();
     }
 
-    public function prepare($query, $options = null)
+    public function prepare($statement, $options = null)
     {
-        return new LitebaseStatement($this->client, $query);
+        return new LitebaseStatement($this->client, $statement);
     }
 
     public function query($statement)

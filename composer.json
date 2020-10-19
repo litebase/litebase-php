@@ -33,9 +33,7 @@
         "php": "^7.4",
         "guzzlehttp/guzzle": "^7.0",
         "mockery/mockery": "^1.4",
-        "react/event-loop": "^1.1",
         "react/http": "^1.0",
-        "react/stream": "^1.1",
         "spacestudio/process": "dev-master"
     },
     "require-dev": {
