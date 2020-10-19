@@ -63,8 +63,8 @@ class ProxyConnection
      */
     public function end()
     {
-        $this->read->end();
-        $this->write->end();
+        $this->reader->end();
+        $this->writer->end();
     }
 
     /**

@@ -188,11 +188,11 @@ class LitebaseClient
      */
     public function exec(array $input = [])
     {
-        // if ($this->connection || $this->waitForConnection()) {
-        //     $result = $this->connection->send($input);
-        // } else {
-        $result = $this->send('POST', 'query', $input);
-        // }
+        if ($this->connection || $this->waitForConnection()) {
+            $result = $this->connection->send($input);
+        } else {
+            $result = $this->send('POST', 'query', $input);
+        }
 
         if (isset($result['data']['lastID'])) {
             $this->lastInsertId = $result['data']['lastID'];

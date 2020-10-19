@@ -62,7 +62,6 @@ class QueryProxyServer
         return new Promise(function ($resolve) use ($request) {
             $data = $request->getParsedBody();
             $connection = $this->connections[$data['connection_id']];
-            $connection->openRequest();
 
             $connection->on('data', function ($data) use ($resolve) {
                 $resolve($data);
@@ -100,7 +99,10 @@ class QueryProxyServer
 
     public function openConnection(RequestInterface $request): array
     {
-        $this->connections[$id = uniqid(time())] = new ProxyConnection($this->loop, $id);
+        $this->connections[$id = uniqid(time())] = $connection = new ProxyConnection($this->loop, $id);
+
+        $connection->openRequest();
+
         return [
             'data' => [
                 'id' => $id,
