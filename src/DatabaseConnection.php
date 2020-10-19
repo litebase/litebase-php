@@ -2,10 +2,7 @@
 
 namespace Litebase;
 
-use Closure;
-use Exception;
 use GuzzleHttp\Client;
-use Illuminate\Support\Str;
 
 class DatabaseConnection
 {
@@ -38,41 +35,26 @@ class DatabaseConnection
         $this->client = new Client([
             'base_uri' => $this->url(),
             'timeout'  => 30,
-            // 'version' => '2',
             'headers' => [],
         ]);
 
         $this->open();
     }
 
-    // /**
-    //  * Close the database connection.
-    //  */
-    // public function close(): bool
-    // {
-    //     if (!$this->id) {
-    //         return false;
-    //     }
+    /**
+     * Close the database connection.
+     */
+    public function close(): bool
+    {
+        if (!$this->id) {
+            return false;
+        }
 
-    //     $client = $this->client;
-    //     $id = $this->id;
+        $this->opened = false;
+        $this->id = null;
 
-    //     $process = process(function () use ($client, $id) {
-    //         try {
-    //             $client->send('DELETE', "connections/{$id}");
-    //         } catch (Exception $e) {
-    //             logger()->error($e->getMessage());
-    //             // throw $th;
-    //         }
-    //     });
-
-    //     $process->withTrails()->run();
-
-    //     $this->opened = false;
-    //     $this->id = null;
-
-    //     return true;
-    // }
+        return true;
+    }
 
     public function open()
     {
@@ -86,6 +68,9 @@ class DatabaseConnection
         }
     }
 
+    /**
+     * Send a query request to the proxy.
+     */
     public function send(array $data)
     {
         $response = $this->client->post('query', [
@@ -98,8 +83,12 @@ class DatabaseConnection
         return json_decode($response->getBody(), true);
     }
 
+    /**
+     * The url to the proxy server.
+     */
     public function url()
     {
+        // @todo: implement
         return 'http://localhost:8081';
     }
 }

@@ -76,12 +76,16 @@ class QueryProxyServer
      */
     public function handleRequest(ServerRequestInterface $request): Promise
     {
-        return new Promise(function ($resolve, $reject) use ($request) {
+        return new Promise(function ($resolve) use ($request) {
             if ($request->getMethod() === 'POST' && $request->getUri()->getPath() === '/connections') {
-                $response = $this->openConnection($request);
+                $response = $this->openConnection();
 
                 return $resolve(
-                    new Response(200, ['Content-Type' => 'application/json'], json_encode($response))
+                    new Response(
+                        200,
+                        ['Content-Type' => 'application/json'],
+                        json_encode($response)
+                    )
                 );
             }
 
@@ -97,7 +101,7 @@ class QueryProxyServer
         });
     }
 
-    public function openConnection(RequestInterface $request): array
+    public function openConnection(): array
     {
         $this->connections[$id = uniqid(time())] = $connection = new ProxyConnection($this->loop, $id);
 
@@ -109,7 +113,6 @@ class QueryProxyServer
             ],
         ];
     }
-
 
     /**
      * Run the server.

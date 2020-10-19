@@ -89,7 +89,6 @@ class LitebaseStatement extends PDOStatement implements IteratorAggregate
             "statement" => $this->query,
             "parameters" => array_merge($this->boundParams, $params),
         ]);
-        // dd($response);
 
         $this->result = $response['data'];
 
