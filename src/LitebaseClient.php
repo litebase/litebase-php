@@ -12,7 +12,8 @@ class LitebaseClient
     /**
      * The base uri of the client.
      */
-    const BASE_URI = 'http://localhost:8000/databases';
+    const BASE_URI = 'http://sqlite_python';
+    // const BASE_URI = 'https://u3t7cfugc9.execute-api.us-east-1.amazonaws.com/databases';
 
     /**
      * The Http client.
@@ -92,9 +93,10 @@ class LitebaseClient
 
         $this->client = new Client(array_merge([
             'base_uri' => "{$this->baseURI()}/{$this->database}/",
+            'headers' => [],
+            'http_errors' => false,
             'timeout'  => 30,
             'version' => '2',
-            'headers' => []
         ], $clientConfig));
     }
 
@@ -272,7 +274,7 @@ class LitebaseClient
 
             if (isset($result['status']) && $result['status'] === 'error') {
                 $this->errorCode = $result['code'] ?? null;
-                $this->errorInfo = $result['message'] ?? null;
+                $this->errorInfo = $result['message'];
             }
 
             return $result;
@@ -284,7 +286,7 @@ class LitebaseClient
             $this->errorCode = $e->getCode();
             $this->errorInfo = $e->getMessage();
 
-            // throw $e;
+            return [];
         }
     }
 

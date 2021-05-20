@@ -2,8 +2,10 @@
 
 namespace Litebase;
 
+use Exception;
 use Iterator;
 use IteratorAggregate;
+use Litebase\Exceptions\QueryException;
 use PDO;
 use PDOStatement;
 
@@ -87,14 +89,16 @@ class LitebaseStatement extends PDOStatement implements IteratorAggregate
     {
         $response = $this->client->exec([
             "statement" => $this->query,
-            "parameters" => array_merge($this->boundParams, $params),
+            "parameters" => $params = array_merge($this->boundParams, $params),
         ]);
 
-        $this->result = $response['data'];
-
         if (!empty($this->errorCode())) {
-            return false;
+            list($state, $code, $message) = $this->errorInfo();
+
+            throw new QueryException($message, $this->query, $params);
         }
+
+        $this->result = $response['data'] ?? [];
 
         if (isset($this->result['rows'])) {
             $this->rows = $this->result['rows'];
@@ -105,7 +109,7 @@ class LitebaseStatement extends PDOStatement implements IteratorAggregate
             $this->cursor = 0;
         }
 
-        if (isset($result['rowCount'])) {
+        if (isset($this->result['rowCount'])) {
             $this->rowCount = $this->result['rowCount'];
         }
 

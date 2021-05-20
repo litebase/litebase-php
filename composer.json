@@ -23,21 +23,13 @@
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
-    "repositories": [
-        {
-            "type": "path",
-            "url": "../process"
-        }
-    ],
     "require": {
         "php": "^7.4",
         "guzzlehttp/guzzle": "^7.0",
-        "mockery/mockery": "^1.4",
-        "react/datagram": "^1.5",
-        "react/http": "^1.0",
-        "spacestudio/process": "dev-master"
+        "mockery/mockery": "^1.4"
     },
     "require-dev": {
+        "illuminate/database": "^8.42",
         "phpunit/phpunit": "^8.0"
     },
     "scripts": {

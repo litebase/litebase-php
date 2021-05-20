@@ -112,18 +112,29 @@ class LitebaseClientTest extends TestCase
     public function test_it_returns_the_error_code()
     {
         $this->mock->append(
-            new Response(500, [], json_encode(['message' => 'Test Error']))
+            new Response(
+                400,
+                [],
+                json_encode([
+                    'code' => '0000',
+                    'status' => 'error',
+                    'message' => 'Test Error'
+                ])
+            )
         );
 
         $this->client->beginTransaction();
 
-        $this->assertEquals(500, $this->client->errorCode());
+        $this->assertEquals('0000', $this->client->errorCode());
     }
 
     public function test_it_returns_the_error_info()
     {
         $this->mock->append(
-            new Response(500, [], json_encode(['message' => 'Test Error']))
+            new Response(500, [], json_encode([
+                'status' => 'error',
+                'message' => 'Test Error'
+            ]))
         );
 
         $this->client->beginTransaction();
@@ -202,15 +213,5 @@ class LitebaseClientTest extends TestCase
         $this->mock->append(new Response(200, [], json_encode([])));
 
         $this->assertEquals([], $this->client->send('POST', '', []));
-    }
-
-    public function test_it_captures_errors_when_sending_api_calls()
-    {
-        // $this->expectException(Exception::class);
-        // $this->expectExceptionMessage('Test Error');
-        $this->mock->append(new Response(500, [], 'Test Error'));
-
-        $this->assertEquals(null, $this->client->send('POST', '', []));
-        $this->assertEquals(500, $this->client->errorCode());
     }
 }

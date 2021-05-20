@@ -52,13 +52,15 @@ class LitebaseStatementTest extends TestCase
         $this->client->shouldReceive('errorCode')->andReturn(null);
         $this->client->shouldReceive('exec')->andReturn([
             'data' => [
-                [
-                    'id' => '1',
-                    'name' => 'John',
-                ],
-                [
-                    'id' => '2',
-                    'name' => 'Jane',
+                'rows' => [
+                    [
+                        'id' => '1',
+                        'name' => 'John',
+                    ],
+                    [
+                        'id' => '2',
+                        'name' => 'Jane',
+                    ],
                 ],
             ],
         ]);
@@ -97,16 +99,18 @@ class LitebaseStatementTest extends TestCase
         $this->client->shouldReceive('exec')->andReturn([
             'status' => 'success',
             'data' => [
-                [
-                    'id' => '1',
-                    'name' => 'John',
+                'rows' => [
+                    [
+                        'id' => '1',
+                        'name' => 'John',
+                    ],
+                    [
+                        'id' => '2',
+                        'name' => 'Jane',
+                    ],
                 ],
-                [
-                    'id' => '2',
-                    'name' => 'Jane',
-                ],
+                'rowCount' => 2,
             ],
-            'row_count' => 2,
         ]);
 
         $statement->execute();
