@@ -125,7 +125,7 @@ class LitebaseClientTest extends TestCase
 
         $this->client->beginTransaction();
 
-        $this->assertEquals('0000', $this->client->errorCode());
+        $this->assertEquals('0000', $this->client->errorInfo()[0]);
     }
 
     public function test_it_returns_the_error_info()
@@ -139,7 +139,7 @@ class LitebaseClientTest extends TestCase
 
         $this->client->beginTransaction();
 
-        $this->assertStringContainsString('Test Error', $this->client->errorInfo());
+        $this->assertStringContainsString('Test Error', $this->client->errorInfo()[2]);
     }
 
     public function test_it_can_execute_a_statment()

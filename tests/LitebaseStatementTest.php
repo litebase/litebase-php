@@ -49,7 +49,7 @@ class LitebaseStatementTest extends TestCase
     public function test_it_can_return_a_column_count()
     {
         $statement = $this->createStatement();
-        $this->client->shouldReceive('errorCode')->andReturn(null);
+        $this->client->shouldReceive('errorInfo')->andReturn(null);
         $this->client->shouldReceive('exec')->andReturn([
             'data' => [
                 'rows' => [
@@ -95,7 +95,7 @@ class LitebaseStatementTest extends TestCase
     public function test_it_can_return_the_row_count()
     {
         $statement = $this->createStatement();
-        $this->client->shouldReceive('errorCode')->andReturn(null);
+        $this->client->shouldReceive('errorInfo')->andReturn(null);
         $this->client->shouldReceive('exec')->andReturn([
             'status' => 'success',
             'data' => [

@@ -92,8 +92,8 @@ class LitebaseStatement extends PDOStatement implements IteratorAggregate
             "parameters" => $params = array_merge($this->boundParams, $params),
         ]);
 
-        if (!empty($this->errorCode())) {
-            list($state, $code, $message) = $this->errorInfo();
+        if ($this->errorInfo()) {
+            list($errorCode, $statusCode, $message) = $this->errorInfo();
 
             throw new QueryException($message, $this->query, $params);
         }

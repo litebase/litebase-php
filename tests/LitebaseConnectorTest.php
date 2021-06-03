@@ -3,9 +3,6 @@
 namespace Litebase\Tests;
 
 use Exception;
-use Illuminate\Database\Query\Processors\SQLiteProcessor;
-use Litebase\LitebaseConnection;
-use Illuminate\Database\Schema\Grammars\SQLiteGrammar;
 use Litebase\LitebaseConnector;
 use Litebase\LitebasePDO;
 

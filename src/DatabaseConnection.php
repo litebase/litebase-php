@@ -10,6 +10,13 @@ use React\EventLoop\Factory;
 class DatabaseConnection
 {
     /**
+     * The litebase client instance.
+     *
+     * @var Litebase
+     */
+    protected $client;
+
+    /**
      * The id of the database connection.
      *
      * @var string
@@ -26,8 +33,9 @@ class DatabaseConnection
     /**
      * Create a new instance of a database connection.
      */
-    public function __construct()
+    public function __construct(LitebaseClient $client)
     {
+        $this->client = $client;
         $this->open();
     }
 
@@ -63,7 +71,7 @@ class DatabaseConnection
     public function port()
     {
         // @todo: implement configuration
-        return 8081;
+        return 8082;
     }
 
     /**
@@ -87,7 +95,7 @@ class DatabaseConnection
      */
     public function transmit(array $message)
     {
-        $response = null;
+        $response = '';
         $loop = Factory::create();
         $factory = new DatagramFactory($loop);
 

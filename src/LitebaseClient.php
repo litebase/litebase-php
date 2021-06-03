@@ -10,12 +10,6 @@ use Litebase\Exceptions\LitebaseConnectionException;
 class LitebaseClient
 {
     /**
-     * The base uri of the client.
-     */
-    const BASE_URI = 'http://sqlite_python';
-    // const BASE_URI = 'https://u3t7cfugc9.execute-api.us-east-1.amazonaws.com/databases';
-
-    /**
      * The Http client.
      *
      * @var \GuzzleHttp\Client
@@ -37,18 +31,18 @@ class LitebaseClient
     protected $database;
 
     /**
-     * An error code received from a request.
-     *
-     * @var int
-     */
-    protected $errorCode = null;
-
-    /**
      * Error info received from a request.
      *
      * @var string
      */
     protected $errorInfo;
+
+    /**
+     * The host of the database.
+     *
+     * @var string
+     */
+    protected $host;
 
     /**
      * The id of the last instered record.
@@ -77,23 +71,30 @@ class LitebaseClient
      */
     public function __construct(array $attributes, array $clientConfig = [])
     {
+        if (!isset($attributes['host'])) {
+            throw new Exception('The Litebase host is missing.');
+        }
+
         if (!isset($attributes['database'])) {
             throw new Exception('The Litebase database is missing.');
         }
 
-        if (!isset($attributes['username'])) {
-            throw new Exception('The Litebase database connection cannot be created without a username.');
+        if (!isset($attributes['key'])) {
+            throw new Exception('The Litebase database connection cannot be created without a valid key id.');
         }
 
-        if (!isset($attributes['password'])) {
-            throw new Exception('The Litebase database connection cannot be created without a password.');
+        if (!isset($attributes['secret'])) {
+            throw new Exception('The Litebase database connection cannot be created without a valid secret key.');
         }
 
+        $this->host = $attributes['database'];
         $this->database = $attributes['database'];
 
         $this->client = new Client(array_merge([
             'base_uri' => "{$this->baseURI()}/{$this->database}/",
-            'headers' => [],
+            'headers' => [
+                'Connection' => 'keep-alive',
+            ],
             'http_errors' => false,
             'timeout'  => 30,
             'version' => '2',
@@ -115,7 +116,7 @@ class LitebaseClient
      */
     public function baseURI()
     {
-        return static::BASE_URI;
+        return "https://{$this->host}/{$this->database}";
     }
 
     /**
@@ -177,7 +178,7 @@ class LitebaseClient
 
     public function errorCode()
     {
-        return $this->errorCode;
+        return $this->errorInfo()[0];
     }
 
     public function errorInfo()
@@ -193,11 +194,11 @@ class LitebaseClient
         if ($this->connection || $this->waitForConnection()) {
             $result = $this->connection->send($input);
         } else {
-            $result = $this->send('POST', 'query', $input);
+            $result = $this->send('POST', '/', $input);
         }
 
-        if (isset($result['data']['lastID'])) {
-            $this->lastInsertId = $result['data']['lastID'];
+        if (isset($result['data']['insertId'])) {
+            $this->lastInsertId = $result['data']['insertId'];
         }
 
         return $result;
@@ -273,8 +274,11 @@ class LitebaseClient
             $result = json_decode((string) $response->getBody(), true);
 
             if (isset($result['status']) && $result['status'] === 'error') {
-                $this->errorCode = $result['code'] ?? null;
-                $this->errorInfo = $result['message'];
+                $this->errorInfo = [
+                    $result['code'] ?? 0,
+                    $response->getStatusCode(),
+                    $result['message'] ?? 'Unknown error',
+                ];
             }
 
             return $result;
@@ -283,8 +287,11 @@ class LitebaseClient
                 throw new LitebaseConnectionException($e->getMessage());
             }
 
-            $this->errorCode = $e->getCode();
-            $this->errorInfo = $e->getMessage();
+            $this->errorInfo = [
+                0,
+                0,
+                $e->getMessage()
+            ];
 
             return [];
         }
@@ -299,8 +306,11 @@ class LitebaseClient
             $this->client->requestAsync($method, $path, ['json' => $data]);
             return true;
         } catch (Exception $e) {
-            $this->errorCode = $e->getCode();
-            $this->errorInfo = $e->getMessage();
+            $this->errorInfo = [
+                0,
+                0,
+                $e->getMessage()
+            ];
 
             throw $e;
         }
