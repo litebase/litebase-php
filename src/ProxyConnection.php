@@ -12,6 +12,13 @@ use React\Stream\ThroughStream;
 class ProxyConnection
 {
     /**
+     * The client of the connection.
+     *
+     * @var LitebaseClient
+     */
+    protected $client;
+
+    /**
      * The id of the connection.
      *
      * @var string
@@ -42,8 +49,9 @@ class ProxyConnection
     /**
      * Create a new instance of a proxy connection.
      */
-    public function __construct(LoopInterface $loop, string $id)
+    public function __construct(LitebaseClient $client, LoopInterface $loop, string $id)
     {
+        $this->client = $client;
         $this->id = $id;
         $this->loop = $loop;
         $this->init();
@@ -138,7 +146,6 @@ class ProxyConnection
 
     public function url()
     {
-        return "http://localhost:8081/stream";
-        // return "https://muddy-wave-4569.fly.dev/stream";
+        return "{$this->client->baseURI()}/stream";
     }
 }

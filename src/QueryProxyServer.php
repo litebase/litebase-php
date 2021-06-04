@@ -12,6 +12,13 @@ use React\Promise\Promise;
 class QueryProxyServer
 {
     /**
+     * The client of the server.
+     *
+     * @var LitebaseClient
+     */
+    protected $client;
+
+    /**
      * The connections of the server.
      *
      * @var array<string, \Litebase\ProxyConnection>
@@ -24,6 +31,14 @@ class QueryProxyServer
      * @var \React\EventLoop\LoopInterface
      */
     protected $loop;
+
+    /**
+     * Create a new instance of the server.
+     */
+    public function __construct(LitebaseClient $client)
+    {
+        $this->client = $client;
+    }
 
     /**
      * Create the React PHP Http server.
@@ -74,7 +89,7 @@ class QueryProxyServer
     public function openConnection(): array
     {
         $id = uniqid(time());
-        $connection = new ProxyConnection($this->loop, $id);
+        $connection = new ProxyConnection($this->client, $this->loop, $id);
         $this->connections[$id] = $connection;
         $connection->openRequest();
 
@@ -84,9 +99,9 @@ class QueryProxyServer
     /**
      * Run the server.
      */
-    public static function run(int $port = 8100)
+    public static function run(LitebaseClient $client, int $port = 8100)
     {
-        $instance = new static;
+        $instance = new static($client);
         $instance->loop = Factory::create();
         $instance->createServer($instance->loop, $port);
 

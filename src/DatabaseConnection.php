@@ -12,7 +12,7 @@ class DatabaseConnection
     /**
      * The litebase client instance.
      *
-     * @var Litebase
+     * @var LitebaseClient
      */
     protected $client;
 
@@ -68,10 +68,9 @@ class DatabaseConnection
     /**
      * The url to the proxy server.
      */
-    public function port()
+    public function port(): int
     {
-        // @todo: implement configuration
-        return 8082;
+        return $this->client->getQueryProxyPort();
     }
 
     /**

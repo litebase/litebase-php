@@ -9,18 +9,10 @@ class LitebasePDO extends PDO
 {
     protected $client;
 
-    public function __construct(string $host, string $database, string $key, string $secret)
+    public function __construct(array $config)
     {
-        if (!ctype_alnum($database)) {
-            throw new Exception('The database identifier contains illegal characters.');
-        }
 
-        $this->client = new LitebaseClient([
-            'host' => $host,
-            'database' => $database,
-            'key' => $key,
-            'secret' => $secret,
-        ]);
+        $this->client = new LitebaseClient($config);
     }
 
     public function beginTransaction()

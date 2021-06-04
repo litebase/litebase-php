@@ -52,6 +52,11 @@ class LitebaseClient
     protected $lastInsertId = null;
 
     /**
+     * The port for the query proxy server.
+     */
+    protected $proxyPort;
+
+    /**
      * Indicates if the client should create a connection before executing
      * any queries.
      *
@@ -87,8 +92,9 @@ class LitebaseClient
             throw new Exception('The Litebase database connection cannot be created without a valid secret key.');
         }
 
-        $this->host = $attributes['database'];
+        $this->host = $attributes['host'];
         $this->database = $attributes['database'];
+        $this->proxyPort = $attributes['proxy_port'];
 
         $this->client = new Client(array_merge([
             'base_uri' => "{$this->baseURI()}/{$this->database}/",
@@ -210,6 +216,14 @@ class LitebaseClient
     public function getGuzzleClient(): Client
     {
         return $this->client;
+    }
+
+    /**
+     * Return the query proxy server port.
+     */
+    public function getQueryProxyPort(): int
+    {
+        return $this->proxyPort;
     }
 
     /**
