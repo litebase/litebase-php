@@ -28,11 +28,11 @@ class QueryProxyServer
     /**
      * Create the React PHP Http server.
      */
-    public function createServer(LoopInterface $loop)
+    public function createServer(LoopInterface $loop, int $port)
     {
         $factory = new DatagramFactory($loop);
 
-        $factory->createServer('localhost:8082')
+        $factory->createServer("localhost:{$port}")
             ->then(function (Socket $server) {
                 $server->on('message', function ($message, $address, $server) {
                     $this->handleRequest($message)->then(
@@ -84,11 +84,14 @@ class QueryProxyServer
     /**
      * Run the server.
      */
-    public static function run()
+    public static function run(int $port = 8100)
     {
         $instance = new static;
         $instance->loop = Factory::create();
-        $instance->createServer($instance->loop);
+        $instance->createServer($instance->loop, $port);
+
+        print("\nLitebase proxy server is running on port: {$port}\n");
+
         $instance->loop->run();
     }
 }
