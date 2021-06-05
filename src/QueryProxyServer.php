@@ -2,11 +2,11 @@
 
 namespace Litebase;
 
+use Exception;
 use React\Datagram\Factory as DatagramFactory;
 use React\Datagram\Socket;
 use React\EventLoop\Factory;
 use React\EventLoop\LoopInterface;
-use React\Http\Message\Response;
 use React\Promise\Promise;
 
 class QueryProxyServer
@@ -40,6 +40,13 @@ class QueryProxyServer
         $this->client = $client;
     }
 
+    public function closeConnection($id)
+    {
+        if (isset($this->connections[$id])) {
+            unset($this->connections[$id]);
+        }
+    }
+
     /**
      * Create the React PHP Http server.
      */
@@ -51,17 +58,32 @@ class QueryProxyServer
             ->then(function (Socket $server) {
                 $server->on('message', function ($message, $address, $server) {
                     $this->handleRequest($message)->then(
-                        fn ($response) => $server->send(json_encode($response), $address)
+                        fn ($response) => $server->send(json_encode($response), $address),
+                        fn (Exception $error) => var_dump($error->getMessage())
                     );
                 });
+
+                $server->on('error', function (Exception $error) {
+                    var_dump($error->getMessage());
+                });
             });
+    }
+
+    public function getClient(): LitebaseClient
+    {
+        return $this->client;
+    }
+
+    public function getLoop(): LoopInterface
+    {
+        return $this->loop;
     }
 
     public function forwardQuery(array $request): Promise
     {
         return new Promise(function ($resolve) use ($request) {
             $connection = $this->connections[$request['connection_id']];
-            $connection->on('data', fn ($data) => $resolve($data));
+            $connection->onResponse($request['data']['id'], fn ($data) => $resolve($data));
             $connection->send($request['data']);
         });
     }
@@ -88,10 +110,21 @@ class QueryProxyServer
 
     public function openConnection(): array
     {
+        $openConnections = array_filter(
+            $this->connections,
+            function (ProxyConnection $connection) {
+                return $connection->isClosing() === false && $connection->isOpen();
+            }
+        );
+
+        if (count($openConnections)) {
+            return ['id' => current($openConnections)->getId()];
+        }
+
         $id = uniqid(time());
-        $connection = new ProxyConnection($this->client, $this->loop, $id);
+        $connection = new ProxyConnection($this, $id);
         $this->connections[$id] = $connection;
-        $connection->openRequest();
+        $connection->open();
 
         return ['id' => $id];
     }

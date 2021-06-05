@@ -97,13 +97,12 @@ class LitebaseClient
         $this->proxyPort = $attributes['proxy_port'];
 
         $this->client = new Client(array_merge([
-            'base_uri' => "{$this->baseURI()}/{$this->database}/",
+            'base_uri' => "{$this->baseURI()}/",
             'headers' => [
                 'Connection' => 'keep-alive',
             ],
             'http_errors' => false,
             'timeout'  => 30,
-            'version' => '2',
         ], $clientConfig));
     }
 
@@ -122,7 +121,7 @@ class LitebaseClient
      */
     public function baseURI()
     {
-        return "https://{$this->host}/{$this->database}";
+        return "http://{$this->host}/{$this->database}";
     }
 
     /**
@@ -200,7 +199,7 @@ class LitebaseClient
         if ($this->connection || $this->waitForConnection()) {
             $result = $this->connection->send($input);
         } else {
-            $result = $this->send('POST', '/', $input);
+            $result = $this->send('POST', 'query', $input);
         }
 
         if (isset($result['data']['insertId'])) {
@@ -284,7 +283,14 @@ class LitebaseClient
     public function send(string $method, string $path, $data = [])
     {
         try {
-            $response = $this->client->request($method, $path, ['json' => $data]);
+            $response = $this->client->request($method, $path, [
+                'json' => $data,
+                'headers' => [
+                    'Content-Type' => 'application/json',
+                    'Content-Length' => strlen(json_encode($data)),
+                ]
+            ]);
+
             $result = json_decode((string) $response->getBody(), true);
 
             if (isset($result['status']) && $result['status'] === 'error') {

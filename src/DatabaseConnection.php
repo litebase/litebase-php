@@ -78,15 +78,13 @@ class DatabaseConnection
      */
     public function send(array $data)
     {
-        $start = microtime(true);
+        $id = uniqid(time());
 
-        $response = $this->transmit([
+        return $this->transmit([
             'type' => 'query',
             'connection_id' => $this->id,
-            'data' => $data,
+            'data' => array_merge(['id' => $id], $data),
         ]);
-
-        return json_decode($response, true);
     }
 
     /**
@@ -102,13 +100,15 @@ class DatabaseConnection
             ->then(function (Socket $client) use ($loop, $message, &$response) {
                 $client->send(json_encode($message));
 
-                $client->on('message', function ($message) use ($loop, &$response) {
+                $client->on('message', function ($message) use ($client, $loop, &$response) {
                     $response = json_decode($message, true);
+                    $client->close();
                     $loop->stop();
                 });
 
                 // @todo: Add proper timeout
-                $loop->addTimer(1, function () use ($loop) {
+                $loop->addTimer(3, function () use ($client, $loop) {
+                    $client->close();
                     $loop->stop();
                 });
 

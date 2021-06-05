@@ -25,6 +25,7 @@
     "prefer-stable": true,
     "require": {
         "php": "^7.4",
+        "clue/ndjson-react": "^1.2",
         "guzzlehttp/guzzle": "^7.0",
         "mockery/mockery": "^1.4",
         "react/datagram": "^1.5",
