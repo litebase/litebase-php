@@ -8,7 +8,7 @@ use Illuminate\Database\Query\Processors\SQLiteProcessor;
 use Illuminate\Database\Schema\SQLiteBuilder;
 use Illuminate\Database\Schema\Grammars\SQLiteGrammar as SchemaGrammar;
 
-class LitebaseConnection extends Connection
+class LitebaseConnection_ extends Connection
 {
     /**
      * Create a new database connection instance.

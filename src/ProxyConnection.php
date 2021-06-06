@@ -204,6 +204,7 @@ class ProxyConnection
     protected function openRequest()
     {
         (new Browser($this->server->getLoop()))
+            ->withTimeout(300)
             ->requestStreaming(
                 'POST',
                 $this->url(),
@@ -219,17 +220,19 @@ class ProxyConnection
                         return;
                     }
 
-                    /** @var ReadableStreamInterface */
+                    /** @var \React\Stream\ReadableStreamInterface */
                     $responseBody = $response->getBody();
                     $responseBody->on('data', fn ($data) => $this->getReadStream()->write($data));
                     $this->getWriteStream()->on('end', fn () => $responseBody->close());
 
+                    $responseBody->on('close', fn () => $this->close());
+                    $responseBody->on('end', fn () => $this->close());
                     $responseBody->on(
                         'error',
                         fn (Exception $error) => print('Response Body Error: ' . $error->getMessage() . PHP_EOL)
                     );
 
-                    $this->autoCloseConnection(30);
+                    $this->autoCloseConnection(30, fn () => $responseBody->close());
                 },
                 fn (Exception $exception) => print('Streaming Request Error: ' . $exception->getMessage())
             );
