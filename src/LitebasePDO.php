@@ -25,12 +25,12 @@ class LitebasePDO extends PDO
 
     public function connect()
     {
-        return $this->client->openConnection();
+        return;
     }
 
     public function disconnect()
     {
-        return $this->client->closeConnection();
+        return;
     }
 
     public function errorCode()
@@ -74,11 +74,6 @@ class LitebasePDO extends PDO
     public function lastInsertId($name = null)
     {
         return $this->client->lastInsertId();
-    }
-
-    public function pendingConnection()
-    {
-        $this->client->shouldConnect();
     }
 
     public function prepare($statement, $options = null)

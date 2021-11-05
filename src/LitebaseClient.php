@@ -17,13 +17,6 @@ class LitebaseClient
     protected $client;
 
     /**
-     * The database connection of the client.
-     *
-     * @var DatabaseConnection
-     */
-    protected $connection;
-
-    /**
      * The database identifier of the client.
      *
      * @var string
@@ -76,14 +69,6 @@ class LitebaseClient
      * @var string
      */
     protected $secret;
-
-    /**
-     * Indicates if the client should create a connection before executing
-     * any queries.
-     *
-     * @var bool
-     */
-    protected $shouldCreateConnection = false;
 
     /**
      * An active transaction id.
@@ -139,9 +124,7 @@ class LitebaseClient
      */
     public function __destruct()
     {
-        if ($this->connection) {
-            $this->closeConnection();
-        }
+        //
     }
 
     /**
@@ -164,14 +147,6 @@ class LitebaseClient
         } catch (Exception $e) {
             return false;
         }
-    }
-
-    /**
-     * Close the database connection.
-     */
-    public function closeConnection()
-    {
-        // $this->connection->close();
     }
 
     /**
@@ -218,12 +193,7 @@ class LitebaseClient
     {
         $id = uniqid(time());
         $input = array_merge(['id' => $id], $input);
-
-        if ($this->connection || $this->waitForConnection()) {
-            $result = $this->connection->send($input);
-        } else {
-            $result = $this->send('POST', 'query', $input);
-        }
+        $result = $this->send('POST', 'query', $input);
 
         if (isset($result['data']['insertId'])) {
             $this->lastInsertId = $result['data']['insertId'];
@@ -254,14 +224,6 @@ class LitebaseClient
     public function getHost(): string
     {
         return $this->host;
-    }
-
-    /**
-     * Return the query proxy server port.
-     */
-    public function getQueryProxyPort(): int
-    {
-        return $this->proxyPort;
     }
 
     /**
@@ -297,27 +259,6 @@ class LitebaseClient
     public function lastInsertId()
     {
         return $this->lastInsertId;
-    }
-
-    /**
-     * Open a database connection.
-     */
-    public function openConnection()
-    {
-        if ($this->connection) {
-            return true;
-        }
-
-        try {
-            $this->connection = new DatabaseConnection($this);
-
-            return true;
-        } catch (\Throwable $th) {
-            //TODO: Store code and message
-            throw $th;
-
-            return false;
-        }
     }
 
     /**
@@ -413,26 +354,8 @@ class LitebaseClient
         }
     }
 
-    public function shouldConnect(): void
-    {
-        $this->shouldCreateConnection = true;
-    }
-
-    public function shouldWaitForConnection(): bool
-    {
-        return $this->shouldCreateConnection;
-    }
-
     public function url(string $path = '')
     {
         return "http://{$this->host}/{$this->getDatabasePath($path)}";
-    }
-
-    public function waitForConnection()
-    {
-        if ($this->shouldWaitForConnection()) {
-            $this->openConnection();
-            return true;
-        }
     }
 }
