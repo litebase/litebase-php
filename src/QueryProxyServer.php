@@ -3,11 +3,11 @@
 namespace Litebase;
 
 use Exception;
-use React\Datagram\Factory as DatagramFactory;
+use React\Datagram\Factory;
 use React\Datagram\Socket;
-use React\EventLoop\Factory;
-use React\EventLoop\LoopInterface;
+use React\EventLoop\Loop;
 use React\Promise\Promise;
+use Throwable;
 
 class QueryProxyServer
 {
@@ -26,13 +26,6 @@ class QueryProxyServer
     protected $connections = [];
 
     /**
-     * The loop of the service.
-     *
-     * @var \React\EventLoop\LoopInterface
-     */
-    protected $loop;
-
-    /**
      * Create a new instance of the server.
      */
     public function __construct(LitebaseClient $client)
@@ -48,35 +41,47 @@ class QueryProxyServer
     }
 
     /**
-     * Create the React PHP Http server.
+     * Create the ReactPHP Datagram server.
      */
-    public function createServer(LoopInterface $loop, int $port)
+    public function createServer(int $port)
     {
-        $factory = new DatagramFactory($loop);
+        $factory = new Factory();
 
         $factory->createServer("localhost:{$port}")
             ->then(function (Socket $server) {
+
+
                 $server->on('message', function ($message, $address, $server) {
                     $this->handleRequest($message)->then(
                         fn ($response) => $server->send(json_encode($response), $address),
-                        fn (Exception $error) => var_dump($error->getMessage())
+                        function (Exception $error) {
+                            var_dump($error->getMessage());
+                            throw $error;
+                        }
                     );
                 });
 
-                $server->on('error', function (Exception $error) {
+                $server->on('error', function (Throwable $error) {
                     var_dump($error->getMessage());
+                    throw $error;
                 });
+
+                try {
+                    $this->openConnection();
+                } catch (Throwable $th) {
+                    var_dump($th->getMessage());
+
+                    throw $th;
+                }
+            }, function (Throwable $error) {
+                var_dump($error->getMessage());
+                throw $error;
             });
     }
 
     public function getClient(): LitebaseClient
     {
         return $this->client;
-    }
-
-    public function getLoop(): LoopInterface
-    {
-        return $this->loop;
     }
 
     public function forwardQuery(array $request): Promise
@@ -135,11 +140,8 @@ class QueryProxyServer
     public static function run(LitebaseClient $client, int $port = 8100)
     {
         $instance = new static($client);
-        $instance->loop = Factory::create();
-        $instance->createServer($instance->loop, $port);
+        $instance->createServer($port);
 
         print("\nLitebase proxy server is running on port: {$port}\n");
-
-        $instance->loop->run();
     }
 }

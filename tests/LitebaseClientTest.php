@@ -16,9 +16,10 @@ class LitebaseClientTest extends TestCase
         $this->mock = new MockHandler();
 
         $this->client = new LitebaseClient([
+            'host' => 'litebase.test',
             'database' => 'testdatabase',
-            'username' => 'test',
-            'password' => 'password',
+            'key' => 'test',
+            'secret' => 'password',
         ], [
             'handler' => HandlerStack::create($this->mock),
         ]);
@@ -50,17 +51,13 @@ class LitebaseClientTest extends TestCase
         $this->expectException(Exception::class);
         $this->expectExceptionMessage('The Litebase database connection cannot be created without a password.');
 
-        new LitebaseClient(['database' => 'testdatabase', 'username' => 'test']);
+        new LitebaseClient(['database' => 'testdatabase', 'key' => 'test']);
     }
 
     public function test_it_configures_the_client()
     {
         $baseUri = $this->client->getGuzzleClient()->getConfig('base_uri');
-
-        $this->assertEquals(
-            $baseUri,
-            LitebaseClient::BASE_URI . "/{$this->client->database()}/"
-        );
+        $this->assertEquals((string) $baseUri, $this->client->baseURI());
     }
 
     public function test_it_can_begin_a_transaction()

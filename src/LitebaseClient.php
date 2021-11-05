@@ -45,6 +45,13 @@ class LitebaseClient
     protected $host;
 
     /**
+     * The accesss key id of the client.
+     *
+     * @var string
+     */
+    protected $key;
+
+    /**
      * The id of the last instered record.
      *
      * @var null|string
@@ -55,6 +62,20 @@ class LitebaseClient
      * The port for the query proxy server.
      */
     protected $proxyPort;
+
+    /**
+     * The region of the database.
+     *
+     * @var string
+     */
+    protected $region;
+
+    /**
+     * The accesss key secret of the client.
+     *
+     * @var string
+     */
+    protected $secret;
 
     /**
      * Indicates if the client should create a connection before executing
@@ -92,12 +113,19 @@ class LitebaseClient
             throw new Exception('The Litebase database connection cannot be created without a valid secret key.');
         }
 
+        if (!isset($attributes['region'])) {
+            throw new Exception('The Litebase database connection cannot be created without a valid region.');
+        }
+
         $this->host = $attributes['host'];
         $this->database = $attributes['database'];
-        $this->proxyPort = $attributes['proxy_port'];
+        $this->proxyPort = $attributes['proxy_port'] ?? 6000;
+        $this->key = $attributes['key'];
+        $this->secret = $attributes['secret'];
+        $this->region = $attributes['region'];
 
         $this->client = new Client(array_merge([
-            'base_uri' => "{$this->baseURI()}/",
+            'base_uri' => "{$this->host}/",
             'headers' => [
                 'Connection' => 'keep-alive',
             ],
@@ -114,14 +142,6 @@ class LitebaseClient
         if ($this->connection) {
             $this->closeConnection();
         }
-    }
-
-    /**
-     * Return the base uri for the client.
-     */
-    public function baseURI()
-    {
-        return "http://{$this->host}/{$this->database}";
     }
 
     /**
@@ -196,6 +216,9 @@ class LitebaseClient
      */
     public function exec(array $input = [])
     {
+        $id = uniqid(time());
+        $input = array_merge(['id' => $id], $input);
+
         if ($this->connection || $this->waitForConnection()) {
             $result = $this->connection->send($input);
         } else {
@@ -210,11 +233,27 @@ class LitebaseClient
     }
 
     /**
+     * Return a database path for a request.
+     */
+    public function getDatabasePath(string $path)
+    {
+        return "{$this->database}/$path";
+    }
+
+    /**
      * Return the guzzle http client.
      */
     public function getGuzzleClient(): Client
     {
         return $this->client;
+    }
+
+    /**
+     * Return the host of the client.
+     */
+    public function getHost(): string
+    {
+        return $this->host;
     }
 
     /**
@@ -224,6 +263,28 @@ class LitebaseClient
     {
         return $this->proxyPort;
     }
+
+    /**
+     * Get an authorization token for a request.
+     */
+    public function getToken(
+        string $method,
+        string $path,
+        array $headers,
+        array $data,
+        array $queryParams = [],
+    ) {
+        return RequestSigner::handle(
+            accessKeyID: $this->key,
+            accessKeySecret: $this->secret,
+            region: $this->region,
+            method: $method,
+            path: $path,
+            headers: $headers,
+            data: $data,
+        );
+    }
+
 
     /**
      * Check if the client has a transaction in progress.
@@ -278,17 +339,33 @@ class LitebaseClient
     }
 
     /**
-     * Set a request to the data api.
+     * Send a request to the data api.
      */
     public function send(string $method, string $path, $data = [])
     {
+        $path = $this->getDatabasePath($path);
+        $date = date('U');
+
+        $headers = [
+            'Content-Type' => 'application/json',
+            'Content-Length' => strlen(json_encode($data)),
+            'Host' => $this->host,
+            'X-LBDB-Date' => $date,
+        ];
+
+        $token = $this->getToken(
+            method: $method,
+            path: $path,
+            headers: $headers,
+            data: $data
+        );
+
         try {
             $response = $this->client->request($method, $path, [
                 'json' => $data,
-                'headers' => [
-                    'Content-Type' => 'application/json',
-                    'Content-Length' => strlen(json_encode($data)),
-                ]
+                'headers' => $headers + [
+                    'Authorization' => $token,
+                ],
             ]);
 
             $result = json_decode((string) $response->getBody(), true);
@@ -344,6 +421,11 @@ class LitebaseClient
     public function shouldWaitForConnection(): bool
     {
         return $this->shouldCreateConnection;
+    }
+
+    public function url(string $path = '')
+    {
+        return "http://{$this->host}/{$this->getDatabasePath($path)}";
     }
 
     public function waitForConnection()

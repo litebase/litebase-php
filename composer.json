@@ -24,12 +24,13 @@
     "minimum-stability": "dev",
     "prefer-stable": true,
     "require": {
-        "php": "^7.4",
+        "php": "^8.0",
         "clue/ndjson-react": "^1.2",
         "guzzlehttp/guzzle": "^7.0",
         "mockery/mockery": "^1.4",
-        "react/datagram": "^1.5",
-        "react/http": "^1.0"
+        "react/datagram": "^1.8",
+        "react/http": "^1.5",
+        "react/socket": "^1.9"
     },
     "require-dev": {
         "illuminate/database": "^8.42",

@@ -140,14 +140,13 @@ class LitebaseStatement extends PDOStatement implements IteratorAggregate
     }
 
     public function fetchAll(
-        $fetchMode = PDO::ATTR_DEFAULT_FETCH_MODE,
-        $fetchArgument = 0,
-        $ctorArgs = null
+        int $mode = PDO::FETCH_DEFAULT,
+        ...$args
     ) {
         $previousFetchMode =  $this->fetchMode;
 
-        if ($fetchMode !== null) {
-            $this->setFetchMode($fetchMode, $fetchArgument, $ctorArgs);
+        if ($mode !== null) {
+            $this->setFetchMode($mode, $args['fetchArgument'] ?? 0, $args['ctorArgs'] ?? null);
         }
 
         $result = iterator_to_array($this);
@@ -188,7 +187,7 @@ class LitebaseStatement extends PDOStatement implements IteratorAggregate
         return $this->rowCount;
     }
 
-    public function setFetchMode($mode, $params = NULL)
+    public function setFetchMode(int $mode, mixed ...$args)
     {
         $this->fetchMode = $mode;
 

@@ -3,9 +3,9 @@
 namespace Litebase;
 
 use Exception;
-use React\Datagram\Factory as DatagramFactory;
+use React\Datagram\Factory;
 use React\Datagram\Socket;
-use React\EventLoop\Factory;
+use React\EventLoop\Loop;
 
 class DatabaseConnection
 {
@@ -78,12 +78,10 @@ class DatabaseConnection
      */
     public function send(array $data)
     {
-        $id = uniqid(time());
-
         return $this->transmit([
             'type' => 'query',
             'connection_id' => $this->id,
-            'data' => array_merge(['id' => $id], $data),
+            'data' => $data,
         ]);
     }
 
@@ -93,23 +91,23 @@ class DatabaseConnection
     public function transmit(array $message)
     {
         $response = '';
-        $loop = Factory::create();
-        $factory = new DatagramFactory($loop);
+        $loop = Loop::get();
+        $factory = new Factory($loop);
 
         $factory->createClient("localhost:{$this->port()}")
-            ->then(function (Socket $client) use ($loop, $message, &$response) {
-                $client->send(json_encode($message));
+            ->then(function (Socket $client) use ($message, &$response) {
+                $client->send(json_encode($message) . PHP_EOL);
 
-                $client->on('message', function ($message) use ($client, $loop, &$response) {
+                $client->on('message', function ($message) use ($client, &$response) {
                     $response = json_decode($message, true);
                     $client->close();
-                    $loop->stop();
+                    Loop::stop();
                 });
 
-                // @todo: Add proper timeout
-                $loop->addTimer(3, function () use ($client, $loop) {
+                // @todo: Add proper timeout and throw exception if no response is received.
+                Loop::addTimer(3, function () use ($client) {
                     $client->close();
-                    $loop->stop();
+                    Loop::stop();
                 });
 
                 $client->on('error', function ($error) {

@@ -2,7 +2,6 @@
 
 namespace Litebase;
 
-use Exception;
 use PDO;
 
 class LitebasePDO extends PDO
@@ -11,7 +10,6 @@ class LitebasePDO extends PDO
 
     public function __construct(array $config)
     {
-
         $this->client = new LitebaseClient($config);
     }
 
@@ -86,15 +84,6 @@ class LitebasePDO extends PDO
     public function prepare($statement, $options = null)
     {
         return new LitebaseStatement($this->client, $statement);
-    }
-
-    public function query($statement)
-    {
-        $statement = $this->prepare($statement);
-
-        $statement->execute();
-
-        return $statement;
     }
 
     public function rollBack()

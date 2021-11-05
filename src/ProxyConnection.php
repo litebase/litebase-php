@@ -6,7 +6,10 @@ use Closure;
 use Clue\React\NDJson\Decoder;
 use Exception;
 use Psr\Http\Message\ResponseInterface;
+use React\EventLoop\Loop;
 use React\Http\Browser;
+use React\Socket\ConnectionInterface;
+use React\Socket\Connector;
 use React\Stream\ThroughStream;
 
 class ProxyConnection
@@ -70,7 +73,7 @@ class ProxyConnection
     /**
      * The server of the connection.
      *
-     * @var QueryProxyServer
+     * @var \Litebase\QueryProxyServer
      */
     protected $server;
 
@@ -109,10 +112,10 @@ class ProxyConnection
         $this->autoCloseAttepts++;
 
         if ($this->autoCloseTimer) {
-            $this->server->getLoop()->cancelTimer($this->autoCloseTimer);
+            Loop::cancelTimer($this->autoCloseTimer);
         }
 
-        $this->autoCloseTimer = $this->server->getLoop()->addTimer($interval, function () use ($callback, $interval) {
+        $this->autoCloseTimer = Loop::addTimer($interval, function () use ($callback, $interval) {
             $this->closing = true;
 
             if ($this->shouldNotAutoClose()) {
@@ -126,6 +129,11 @@ class ProxyConnection
 
             $this->close();
         });
+    }
+
+    public function client(): LitebaseClient
+    {
+        return $this->server->getClient();
     }
 
     public function close()
@@ -194,6 +202,7 @@ class ProxyConnection
     {
         $this->opened = true;
         $this->openRequest();
+        // $this->openConnection();
     }
 
     public function onResponse(string $id, Closure $callback)
@@ -201,22 +210,76 @@ class ProxyConnection
         $this->readCallbacks[$id] = $callback;
     }
 
+    // protected function openConnection()
+    // {
+    //     $connector = new Connector([
+    //         'timeout' => false,
+    //         "socket" => [
+    //             // "tcp_nodelay" => true
+    //         ],
+    //     ]);
+
+    //     $connector->connect("{$this->url()}")
+    //         ->then(
+    //             function (ConnectionInterface $connection) {
+    //                 $this->getWriteStream()->on(
+    //                     'data',
+    //                     function ($data) use ($connection) {
+    //                         $connection->write($data);
+    //                     }
+    //                 );
+
+    //                 $connection->on(
+    //                     'data',
+    //                     fn ($data) => $this->getReadStream()->write($data)
+    //                 );
+
+    //                 $connection->on('error', fn ($error) => print($error));
+    //                 $connection->on('close', fn () => $this->close());
+    //                 $connection->on('end', fn () => $this->close());
+    //             },
+    //             fn (Exception $exception) => var_dump('Connection Error: ' . $exception->getMessage())
+    //         );
+    // }
+
     protected function openRequest()
     {
-        (new Browser($this->server->getLoop()))
+        $date = date('U');
+        $headers  = [
+            'Connection' => 'keep-alive',
+            'Host' => $this->client()->getHost(),
+            'Transfer-Encoding' => 'chunked',
+            'X-LBDB-Date' => $date,
+        ];
+
+        $token = $this->client()->getToken(
+            method: 'POST',
+            path: $this->client()->getDatabasePath('steam'),
+            headers: $headers,
+            data: [],
+        );
+
+        // Loop::addPeriodicTimer(0.01, function () {
+        // });
+        Loop::addTimer(0.1, function () {
+            $this->writer->write(' ');
+        });
+
+        // TODO update with signed request.
+        (new Browser())
             ->withTimeout(300)
             ->requestStreaming(
                 'POST',
                 $this->url(),
-                [
-                    'Connection' => 'keep-alive'
-                ],
-                $this->getWriteStream()
+                [], //$headers + ['Authorization' => $token],
+                $this->writer
             )
             ->then(
                 function (ResponseInterface $response) {
+                    dump('connected', $response->getStatusCode());
                     if ($response->getStatusCode() !== 200) {
                         // @Todo: Handle request error.
+                        print('Server error');
                         return;
                     }
 
@@ -258,8 +321,7 @@ class ProxyConnection
 
     public function send(array $data)
     {
-        var_dump("sending from: {$this->id}");
-        $this->writer->write(json_encode($data) . "\n");
+        $this->writer->write(json_encode($data) . PHP_EOL);
         $this->inFlightRequests++;
     }
 
@@ -270,6 +332,6 @@ class ProxyConnection
 
     public function url()
     {
-        return "{$this->server->getClient()->baseURI()}/stream";
+        return $this->server->getClient()->url('stream');
     }
 }

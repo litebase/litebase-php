@@ -5,4 +5,5 @@ use Litebase\QueryProxyServer;
 
 require_once __DIR__ . '/vendor/autoload.php';
 
+// TODO: setup the client
 QueryProxyServer::run();
