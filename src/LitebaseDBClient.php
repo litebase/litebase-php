@@ -1,13 +1,13 @@
 <?php
 
-namespace Litebase;
+namespace LitebaseDB;
 
 use Exception;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ConnectException;
-use Litebase\Exceptions\LitebaseConnectionException;
+use LitebaseDB\Exceptions\LitebaseConnectionException;
 
-class LitebaseClient
+class LitebaseDBClient
 {
     /**
      * The Http client.
@@ -52,11 +52,6 @@ class LitebaseClient
     protected $lastInsertId = null;
 
     /**
-     * The port for the query proxy server.
-     */
-    protected $proxyPort;
-
-    /**
      * The region of the database.
      *
      * @var string
@@ -82,49 +77,34 @@ class LitebaseClient
      */
     public function __construct(array $attributes, array $clientConfig = [])
     {
-        if (!isset($attributes['host'])) {
-            throw new Exception('The Litebase host is missing.');
+        if (!isset($attributes['access_key_id'])) {
+            throw new Exception('The LitebaseDB database connection cannot be created without a valid access key id.');
+        }
+
+        if (!isset($attributes['secret_access_key'])) {
+            throw new Exception('The LitebaseDB database connection cannot be created without a valid secret access key.');
         }
 
         if (!isset($attributes['database'])) {
-            throw new Exception('The Litebase database is missing.');
+            throw new Exception('The LitebaseDB database connection cannot be created without a valid database.');
         }
 
-        if (!isset($attributes['key'])) {
-            throw new Exception('The Litebase database connection cannot be created without a valid key id.');
+        if (!isset($attributes['host'])) {
+            throw new Exception('The LitebaseDB database connection cannot be created without a valid host.');
         }
 
-        if (!isset($attributes['secret'])) {
-            throw new Exception('The Litebase database connection cannot be created without a valid secret key.');
-        }
-
-        if (!isset($attributes['region'])) {
-            throw new Exception('The Litebase database connection cannot be created without a valid region.');
-        }
-
-        $this->host = $attributes['host'];
-        $this->database = $attributes['database'];
-        $this->proxyPort = $attributes['proxy_port'] ?? 6000;
-        $this->key = $attributes['key'];
-        $this->secret = $attributes['secret'];
-        $this->region = $attributes['region'];
+        $this->key = $attributes['access_key_id'];
+        $this->secret = $attributes['secret_access_key'];
+        $this->url = "{$attributes['database']}.{$attributes['host']}";
 
         $this->client = new Client(array_merge([
-            'base_uri' => "{$this->host}/",
+            'base_uri' => "{$this->url}/",
             'headers' => [
                 'Connection' => 'keep-alive',
             ],
             'http_errors' => false,
             'timeout'  => 30,
         ], $clientConfig));
-    }
-
-    /**
-     * Destroy the instance of the client.
-     */
-    public function __destruct()
-    {
-        //
     }
 
     /**
@@ -168,14 +148,6 @@ class LitebaseClient
         return true;
     }
 
-    /**
-     * Returns the database identifier.
-     */
-    public function database(): string
-    {
-        return $this->database;
-    }
-
     public function errorCode()
     {
         return $this->errorInfo()[0];
@@ -200,14 +172,6 @@ class LitebaseClient
         }
 
         return $result;
-    }
-
-    /**
-     * Return a database path for a request.
-     */
-    public function getDatabasePath(string $path)
-    {
-        return "{$this->database}/$path";
     }
 
     /**
@@ -239,7 +203,6 @@ class LitebaseClient
         return RequestSigner::handle(
             accessKeyID: $this->key,
             accessKeySecret: $this->secret,
-            region: $this->region,
             method: $method,
             path: $path,
             headers: $headers,
@@ -284,7 +247,6 @@ class LitebaseClient
      */
     public function send(string $method, string $path, $data = [])
     {
-        $path = $this->getDatabasePath($path);
         $date = date('U');
 
         $headers = [
@@ -352,10 +314,5 @@ class LitebaseClient
 
             throw $e;
         }
-    }
-
-    public function url(string $path = '')
-    {
-        return "http://{$this->host}/{$this->getDatabasePath($path)}";
     }
 }

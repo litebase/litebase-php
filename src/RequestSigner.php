@@ -1,13 +1,12 @@
 <?php
 
-namespace Litebase;
+namespace LitebaseDB;
 
 class RequestSigner
 {
     public static function handle(
         string $accessKeyID,
         string $accessKeySecret,
-        string $region,
         string $method,
         string $path,
         array $headers,
@@ -38,8 +37,7 @@ class RequestSigner
 
         $signed_request = hash('sha256', $requestString);
         $date = hash_hmac('sha256', date('Ymd'), $accessKeySecret);
-        $region = hash_hmac('sha256', $region, $date);
-        $service = hash_hmac('sha256', 'litebasedb_request', $region);
+        $service = hash_hmac('sha256', 'litebasedb_request', $date);
         $signature = hash_hmac('sha256', $signed_request, $service);
         $token = base64_encode("credential=$accessKeyID;signed_headers=content-type,host,x-lbdb-date;signature=$signature");
 

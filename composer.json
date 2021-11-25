@@ -1,5 +1,5 @@
 {
-    "name": "litebase/litebase-php",
+    "name": "litebasedb/litebasedb-php",
     "authors": [
         {
             "name": "Thiery Laverdure",
@@ -8,12 +8,12 @@
     ],
     "autoload": {
         "psr-4": {
-            "Litebase\\": "src/"
+            "LitebaseDB\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Litebase\\Tests\\": "tests"
+            "LitebaseDB\\Tests\\": "tests"
         }
     },
     "config": {

@@ -1,25 +1,20 @@
 <?php
 
-namespace Litebase\Tests;
+namespace LitebaseDB\Tests;
 
-use Exception;
-use Litebase\LitebaseClient;
-use Litebase\LitebasePDO;
-use Litebase\LitebaseStatement;
+use LitebaseDB\LitebaseClient;
+use LitebaseDB\LitebaseDBPDO;
+use LitebaseDB\LitebaseDBStatement;
 use Mockery;
 
-class LitebasePDOTest extends TestCase
+class LitebaseDBPDOTest extends TestCase
 {
     public function test_it_can_be_created()
     {
-        $this->assertInstanceOf(LitebasePDO::class, new LitebasePDO('datasbse', 'username', 'password'));
-    }
-
-    public function test_it_cant_be_created_with_an_improper_database_identifier()
-    {
-        $this->expectException(Exception::class);
-        $this->expectExceptionMessage('The database identifier contains illegal characters.');
-        new LitebasePDO('database!', 'username', 'password');
+        $this->assertInstanceOf(
+            LitebaseDBPDO::class,
+            new LitebaseDBPDO(['access_key_id' => 'key', 'secret_access_key' => 'secret', 'url' => 'http://litebasedb.test'])
+        );
     }
 
     public function test_it_can_begin_a_transaction()
@@ -105,24 +100,11 @@ class LitebasePDOTest extends TestCase
         $query = 'select * from users';
         $pdo = $this->createPDO();
         $this->client->shouldReceive('prepare')
-            ->andReturn(new LitebaseStatement($this->client, $query));
+            ->andReturn(new LitebaseDBStatement($this->client, $query));
 
         $statement = $pdo->prepare($query);
         $this->assertNotNull($statement);
-        $this->assertInstanceOf(LitebaseStatement::class, $statement);
-    }
-
-    public function test_it_can_run_a_query()
-    {
-
-        $query = 'SELECT * from users';
-        $pdo = $this->createPDO();
-        $this->client->shouldReceive('exec');
-        $this->client->shouldReceive('errorCode')->andReturn(null);
-        $statement = $pdo->query($query);
-
-        $this->assertNotNull($statement);
-        $this->assertInstanceOf(LitebaseStatement::class, $statement);
+        $this->assertInstanceOf(LitebaseDBStatement::class, $statement);
     }
 
     public function test_it_can_roll_back_a_transaction()
@@ -143,7 +125,7 @@ class LitebasePDOTest extends TestCase
     {
         $this->client = Mockery::mock(LitebaseClient::class);
 
-        $pdo = new LitebasePDO('database', 'username', 'password');
+        $pdo = new LitebaseDBPDO(['access_key_id' => 'key', 'secret_access_key' => 'secret', 'url' => 'http://litebasedb.test']);
 
         return $pdo->setClient($this->client);
     }

@@ -1,8 +1,8 @@
 <?php
 
-namespace Litebase\Tests;
+namespace LitebaseDB\Tests;
 
-class LitebaseTest extends TestCase
+class LitebaseDBTest extends TestCase
 {
     public function test_true_is_true()
     {

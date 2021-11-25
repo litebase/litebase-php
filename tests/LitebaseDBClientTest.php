@@ -1,28 +1,31 @@
 <?php
 
-namespace Litebase\Tests;
+namespace LitebaseDB\Tests;
 
 use Exception;
 use GuzzleHttp\Client;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Response;
-use Litebase\LitebaseClient;
+use LitebaseDB\LitebaseDBClient;
 
-class LitebaseClientTest extends TestCase
+class LitebaseDBClientTest extends TestCase
 {
     public function afterSetup(): void
     {
         $this->mock = new MockHandler();
 
-        $this->client = new LitebaseClient([
-            'host' => 'litebase.test',
-            'database' => 'testdatabase',
-            'key' => 'test',
-            'secret' => 'password',
-        ], [
-            'handler' => HandlerStack::create($this->mock),
-        ]);
+        $this->client = new LitebaseDBClient(
+            [
+                'access_key_id' => 'key',
+                'secret_access_key' => 'secret',
+                'database' => 'test',
+                'host' => 'us-east-1.litebasedb.test',
+            ],
+            [
+                'handler' => HandlerStack::create($this->mock),
+            ]
+        );
     }
 
     public function afterTest(): void
@@ -30,34 +33,37 @@ class LitebaseClientTest extends TestCase
         $this->mock->reset();
     }
 
+    public function test_it_cant_be_created_without_an_access_key_id()
+    {
+        $this->expectException(Exception::class);
+        $this->expectExceptionMessage('The LitebaseDB database connection cannot be created without a valid access key id.');
+
+        new LitebaseDBClient([]);
+    }
+
+    public function test_it_cant_be_created_without_a_secret_access_key()
+    {
+        $this->expectException(Exception::class);
+        $this->expectExceptionMessage('The LitebaseDB database connection cannot be created without a valid secret access key.');
+
+        new LitebaseDBClient(['access_key_id' => 'key']);
+    }
+
     public function test_it_cant_be_created_without_a_database()
     {
         $this->expectException(Exception::class);
-        $this->expectExceptionMessage('The Litebase database is missing.');
+        $this->expectExceptionMessage('The LitebaseDB database connection cannot be created without a valid database.');
 
-        new LitebaseClient([]);
-    }
-
-    public function test_it_cant_be_created_without_a_username()
-    {
-        $this->expectException(Exception::class);
-        $this->expectExceptionMessage('The Litebase database connection cannot be created without a username.');
-
-        new LitebaseClient(['database' => 'testdatabase']);
-    }
-
-    public function test_it_cant_be_created_without_a_password()
-    {
-        $this->expectException(Exception::class);
-        $this->expectExceptionMessage('The Litebase database connection cannot be created without a password.');
-
-        new LitebaseClient(['database' => 'testdatabase', 'key' => 'test']);
+        new LitebaseDBClient([
+            'access_key_id' => 'key',
+            'secret_access_key' => 'secret',
+        ]);
     }
 
     public function test_it_configures_the_client()
     {
         $baseUri = $this->client->getGuzzleClient()->getConfig('base_uri');
-        $this->assertEquals((string) $baseUri, $this->client->baseURI());
+        $this->assertEquals((string) $baseUri, 'test.us-east-1.litebasedb.test/');
     }
 
     public function test_it_can_begin_a_transaction()
@@ -99,11 +105,6 @@ class LitebaseClientTest extends TestCase
     public function test_it_cant_commit_a_transaction()
     {
         $this->assertFalse($this->client->commit());
-    }
-
-    public function test_it_returns_the_database()
-    {
-        $this->assertEquals('testdatabase', $this->client->database());
     }
 
     public function test_it_returns_the_error_code()
@@ -178,7 +179,7 @@ class LitebaseClientTest extends TestCase
             new Response(200, [], json_encode([
                 'status' => 'success',
                 'data' => [
-                    'lastID' => '1',
+                    'insertId' => '1',
                 ],
             ]))
         );

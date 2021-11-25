@@ -1,15 +1,14 @@
 <?php
 
-namespace Litebase;
+namespace LitebaseDB;
 
-use Exception;
 use Iterator;
 use IteratorAggregate;
-use Litebase\Exceptions\QueryException;
+use LitebaseDB\Exceptions\QueryException;
 use PDO;
 use PDOStatement;
 
-class LitebaseStatement extends PDOStatement implements IteratorAggregate
+class LitebaseDBStatement extends PDOStatement implements IteratorAggregate
 {
     protected $boundParams = [];
 
@@ -26,7 +25,7 @@ class LitebaseStatement extends PDOStatement implements IteratorAggregate
     protected $rows = [];
     protected $rowCount;
 
-    public function __construct(LitebaseClient $client, $query)
+    public function __construct(LitebaseDBClient $client, $query)
     {
         $this->client = $client;
         $this->query = $query;

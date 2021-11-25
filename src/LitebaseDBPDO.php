@@ -1,16 +1,16 @@
 <?php
 
-namespace Litebase;
+namespace LitebaseDB;
 
 use PDO;
 
-class LitebasePDO extends PDO
+class LitebaseDBPDO extends PDO
 {
     protected $client;
 
     public function __construct(array $config)
     {
-        $this->client = new LitebaseClient($config);
+        $this->client = new LitebaseDBClient($config);
     }
 
     public function beginTransaction()
@@ -23,15 +23,15 @@ class LitebasePDO extends PDO
         return $this->client->commit();
     }
 
-    public function connect()
-    {
-        return;
-    }
+    // public function connect()
+    // {
+    //     return;
+    // }
 
-    public function disconnect()
-    {
-        return;
-    }
+    // public function disconnect()
+    // {
+    //     return;
+    // }
 
     public function errorCode()
     {
@@ -78,7 +78,7 @@ class LitebasePDO extends PDO
 
     public function prepare($statement, $options = null)
     {
-        return new LitebaseStatement($this->client, $statement);
+        return new LitebaseDBStatement($this->client, $statement);
     }
 
     public function rollBack()
@@ -86,7 +86,7 @@ class LitebasePDO extends PDO
         return $this->client->rollback();
     }
 
-    public function setClient(LitebaseClient $client)
+    public function setClient(LitebaseDBClient $client)
     {
         $this->client = $client;
 

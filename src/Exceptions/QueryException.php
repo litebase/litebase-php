@@ -1,6 +1,6 @@
 <?php
 
-namespace Litebase\Exceptions;
+namespace LitebaseDB\Exceptions;
 
 use Exception;
 use Throwable;

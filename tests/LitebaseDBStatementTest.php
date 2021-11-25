@@ -1,19 +1,19 @@
 <?php
 
-namespace Litebase\Tests;
+namespace LitebaseDB\Tests;
 
 use PDO;
-use Litebase\LitebaseClient;
-use Litebase\LitebaseStatement;
+use LitebaseDB\LitebaseClient;
+use LitebaseDB\LitebaseDBStatement;
 use Mockery;
 
-class LitebaseStatementTest extends TestCase
+class LitebaseDBStatementTest extends TestCase
 {
     public function test_it_can_be_created()
     {
         $statement = $this->createStatement();
 
-        $this->assertInstanceOf(LitebaseStatement::class, $statement);
+        $this->assertInstanceOf(LitebaseDBStatement::class, $statement);
     }
 
     public function test_it_can_bind_a_param()
@@ -128,6 +128,6 @@ class LitebaseStatementTest extends TestCase
         /**  @var LitebaseClient */
         $this->client = Mockery::mock(LitebaseClient::class);
         $query = 'SELECT * FROM users';
-        return new LitebaseStatement($this->client, $query);
+        return new LitebaseDBStatement($this->client, $query);
     }
 }
