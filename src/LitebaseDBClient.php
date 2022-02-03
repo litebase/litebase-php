@@ -31,13 +31,6 @@ class LitebaseDBClient
     protected $errorInfo;
 
     /**
-     * The host of the database.
-     *
-     * @var string
-     */
-    protected $host;
-
-    /**
      * The accesss key id of the client.
      *
      * @var string
@@ -77,6 +70,25 @@ class LitebaseDBClient
      */
     public function __construct(array $attributes, array $clientConfig = [])
     {
+        $this->ensureRequiredAttributesAreProvided($attributes);
+
+        $this->key = $attributes['access_key_id'];
+        $this->secret = $attributes['secret_access_key'];
+        $this->url = "{$attributes['database']}.{$attributes['host']}";
+
+        $this->client = new Client(array_merge([
+            'base_uri' => $this->url,
+            'http_errors' => false,
+            'timeout'  => 30,
+        ], $clientConfig));
+    }
+
+    /**
+     * Ensure the require attributes to create a client connection are provided
+     * before creating a new instance.
+     */
+    protected function ensureRequiredAttributesAreProvided(array $attributes)
+    {
         if (!isset($attributes['access_key_id'])) {
             throw new Exception('The LitebaseDB database connection cannot be created without a valid access key id.');
         }
@@ -92,19 +104,6 @@ class LitebaseDBClient
         if (!isset($attributes['host'])) {
             throw new Exception('The LitebaseDB database connection cannot be created without a valid host.');
         }
-
-        $this->key = $attributes['access_key_id'];
-        $this->secret = $attributes['secret_access_key'];
-        $this->url = "{$attributes['database']}.{$attributes['host']}";
-
-        $this->client = new Client(array_merge([
-            'base_uri' => "{$this->url}/",
-            'headers' => [
-                'Connection' => 'keep-alive',
-            ],
-            'http_errors' => false,
-            'timeout'  => 30,
-        ], $clientConfig));
     }
 
     /**
@@ -183,14 +182,6 @@ class LitebaseDBClient
     }
 
     /**
-     * Return the host of the client.
-     */
-    public function getHost(): string
-    {
-        return $this->host;
-    }
-
-    /**
      * Get an authorization token for a request.
      */
     public function getToken(
@@ -207,6 +198,7 @@ class LitebaseDBClient
             path: $path,
             headers: $headers,
             data: $data,
+            queryParams: $queryParams,
         );
     }
 
@@ -252,7 +244,7 @@ class LitebaseDBClient
         $headers = [
             'Content-Type' => 'application/json',
             'Content-Length' => strlen(json_encode($data)),
-            'Host' => $this->host,
+            'Host' => $this->url,
             'X-LBDB-Date' => $date,
         ];
 
