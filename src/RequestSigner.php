@@ -29,7 +29,7 @@ class RequestSigner
 
         $requestString = implode('', [
             $method,
-            $path,
+            '/' . ltrim($path, '/'),
             json_encode($headers),
             json_encode($queryParams),
             json_encode($data),
