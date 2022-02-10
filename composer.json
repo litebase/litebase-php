@@ -25,16 +25,12 @@
     "prefer-stable": true,
     "require": {
         "php": "^8.0",
-        "clue/ndjson-react": "^1.2",
-        "guzzlehttp/guzzle": "^7.0",
-        "mockery/mockery": "^1.4",
-        "react/datagram": "^1.8",
-        "react/http": "^1.5",
-        "react/socket": "^1.9"
+        "guzzlehttp/guzzle": "^7.2",
+        "mockery/mockery": "^1.4"
     },
     "require-dev": {
-        "illuminate/database": "^8.42",
-        "phpunit/phpunit": "^8.0"
+        "illuminate/database": "^8.42|^9.0",
+        "phpunit/phpunit": "^9.5.10"
     },
     "scripts": {
         "test": "vendor/bin/phpunit",
