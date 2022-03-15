@@ -6,6 +6,7 @@ use Exception;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ConnectException;
 use LitebaseDB\Exceptions\LitebaseConnectionException;
+use RuntimeException;
 
 class LitebaseDBClient
 {
@@ -338,6 +339,10 @@ class LitebaseDBClient
                     $result['message'] ?? 'Unknown error',
                 ];
             } else {
+                if (!isset($result['data'])) {
+                    throw new RuntimeException('Server error');
+                }
+
                 $result['data'] = json_decode($this->decrypt($result['data']), true);
             }
 
