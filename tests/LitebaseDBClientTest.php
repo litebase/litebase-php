@@ -18,7 +18,7 @@ class LitebaseDBClientTest extends TestCase
         $this->client = new LitebaseDBClient(
             [
                 'access_key_id' => 'key',
-                'secret_access_key' => 'secret',
+                'access_key_secret' => 'secret',
                 'database' => 'test',
                 'host' => 'us-east-1.litebasedb.test',
             ],
@@ -41,7 +41,7 @@ class LitebaseDBClientTest extends TestCase
         new LitebaseDBClient([]);
     }
 
-    public function test_it_cant_be_created_without_a_secret_access_key()
+    public function test_it_cant_be_created_without_an_access_key_secret()
     {
         $this->expectException(Exception::class);
         $this->expectExceptionMessage('The LitebaseDB database connection cannot be created without a valid secret access key.');
@@ -56,7 +56,7 @@ class LitebaseDBClientTest extends TestCase
 
         new LitebaseDBClient([
             'access_key_id' => 'key',
-            'secret_access_key' => 'secret',
+            'access_key_secret' => 'secret',
         ]);
     }
 

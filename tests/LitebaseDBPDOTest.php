@@ -13,7 +13,7 @@ class LitebaseDBPDOTest extends TestCase
     {
         $this->assertInstanceOf(
             LitebaseDBPDO::class,
-            new LitebaseDBPDO(['access_key_id' => 'key', 'secret_access_key' => 'secret', 'url' => 'http://litebasedb.test'])
+            new LitebaseDBPDO(['access_key_id' => 'key', 'access_key_secret' => 'secret', 'url' => 'http://litebasedb.test'])
         );
     }
 
@@ -125,7 +125,7 @@ class LitebaseDBPDOTest extends TestCase
     {
         $this->client = Mockery::mock(LitebaseClient::class);
 
-        $pdo = new LitebaseDBPDO(['access_key_id' => 'key', 'secret_access_key' => 'secret', 'url' => 'http://litebasedb.test']);
+        $pdo = new LitebaseDBPDO(['access_key_id' => 'key', 'access_key_secret' => 'secret', 'url' => 'http://litebasedb.test']);
 
         return $pdo->setClient($this->client);
     }

@@ -73,14 +73,33 @@ class LitebaseDBClient
         $this->ensureRequiredAttributesAreProvided($attributes);
 
         $this->key = $attributes['access_key_id'];
-        $this->secret = $attributes['secret_access_key'];
+        $this->secret = $attributes['access_key_secret'];
         $this->url = "{$attributes['database']}.{$attributes['host']}";
 
         $this->client = new Client(array_merge([
-            'base_uri' => $this->url,
+            'base_uri' => "http://{$this->url}",
             'http_errors' => false,
             'timeout'  => 30,
+            'headers' => $this->defaultHeaders($attributes),
+
         ], $clientConfig));
+    }
+
+    protected function defaultHeaders(array $attributes): array
+    {
+        $headers = [];
+
+        foreach ($attributes as $key => $value) {
+            if (str_starts_with($key, '_x_')) {
+                $header = strtoupper(str_replace('_x_', 'x-', $key));
+                $headers[$header] = $value;
+            }
+        }
+
+
+        return $headers + [
+            'Keep-Alive' => 'true',
+        ];
     }
 
     /**
@@ -93,7 +112,7 @@ class LitebaseDBClient
             throw new Exception('The LitebaseDB database connection cannot be created without a valid access key id.');
         }
 
-        if (!isset($attributes['secret_access_key'])) {
+        if (!isset($attributes['access_key_secret'])) {
             throw new Exception('The LitebaseDB database connection cannot be created without a valid secret access key.');
         }
 
@@ -147,6 +166,28 @@ class LitebaseDBClient
         return true;
     }
 
+    protected function decrypt(string $value)
+    {
+        $payload = json_decode(base64_decode($value), true);
+        $iv = base64_decode($payload['iv']);
+        $tag = empty($payload['tag']) ? null : base64_decode($payload['tag']);
+
+        $decrypted = \openssl_decrypt(
+            $payload['value'],
+            'aes-256-gcm',
+            str_replace('lbdbsk-', '', $this->secret),
+            0,
+            $iv,
+            $tag ?? ''
+        );
+
+        if ($decrypted === false) {
+            throw new Exception('Could not decrypt the data.');
+        }
+
+        return $decrypted;
+    }
+
     public function errorCode()
     {
         return $this->errorInfo()[0];
@@ -171,6 +212,29 @@ class LitebaseDBClient
         }
 
         return $result;
+    }
+
+    protected function encrypt(mixed $value)
+    {
+        $iv = random_bytes(openssl_cipher_iv_length(strtolower('aes-256-gcm')));
+
+        $value = openssl_encrypt(
+            json_encode($value),
+            'aes-256-gcm',
+            str_replace('lbdbsk-', '', $this->secret),
+            0,
+            $iv,
+            $tag
+        );
+
+        return base64_encode(
+            json_encode([
+                'iv' => base64_encode($iv),
+                'value' => $value,
+                'mac' => '',
+                'tag' => base64_encode($tag ?? ''),
+            ], JSON_UNESCAPED_SLASHES)
+        );
     }
 
     /**
@@ -239,6 +303,7 @@ class LitebaseDBClient
      */
     public function send(string $method, string $path, $data = [])
     {
+        $data['parameters'] = $this->encrypt($data['parameters']);
         $date = date('U');
 
         $headers = [
@@ -272,6 +337,8 @@ class LitebaseDBClient
                     $result['message'] ?? 'Unknown error',
                 ];
             }
+
+            $result['data'] = json_decode($this->decrypt($result['data']), true);
 
             return $result;
         } catch (Exception $e) {

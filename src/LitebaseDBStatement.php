@@ -15,7 +15,7 @@ class LitebaseDBStatement extends PDOStatement implements IteratorAggregate
     /**
      * Undocumented variable
      *
-     * @var LitebaseClient
+     * @var LitebaseDBClient
      */
     protected $client;
     protected $columns;
