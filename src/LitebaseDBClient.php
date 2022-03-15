@@ -175,7 +175,7 @@ class LitebaseDBClient
         $decrypted = \openssl_decrypt(
             $payload['value'],
             'aes-256-gcm',
-            str_replace('lbdbsk-', '', $this->secret),
+            md5($this->secret),
             0,
             $iv,
             $tag ?? ''
@@ -214,14 +214,14 @@ class LitebaseDBClient
         return $result;
     }
 
-    protected function encrypt(mixed $value)
+    protected function encrypt(mixed $value, string $secret = null)
     {
         $iv = random_bytes(openssl_cipher_iv_length(strtolower('aes-256-gcm')));
 
         $value = openssl_encrypt(
             json_encode($value),
             'aes-256-gcm',
-            str_replace('lbdbsk-', '', $this->secret),
+            md5($secret ?? $this->secret),
             0,
             $iv,
             $tag
@@ -303,6 +303,7 @@ class LitebaseDBClient
      */
     public function send(string $method, string $path, $data = [])
     {
+        $data['statement'] = $this->encrypt($data['statement'], $this->key);
         $data['parameters'] = $this->encrypt($data['parameters']);
         $date = date('U');
 
@@ -336,9 +337,9 @@ class LitebaseDBClient
                     $response->getStatusCode(),
                     $result['message'] ?? 'Unknown error',
                 ];
+            } else {
+                $result['data'] = json_decode($this->decrypt($result['data']), true);
             }
-
-            $result['data'] = json_decode($this->decrypt($result['data']), true);
 
             return $result;
         } catch (Exception $e) {
