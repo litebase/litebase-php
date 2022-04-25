@@ -7,64 +7,51 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ConnectException;
 use LitebaseDB\Exceptions\LitebaseConnectionException;
 use RuntimeException;
+use Throwable;
 
 class LitebaseDBClient
 {
     /**
      * The Http client.
-     *
-     * @var \GuzzleHttp\Client
      */
-    protected $client;
+    protected \GuzzleHttp\Client $client;
 
     /**
      * The database identifier of the client.
-     *
-     * @var string
      */
-    protected $database;
+    protected string $database;
 
     /**
      * Error info received from a request.
      *
-     * @var string
+     * @var array
      */
-    protected $errorInfo;
+    protected array $errorInfo = [];
 
     /**
      * The accesss key id of the client.
-     *
-     * @var string
      */
-    protected $key;
+    protected string $key;
 
     /**
      * The id of the last instered record.
-     *
-     * @var null|string
      */
-    protected $lastInsertId = null;
+    protected string|false $lastInsertId = false;
 
     /**
      * The region of the database.
-     *
-     * @var string
      */
-    protected $region;
+    protected string $region;
 
     /**
      * The accesss key secret of the client.
-     *
-     * @var string
      */
-    protected $secret;
+    protected string $secret;
 
     /**
      * An active transaction id.
-     *
-     * @var null|string
      */
-    protected $transactionId = null;
+    protected null|string $transactionId = null;
 
     /**
      * Create a new instance of the client.
@@ -73,6 +60,7 @@ class LitebaseDBClient
     {
         $this->ensureRequiredAttributesAreProvided($attributes);
 
+        $this->database = $attributes['database'];
         $this->key = $attributes['access_key_id'];
         $this->secret = $attributes['access_key_secret'];
         $this->url = "{$attributes['database']}.{$attributes['host']}";
@@ -127,7 +115,7 @@ class LitebaseDBClient
     }
 
     /**
-     *
+     * Begin a transaction.
      */
     public function beginTransaction(): bool
     {
@@ -137,19 +125,21 @@ class LitebaseDBClient
         }
 
         try {
-            $response = $this->send('POST', 'transaction',  [
+            $response = $this->send('POST', 'transactions',  [
                 'database' => $this->database,
             ]);
 
-            $this->transactionId = $response['data']['rows'][0]['id'] ?? null;
+            $this->transactionId = $response['data']['transactionId'] ?? null;
+
             return true;
         } catch (Exception $e) {
+            throw $e;
             return false;
         }
     }
 
     /**
-     *
+     * Commit a transaction.
      */
     public function commit()
     {
@@ -157,14 +147,16 @@ class LitebaseDBClient
             return false;
         }
 
-        $this->send('PUT', 'transaction',  [
-            'database' => $this->database,
-            'transaction' => $this->transactionId,
-        ]);
+        try {
+            $this->send('POST', "transactions/{$this->transactionId}/commit");
 
-        $this->transactionId = null;
+            $this->transactionId = null;
 
-        return true;
+            return true;
+        } catch (Throwable $th) {
+            throw $th;
+            return false;
+        }
     }
 
     protected function decrypt(string $value)
@@ -189,12 +181,12 @@ class LitebaseDBClient
         return $decrypted;
     }
 
-    public function errorCode()
+    public function errorCode(): null | string
     {
         return $this->errorInfo()[0];
     }
 
-    public function errorInfo()
+    public function errorInfo(): array
     {
         return $this->errorInfo;
     }
@@ -206,10 +198,15 @@ class LitebaseDBClient
     {
         $id = uniqid(time());
         $input = array_merge(['id' => $id], $input);
-        $result = $this->send('POST', 'query', $input);
+
+        if ($this->inTransaction()) {
+            $result = $this->send('POST', "transactions/{$this->transactionId}", $input);
+        } else {
+            $result = $this->send('POST', 'query', $input);
+        }
 
         if (isset($result['data']['insertId'])) {
-            $this->lastInsertId = $result['data']['insertId'];
+            $this->lastInsertId = $result['data']['insertId'] ?? null;
         }
 
         return $result;
@@ -276,9 +273,14 @@ class LitebaseDBClient
         return (bool) $this->transactionId;
     }
 
-    public function lastInsertId()
+    public function lastInsertId(): null|string
     {
         return $this->lastInsertId;
+    }
+
+    public function prepare($statement): LitebaseDBStatement
+    {
+        return new LitebaseDBStatement($this, $statement);
     }
 
     /**
@@ -289,10 +291,9 @@ class LitebaseDBClient
         if (!$this->transactionId) {
             return false;
         }
+
         // TODO: transform to query
-        $this->send('DELETE', 'transaction',  [
-            'transaction' => $this->transactionId,
-        ]);
+        $this->send('DELETE', "transactions/{$this->transactionId}");
 
         $this->transactionId = null;
 
@@ -304,8 +305,14 @@ class LitebaseDBClient
      */
     public function send(string $method, string $path, $data = [])
     {
-        $data['statement'] = $this->encrypt($data['statement'], $this->key);
-        $data['parameters'] = $this->encrypt($data['parameters']);
+        if (isset($data['statement'])) {
+            $data['statement'] = $this->encrypt($data['statement'], $this->key);
+        }
+
+        if (isset($data['parameters'])) {
+            $data['parameters'] = $this->encrypt($data['parameters']);
+        }
+
         $date = date('U');
 
         $headers = [
@@ -334,20 +341,19 @@ class LitebaseDBClient
 
             if (isset($result['status']) && $result['status'] === 'error') {
                 $this->errorInfo = [
-                    $result['code'] ?? 0,
+                    $result['statusCode'] ?? 0,
                     $response->getStatusCode(),
                     $result['message'] ?? 'Unknown error',
                 ];
             } else {
-                if (!isset($result['data'])) {
-                    throw new RuntimeException('Server error');
+                if (isset($result['data'])) {
+                    $result['data'] = json_decode($this->decrypt($result['data']), true);
                 }
-
-                $result['data'] = json_decode($this->decrypt($result['data']), true);
             }
 
             return $result;
         } catch (Exception $e) {
+            throw ($e);
             if ($e instanceof ConnectException) {
                 throw new LitebaseConnectionException($e->getMessage());
             }

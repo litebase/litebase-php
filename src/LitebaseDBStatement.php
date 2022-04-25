@@ -23,7 +23,7 @@ class LitebaseDBStatement extends PDOStatement implements IteratorAggregate
     protected $query = '';
     protected $result;
     protected $rows = [];
-    protected $rowCount;
+    protected $rowCount = 0;
 
     public function __construct(LitebaseDBClient $client, $query)
     {
@@ -32,16 +32,18 @@ class LitebaseDBStatement extends PDOStatement implements IteratorAggregate
     }
 
     public function bindParam(
-        $parameter,
-        &$variable,
-        $data_type = PDO::PARAM_STR,
+        int|string $param,
+        mixed &$variable,
+        int $data_type = PDO::PARAM_STR,
         $length = null,
         $driver_options = null
-    ) {
-        $this->boundParams[$parameter] = &$variable;
+    ): bool {
+        $this->boundParams[$param] = &$variable;
+
+        return true;
     }
 
-    public function bindValue($parameter, $value, $data_type = PDO::PARAM_STR)
+    public function bindValue(int|string $parameter, mixed $value, int $data_type = PDO::PARAM_STR): bool
     {
         if (is_int($parameter)) {
             $this->boundParams[$parameter - 1] = $value;
@@ -64,27 +66,29 @@ class LitebaseDBStatement extends PDOStatement implements IteratorAggregate
         return true;
     }
 
-    public function columnCount()
+    public function columnCount(): int
     {
         return $this->columns ? count($this->columns) : 0;
     }
 
-    public function debugDumpParams()
+    public function debugDumpParams(): null|bool
     {
         var_dump($this->query, $this->boundParams);
+
+        return null;
     }
 
-    public function errorCode()
+    public function errorCode(): null | string
     {
         return $this->client->errorCode();
     }
 
-    public function errorInfo()
+    public function errorInfo(): array
     {
         return $this->client->errorInfo();
     }
 
-    public function execute($params = [])
+    public function execute($params = []): bool
     {
         $response = $this->client->exec([
             "statement" => $this->query,
@@ -138,10 +142,8 @@ class LitebaseDBStatement extends PDOStatement implements IteratorAggregate
         return $result;
     }
 
-    public function fetchAll(
-        int $mode = PDO::FETCH_DEFAULT,
-        ...$args
-    ) {
+    public function fetchAll(int $mode = PDO::FETCH_DEFAULT, mixed ...$args): array
+    {
         $previousFetchMode =  $this->fetchMode;
 
         if ($mode !== null) {
@@ -181,7 +183,7 @@ class LitebaseDBStatement extends PDOStatement implements IteratorAggregate
         }
     }
 
-    public function rowCount()
+    public function rowCount(): int
     {
         return $this->rowCount;
     }

@@ -3,47 +3,48 @@
 namespace LitebaseDB;
 
 use PDO;
+use PDOStatement;
 
 class LitebaseDBPDO extends PDO
 {
-    protected $client;
+    protected LitebaseDBClient $client;
 
     public function __construct(array $config)
     {
         $this->client = new LitebaseDBClient($config);
     }
 
-    public function beginTransaction()
+    public function beginTransaction(): bool
     {
         return $this->client->beginTransaction();
     }
 
-    public function commit()
+    public function commit(): bool
     {
         return $this->client->commit();
     }
 
-    // public function connect()
-    // {
-    //     return;
-    // }
+    public function connect()
+    {
+        return;
+    }
 
-    // public function disconnect()
-    // {
-    //     return;
-    // }
+    public function disconnect()
+    {
+        return;
+    }
 
-    public function errorCode()
+    public function errorCode(): null|string
     {
         return $this->client->errorCode();
     }
 
-    public function errorInfo()
+    public function errorInfo(): array
     {
         return $this->client->errorInfo();
     }
 
-    public function exec($statement)
+    public function exec(string $statement): int
     {
         return $this->client->exec([
             'statement' => $statement
@@ -66,22 +67,22 @@ class LitebaseDBPDO extends PDO
         return  $code >= 0;
     }
 
-    public function inTransaction()
+    public function inTransaction(): bool
     {
         return $this->client->inTransaction();
     }
 
-    public function lastInsertId($name = null)
+    public function lastInsertId($name = null): string|false
     {
         return $this->client->lastInsertId();
     }
 
-    public function prepare($statement, $options = null)
+    public function prepare($statement, $options = null): PDOStatement
     {
         return new LitebaseDBStatement($this->client, $statement);
     }
 
-    public function rollBack()
+    public function rollBack(): bool
     {
         return $this->client->rollback();
     }
