@@ -13,11 +13,12 @@ class LitebaseDBStatement extends PDOStatement implements IteratorAggregate
     protected $boundParams = [];
 
     /**
-     * Undocumented variable
+     * The LitebaseDB Client instance.
      *
      * @var LitebaseDBClient
      */
     protected $client;
+
     protected $columns;
     protected $fetchMode;
     protected $query = '';
@@ -25,12 +26,18 @@ class LitebaseDBStatement extends PDOStatement implements IteratorAggregate
     protected $rows = [];
     protected $rowCount = 0;
 
+    /**
+     * Create a new instance of the prepare statement.
+     */
     public function __construct(LitebaseDBClient $client, $query)
     {
         $this->client = $client;
         $this->query = $query;
     }
 
+    /**
+     * @inheritDoc
+     */
     public function bindParam(
         int|string $param,
         mixed &$variable,
@@ -43,6 +50,9 @@ class LitebaseDBStatement extends PDOStatement implements IteratorAggregate
         return true;
     }
 
+    /**
+     * @inheritDoc
+     */
     public function bindValue(int|string $parameter, mixed $value, int $data_type = PDO::PARAM_STR): bool
     {
         if (is_int($parameter)) {
@@ -66,11 +76,17 @@ class LitebaseDBStatement extends PDOStatement implements IteratorAggregate
         return true;
     }
 
+    /**
+     * @inheritDoc
+     */
     public function columnCount(): int
     {
         return $this->columns ? count($this->columns) : 0;
     }
 
+    /**
+     * @inheritDoc
+     */
     public function debugDumpParams(): null|bool
     {
         var_dump($this->query, $this->boundParams);
@@ -78,16 +94,25 @@ class LitebaseDBStatement extends PDOStatement implements IteratorAggregate
         return null;
     }
 
+    /**
+     * @inheritDoc
+     */
     public function errorCode(): null | string
     {
         return $this->client->errorCode();
     }
 
+    /**
+     * @inheritDoc
+     */
     public function errorInfo(): array
     {
         return $this->client->errorInfo();
     }
 
+    /**
+     * @inheritDoc
+     */
     public function execute($params = []): bool
     {
         $response = $this->client->exec([
@@ -119,6 +144,9 @@ class LitebaseDBStatement extends PDOStatement implements IteratorAggregate
         return true;
     }
 
+    /**
+     * @inheritDoc
+     */
     public function fetch(
         $fetchMode = PDO::ATTR_DEFAULT_FETCH_MODE,
         $cursorOrientation = PDO::FETCH_ORI_NEXT,
@@ -136,27 +164,28 @@ class LitebaseDBStatement extends PDOStatement implements IteratorAggregate
 
         $fetchMode = $fetchMode !== null ? [$fetchMode, null] : $this->fetchMode;
 
-        // advance the pointer and return
         next($this->rows);
 
         return $result;
     }
 
+    /**
+     * @inheritDoc
+     */
     public function fetchAll(int $mode = PDO::FETCH_DEFAULT, mixed ...$args): array
     {
-        $previousFetchMode =  $this->fetchMode;
-
         if ($mode !== null) {
             $this->setFetchMode($mode, $args['fetchArgument'] ?? 0, $args['ctorArgs'] ?? null);
         }
 
         $result = iterator_to_array($this);
 
-        // $this->setFetchMode($previousFetchMode);
-
         return $result;
     }
 
+    /**
+     * @inheritDoc
+     */
     public function fetchColumn($columnIndex = 0)
     {
         $row = $this->fetch();
@@ -166,11 +195,6 @@ class LitebaseDBStatement extends PDOStatement implements IteratorAggregate
         }
 
         return array_search($columnIndex, array_keys($row)) ?? false;
-    }
-
-    public function getBoundParams()
-    {
-        return $this->boundParams;
     }
 
     /**
@@ -183,11 +207,9 @@ class LitebaseDBStatement extends PDOStatement implements IteratorAggregate
         }
     }
 
-    public function rowCount(): int
-    {
-        return $this->rowCount;
-    }
-
+    /**
+     * @inheritDoc
+     */
     public function setFetchMode(int $mode, mixed ...$args)
     {
         $this->fetchMode = $mode;
