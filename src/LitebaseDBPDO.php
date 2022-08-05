@@ -21,6 +21,8 @@ class LitebaseDBPDO extends PDO
      */
     public function __construct(array $config)
     {
+        parent::__construct('sqlite:');
+
         $this->client = new LitebaseDBClient($config);
     }
 

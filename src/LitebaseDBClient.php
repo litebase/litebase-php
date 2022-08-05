@@ -22,6 +22,11 @@ class LitebaseDBClient
     protected string $database;
 
     /**
+     * The endpoint of the database.
+     */
+    protected string $endpoint;
+
+    /**
      * Error info received from a request.
      *
      * @var array
@@ -37,11 +42,6 @@ class LitebaseDBClient
      * The id of the last instered record.
      */
     protected string|false $lastInsertId = false;
-
-    /**
-     * The region of the database.
-     */
-    protected string $region;
 
     /**
      * The accesss key secret of the client.
@@ -60,17 +60,16 @@ class LitebaseDBClient
     {
         $this->ensureRequiredAttributesAreProvided($attributes);
 
-        $this->database = $attributes['database'];
         $this->key = $attributes['access_key_id'];
         $this->secret = $attributes['access_key_secret'];
-        $this->url = "{$attributes['database']}.{$attributes['host']}";
+        $this->database = $attributes['database'];
+        $this->endpoint = $attributes['endpoint'];
 
         $this->client = new Client(array_merge([
-            'base_uri' => "http://{$this->url}",
+            'base_uri' => $this->endpoint,
             'http_errors' => false,
             'timeout'  => 30,
             'headers' => $this->defaultHeaders($attributes),
-
         ], $clientConfig));
     }
 
@@ -84,7 +83,6 @@ class LitebaseDBClient
                 $headers[$header] = $value;
             }
         }
-
 
         return $headers + [
             'Keep-Alive' => 'true',
@@ -109,8 +107,8 @@ class LitebaseDBClient
             throw new Exception('The LitebaseDB database connection cannot be created without a valid database.');
         }
 
-        if (!isset($attributes['host'])) {
-            throw new Exception('The LitebaseDB database connection cannot be created without a valid host.');
+        if (!isset($attributes['endpoint'])) {
+            throw new Exception('The LitebaseDB database connection cannot be created without a valid endpoint.');
         }
     }
 
@@ -264,7 +262,6 @@ class LitebaseDBClient
         );
     }
 
-
     /**
      * Check if the client has a transaction in progress.
      */
@@ -318,7 +315,8 @@ class LitebaseDBClient
         $headers = [
             'Content-Type' => 'application/json',
             'Content-Length' => strlen(json_encode($data)),
-            'Host' => $this->url,
+            // replace http and https from string
+            'Host' => str_replace(['http://', 'https://'], '', $this->endpoint),
             'X-LBDB-Date' => $date,
         ];
 

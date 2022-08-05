@@ -151,7 +151,7 @@ class LitebaseDBStatement extends PDOStatement implements IteratorAggregate
         $fetchMode = PDO::ATTR_DEFAULT_FETCH_MODE,
         $cursorOrientation = PDO::FETCH_ORI_NEXT,
         $cursorOffset = 0
-    ) {
+    ): mixed {
         if ($cursorOrientation !== PDO::FETCH_ORI_NEXT) {
             throw new \RuntimeException("Cursor direction not implemented");
         }
@@ -186,7 +186,7 @@ class LitebaseDBStatement extends PDOStatement implements IteratorAggregate
     /**
      * @inheritDoc
      */
-    public function fetchColumn($columnIndex = 0)
+    public function fetchColumn($columnIndex = 0): mixed
     {
         $row = $this->fetch();
 
