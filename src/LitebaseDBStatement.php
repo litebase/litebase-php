@@ -207,6 +207,11 @@ class LitebaseDBStatement extends PDOStatement implements IteratorAggregate
         }
     }
 
+    public function rowCount(): int
+    {
+        return $this->rowCount;
+    }
+
     /**
      * @inheritDoc
      */
