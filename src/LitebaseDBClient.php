@@ -337,9 +337,9 @@ class LitebaseDBClient
 
             $result = json_decode((string) $response->getBody(), true);
 
-            if (isset($result['status']) && $result['status'] === 'error') {
+            if ($response->getStatusCode() >= 400 || isset($result['status']) && $result['status'] === 'error') {
                 $this->errorInfo = [
-                    $result['statusCode'] ?? 0,
+                    $result['error_code'] ?? 0,
                     $response->getStatusCode(),
                     $result['message'] ?? 'Unknown error',
                 ];
@@ -351,7 +351,6 @@ class LitebaseDBClient
 
             return $result;
         } catch (Exception $e) {
-            throw ($e);
             if ($e instanceof ConnectException) {
                 throw new LitebaseConnectionException($e->getMessage());
             }
