@@ -1,0 +1,75 @@
+<?php
+{{#models}}
+{{#model}}
+{{>partial_header}}
+
+/**
+ * NOTE: This class is auto generated, do not edit the class manually.
+ */
+
+namespace {{invokerPackage}}\Test\Model;
+
+use PHPUnit\Framework\TestCase;
+
+/**
+ * {{classname}}Test Class Doc Comment
+ *
+ * @category    Class
+ * @description {{description}}{{^description}}{{classname}}{{/description}}
+ * @package     {{invokerPackage}}
+ * @author      OpenAPI Generator team
+ * @link        https://openapi-generator.tech
+ */
+class {{classname}}Test extends TestCase
+{
+
+    /**
+     * Setup before running any test case
+     */
+    public static function setUpBeforeClass(): void
+    {
+    }
+
+    /**
+     * Setup before running each test case
+     */
+    public function setUp(): void
+    {
+    }
+
+    /**
+     * Clean up after running each test case
+     */
+    public function tearDown(): void
+    {
+    }
+
+    /**
+     * Clean up after running all test cases
+     */
+    public static function tearDownAfterClass(): void
+    {
+    }
+
+    /**
+     * Test "{{classname}}"
+     */
+    public function test{{classname}}()
+    {
+        // TODO: implement
+        self::markTestIncomplete('Not implemented');
+    }
+{{#vars}}
+
+    /**
+     * Test attribute "{{name}}"
+     */
+    public function testProperty{{nameInPascalCase}}()
+    {
+        // TODO: implement
+        self::markTestIncomplete('Not implemented');
+    }
+{{/vars}}
+}
+{{/model}}
+{{/models}}

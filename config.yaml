@@ -1,0 +1,11 @@
+srcBasePath: ./src/Generated
+apiPackage: API
+modelPackage: Model
+invokerPackage: Litebase\Generated
+artifactVersion: 1.0.0
+composerPackageName: litebase/litebase-php
+developerOrganization: Litebase
+developerOrganizationUrl: https://litebase.com
+licenseName: MIT
+packageName: Litebase PHP SDK
+templateDir: templates

@@ -1,6 +1,6 @@
 <?php
 
-namespace LitebaseDB\Tests;
+namespace Litebase\Tests;
 
 use Mockery;
 use PHPUnit\Framework\TestCase as FrameworkTestCase;

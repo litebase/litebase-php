@@ -1,9 +1,7 @@
 <?php
 
-namespace LitebaseDB\Exceptions;
+namespace Litebase\Exceptions;
 
 use Exception;
 
-class LitebaseConnectionException extends Exception
-{
-}
+class LitebaseConnectionException extends Exception {}

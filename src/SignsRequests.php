@@ -1,0 +1,30 @@
+<?php
+
+namespace Litebase;
+
+trait SignsRequests
+{
+    /**
+     * Get an authorization token for a request.
+     */
+    public function getToken(
+        string $accessKeyID,
+        #[\SensitiveParameter]
+        string $accessKeySecret,
+        string $method,
+        string $path,
+        array $headers,
+        ?array $data,
+        array $queryParams = [],
+    ) {
+        return RequestSigner::handle(
+            accessKeyID: $accessKeyID,
+            accessKeySecret: $accessKeySecret,
+            method: $method,
+            path: $path,
+            headers: $headers,
+            data: $data,
+            queryParams: $queryParams,
+        );
+    }
+}

@@ -1,6 +1,6 @@
 <?php
 
-namespace LitebaseDB\Exceptions;
+namespace Litebase\Exceptions;
 
 use Exception;
 use Throwable;
@@ -24,7 +24,7 @@ class QueryException extends Exception
     /**
      * Create a new QueryException instance.
      */
-    public function __construct(string $message, string $statement, array $parameters, Throwable $previous = null)
+    public function __construct(string $message, string $statement, array $parameters, ?Throwable $previous = null)
     {
         $this->statement = $statement;
         $this->parameters = $parameters;
