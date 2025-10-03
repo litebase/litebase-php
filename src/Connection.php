@@ -293,7 +293,6 @@ class Connection
         ]);
 
         try {
-            // TODO: Need to detect a broken connection
             $this->socket = stream_socket_client(
                 str_starts_with($this->url, "https://") ? "tls://{$this->host}:{$this->port}" : "{$this->host}:{$this->port}",
                 $errno,

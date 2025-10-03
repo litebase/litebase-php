@@ -159,24 +159,24 @@ class LitebaseStatement extends PDOStatement implements IteratorAggregate
             throw new QueryException($message, $this->query, $params);
         }
 
-        if (isset($response['error'])) {
-            throw new QueryException($response['error'], $this->query, $params);
+        if (isset($response->errorMessage)) {
+            throw new QueryException($response->errorMessage, $this->query, $params);
         }
 
         $this->result = $response ?? [];
 
-        if (isset($this->result['columns'])) {
-            $this->columns = $this->result['columns'];
+        if (isset($this->result->columns)) {
+            $this->columns = $this->result->columns;
         }
 
-        if (isset($this->result['rows'])) {
+        if (isset($this->result->rows)) {
             $this->rows = array_map(function ($row) {
                 return array_combine($this->columns, $row);
-            }, $this->result['rows']);
+            }, $this->result->rows);
         }
 
-        if (isset($this->result['row_count'])) {
-            $this->rowCount = $this->result['row_count'];
+        if (isset($this->result->rowsCount)) {
+            $this->rowCount = $this->result->rowsCount;
         }
 
         return true;

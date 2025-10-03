@@ -20,10 +20,10 @@ class HttpStreamingTransport implements TransportInterface
         protected Configuration $config,
     ) {}
 
-    public function send(Query $query): array
+    public function send(Query $query): ?QueryResult
     {
         $path = sprintf(
-            '%s/branches/%s/query/stream',
+            'v1/databases/%s/branches/%s/query/stream',
             $this->config->getDatabase(),
             $this->config->getBranch()
         );
@@ -38,26 +38,32 @@ class HttpStreamingTransport implements TransportInterface
                 ]
             );
 
-            $token = $this->getToken(
-                accessKeyID: $this->config->getAccessKeyId(),
-                accessKeySecret: $this->config->getAccessKeySecret(),
-                method: 'POST',
-                path: $path,
-                headers: $headers,
-                data: null,
-            );
-
             $url = $this->config->getPort() === null
                 ? sprintf('https://%s/%s', $this->config->getHost(), $path)
                 : sprintf('http://%s:%d/%s', $this->config->getHost(), $this->config->getPort(), $path);
 
-            $this->connection = new Connection(
-                $url,
-                [
-                    ...$headers,
-                    'Authorization' => sprintf('Litebase-HMAC-SHA256 %s', $token),
-                ],
-            );
+            if (!empty($this->config->getUsername()) || !(empty($this->config->getPassword()))) {
+                $headers['Authorization'] = 'Basic ' . base64_encode($this->config->getUsername() . ":" . $this->config->getPassword());
+            }
+
+            if (!empty($this->config->getAccessToken())) {
+                $headers['Authorization'] = 'Bearer ' . $this->config->getAccessToken();
+            }
+
+            if (!empty($this->config->getAccessKeyId())) {
+                $token = $this->getToken(
+                    accessKeyID: $this->config->getAccessKeyId(),
+                    accessKeySecret: $this->config->getAccessKeySecret(),
+                    method: 'POST',
+                    path: $path,
+                    headers: $headers,
+                    data: null,
+                );
+
+                $headers['Authorization'] = sprintf('Litebase-HMAC-SHA256 %s', $token);
+            }
+
+            $this->connection = new Connection($url, $headers);
         }
 
         $result = null;
@@ -70,7 +76,7 @@ class HttpStreamingTransport implements TransportInterface
                 message: $e->getMessage(),
             );
 
-            return [];
+            return null;
         }
 
         if ($result === null) {
@@ -82,7 +88,6 @@ class HttpStreamingTransport implements TransportInterface
             );
         }
 
-
         if (($result['status'] ?? null) === 'error') {
             $this->connection->close();
 
@@ -92,10 +97,19 @@ class HttpStreamingTransport implements TransportInterface
             );
         }
 
-        if (empty($result)) {
-            return [];
+        if (empty($result['data'])) {
+            return null;
         }
 
-        return $result;
+        return new QueryResult(
+            changes: $result['data']['changes'] ?? 0,
+            columns: $result['data']['columns'] ?? [],
+            id: $result['data']['id'] ?? '',
+            lastInsertRowID: $result['data']['last_insert_row_id'] ?? null,
+            latency: $result['data']['latency'] ?? 0.0,
+            rowsCount: $result['data']['row_count'] ?? 0,
+            rows: $result['data']['rows'] ?? [],
+            transactionID: $result['data']['transaction_id'] ?? null,
+        );
     }
 }

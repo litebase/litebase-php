@@ -145,7 +145,7 @@ class LitebaseClient
     /**
      * Exectute a statement on the database.
      */
-    public function exec(array $input = []): array
+    public function exec(array $input = []): ?QueryResult
     {
         // Set a unique id for the request.
         $input['id'] = uniqid();
@@ -161,34 +161,12 @@ class LitebaseClient
             parameters: $input['parameters'] ?? [],
         ));
 
-        // $result is a CreateQuery200Response object
-        // getData() returns an array of CreateQuery200ResponseDataInner objects
-        $dataItems = $result->getData();
-
-        // Get the first query result (since we're executing a single query)
-        $firstResult = $dataItems[0] ?? null;
-
-        if (!$firstResult) {
-            return [];
-        }
-
         // Store the last insert ID if available
-        $lastInsertRowId = $firstResult->getLastInsertRowId();
-
-        if ($lastInsertRowId !== null) {
-            $this->lastInsertId = (string) $lastInsertRowId;
+        if (isset($result->lastInsertRowID)) {
+            $this->lastInsertId = (string) $result->lastInsertRowID;
         }
 
-        return [
-            'changes' => $firstResult->getChanges(),
-            'columns' => $firstResult->getColumns(),
-            'id' => $firstResult->getId(),
-            'last_insert_row_id' => $firstResult->getLastInsertRowId(),
-            'latency' => $firstResult->getLatency(),
-            'row_count' => $firstResult->getRowCount(),
-            'rows' => $firstResult->getRows(),
-            'transaction_id' => $firstResult->getTransactionId(),
-        ];
+        return $result;
     }
 
     /**
