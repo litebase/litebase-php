@@ -34,8 +34,6 @@ class RequestSigner
             $bodyHash,
         ]);
 
-        dump($requestString);
-
         $signed_request = hash('sha256', trim($requestString));
 
         $date = hash_hmac('sha256', $headers['x-litebase-date'], $accessKeySecret);

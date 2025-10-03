@@ -23,6 +23,7 @@ class CreateQuery200ResponseDataInner implements ModelInterface, ArrayAccess, \J
       */
     protected static $openAPITypes = [
         'changes' => 'int',
+        'columns' => 'string[]',
         'id' => 'string',
         'last_insert_row_id' => 'int',
         'latency' => 'float',
@@ -40,6 +41,7 @@ class CreateQuery200ResponseDataInner implements ModelInterface, ArrayAccess, \J
       */
     protected static $openAPIFormats = [
         'changes' => null,
+        'columns' => null,
         'id' => null,
         'last_insert_row_id' => null,
         'latency' => null,
@@ -55,6 +57,7 @@ class CreateQuery200ResponseDataInner implements ModelInterface, ArrayAccess, \J
       */
     protected static array $openAPINullables = [
         'changes' => false,
+        'columns' => false,
         'id' => false,
         'last_insert_row_id' => false,
         'latency' => false,
@@ -150,6 +153,7 @@ class CreateQuery200ResponseDataInner implements ModelInterface, ArrayAccess, \J
      */
     protected static $attributeMap = [
         'changes' => 'changes',
+        'columns' => 'columns',
         'id' => 'id',
         'last_insert_row_id' => 'last_insert_row_id',
         'latency' => 'latency',
@@ -165,6 +169,7 @@ class CreateQuery200ResponseDataInner implements ModelInterface, ArrayAccess, \J
      */
     protected static $setters = [
         'changes' => 'setChanges',
+        'columns' => 'setColumns',
         'id' => 'setId',
         'last_insert_row_id' => 'setLastInsertRowId',
         'latency' => 'setLatency',
@@ -180,6 +185,7 @@ class CreateQuery200ResponseDataInner implements ModelInterface, ArrayAccess, \J
      */
     protected static $getters = [
         'changes' => 'getChanges',
+        'columns' => 'getColumns',
         'id' => 'getId',
         'last_insert_row_id' => 'getLastInsertRowId',
         'latency' => 'getLatency',
@@ -246,6 +252,7 @@ class CreateQuery200ResponseDataInner implements ModelInterface, ArrayAccess, \J
     public function __construct(?array $data = null)
     {
         $this->setIfExists('changes', $data ?? [], null);
+        $this->setIfExists('columns', $data ?? [], null);
         $this->setIfExists('id', $data ?? [], null);
         $this->setIfExists('last_insert_row_id', $data ?? [], null);
         $this->setIfExists('latency', $data ?? [], null);
@@ -319,6 +326,33 @@ class CreateQuery200ResponseDataInner implements ModelInterface, ArrayAccess, \J
             throw new \InvalidArgumentException('non-nullable changes cannot be null');
         }
         $this->container['changes'] = $changes;
+
+        return $this;
+    }
+
+    /**
+     * Gets columns
+     *
+     * @return string[]|null
+     */
+    public function getColumns()
+    {
+        return $this->container['columns'];
+    }
+
+    /**
+     * Sets columns
+     *
+     * @param string[]|null $columns columns
+     *
+     * @return self
+     */
+    public function setColumns($columns)
+    {
+        if (is_null($columns)) {
+            throw new \InvalidArgumentException('non-nullable columns cannot be null');
+        }
+        $this->container['columns'] = $columns;
 
         return $this;
     }

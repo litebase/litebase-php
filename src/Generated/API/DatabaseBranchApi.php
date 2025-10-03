@@ -482,17 +482,17 @@ class DatabaseBranchApi
      *
      * Delete a database branch
      *
-     * @param  string $database_name The databaseName parameter (required)
      * @param  string $branch_name The branchName parameter (required)
+     * @param  string $database_name The databaseName parameter (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['deleteDatabaseBranch'] to see the possible values for this operation
      *
      * @throws \Litebase\Generated\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
      * @return \Litebase\Generated\Model\DeleteDatabaseBranch200Response|\Litebase\Generated\Model\ErrorResponse|\Litebase\Generated\Model\ErrorResponse|\Litebase\Generated\Model\ErrorResponse|\Litebase\Generated\Model\ErrorResponse
      */
-    public function deleteDatabaseBranch($database_name, $branch_name, string $contentType = self::contentTypes['deleteDatabaseBranch'][0])
+    public function deleteDatabaseBranch($branch_name, $database_name, string $contentType = self::contentTypes['deleteDatabaseBranch'][0])
     {
-        list($response) = $this->deleteDatabaseBranchWithHttpInfo($database_name, $branch_name, $contentType);
+        list($response) = $this->deleteDatabaseBranchWithHttpInfo($branch_name, $database_name, $contentType);
         return $response;
     }
 
@@ -501,17 +501,17 @@ class DatabaseBranchApi
      *
      * Delete a database branch
      *
-     * @param  string $database_name The databaseName parameter (required)
      * @param  string $branch_name The branchName parameter (required)
+     * @param  string $database_name The databaseName parameter (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['deleteDatabaseBranch'] to see the possible values for this operation
      *
      * @throws \Litebase\Generated\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
      * @return array of \Litebase\Generated\Model\DeleteDatabaseBranch200Response|\Litebase\Generated\Model\ErrorResponse|\Litebase\Generated\Model\ErrorResponse|\Litebase\Generated\Model\ErrorResponse|\Litebase\Generated\Model\ErrorResponse, HTTP status code, HTTP response headers (array of strings)
      */
-    public function deleteDatabaseBranchWithHttpInfo($database_name, $branch_name, string $contentType = self::contentTypes['deleteDatabaseBranch'][0])
+    public function deleteDatabaseBranchWithHttpInfo($branch_name, $database_name, string $contentType = self::contentTypes['deleteDatabaseBranch'][0])
     {
-        $request = $this->deleteDatabaseBranchRequest($database_name, $branch_name, $contentType);
+        $request = $this->deleteDatabaseBranchRequest($branch_name, $database_name, $contentType);
 
         try {
             $options = $this->createHttpClientOption();
@@ -643,16 +643,16 @@ class DatabaseBranchApi
      *
      * Delete a database branch
      *
-     * @param  string $database_name The databaseName parameter (required)
      * @param  string $branch_name The branchName parameter (required)
+     * @param  string $database_name The databaseName parameter (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['deleteDatabaseBranch'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function deleteDatabaseBranchAsync($database_name, $branch_name, string $contentType = self::contentTypes['deleteDatabaseBranch'][0])
+    public function deleteDatabaseBranchAsync($branch_name, $database_name, string $contentType = self::contentTypes['deleteDatabaseBranch'][0])
     {
-        return $this->deleteDatabaseBranchAsyncWithHttpInfo($database_name, $branch_name, $contentType)
+        return $this->deleteDatabaseBranchAsyncWithHttpInfo($branch_name, $database_name, $contentType)
             ->then(
                 function ($response) {
                     return $response[0];
@@ -665,17 +665,17 @@ class DatabaseBranchApi
      *
      * Delete a database branch
      *
-     * @param  string $database_name The databaseName parameter (required)
      * @param  string $branch_name The branchName parameter (required)
+     * @param  string $database_name The databaseName parameter (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['deleteDatabaseBranch'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function deleteDatabaseBranchAsyncWithHttpInfo($database_name, $branch_name, string $contentType = self::contentTypes['deleteDatabaseBranch'][0])
+    public function deleteDatabaseBranchAsyncWithHttpInfo($branch_name, $database_name, string $contentType = self::contentTypes['deleteDatabaseBranch'][0])
     {
         $returnType = '\Litebase\Generated\Model\DeleteDatabaseBranch200Response';
-        $request = $this->deleteDatabaseBranchRequest($database_name, $branch_name, $contentType);
+        $request = $this->deleteDatabaseBranchRequest($branch_name, $database_name, $contentType);
 
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
@@ -716,27 +716,27 @@ class DatabaseBranchApi
     /**
      * Create request for operation 'deleteDatabaseBranch'
      *
-     * @param  string $database_name The databaseName parameter (required)
      * @param  string $branch_name The branchName parameter (required)
+     * @param  string $database_name The databaseName parameter (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['deleteDatabaseBranch'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
      */
-    public function deleteDatabaseBranchRequest($database_name, $branch_name, string $contentType = self::contentTypes['deleteDatabaseBranch'][0])
+    public function deleteDatabaseBranchRequest($branch_name, $database_name, string $contentType = self::contentTypes['deleteDatabaseBranch'][0])
     {
-
-        // verify the required parameter 'database_name' is set
-        if ($database_name === null || (is_array($database_name) && count($database_name) === 0)) {
-            throw new \InvalidArgumentException(
-                'Missing the required parameter $database_name when calling deleteDatabaseBranch'
-            );
-        }
 
         // verify the required parameter 'branch_name' is set
         if ($branch_name === null || (is_array($branch_name) && count($branch_name) === 0)) {
             throw new \InvalidArgumentException(
                 'Missing the required parameter $branch_name when calling deleteDatabaseBranch'
+            );
+        }
+
+        // verify the required parameter 'database_name' is set
+        if ($database_name === null || (is_array($database_name) && count($database_name) === 0)) {
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $database_name when calling deleteDatabaseBranch'
             );
         }
 
@@ -751,18 +751,18 @@ class DatabaseBranchApi
 
 
         // path params
-        if ($database_name !== null) {
-            $resourcePath = str_replace(
-                '{' . 'databaseName' . '}',
-                ObjectSerializer::toPathValue($database_name),
-                $resourcePath
-            );
-        }
-        // path params
         if ($branch_name !== null) {
             $resourcePath = str_replace(
                 '{' . 'branchName' . '}',
                 ObjectSerializer::toPathValue($branch_name),
+                $resourcePath
+            );
+        }
+        // path params
+        if ($database_name !== null) {
+            $resourcePath = str_replace(
+                '{' . 'databaseName' . '}',
+                ObjectSerializer::toPathValue($database_name),
                 $resourcePath
             );
         }
@@ -833,17 +833,17 @@ class DatabaseBranchApi
      *
      * Show details of a specific database branch
      *
-     * @param  string $database_name The databaseName parameter (required)
      * @param  string $branch_name The branchName parameter (required)
+     * @param  string $database_name The databaseName parameter (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getDatabaseBranch'] to see the possible values for this operation
      *
      * @throws \Litebase\Generated\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
      * @return \Litebase\Generated\Model\GetDatabaseBranch200Response|\Litebase\Generated\Model\ErrorResponse|\Litebase\Generated\Model\ErrorResponse|\Litebase\Generated\Model\ErrorResponse
      */
-    public function getDatabaseBranch($database_name, $branch_name, string $contentType = self::contentTypes['getDatabaseBranch'][0])
+    public function getDatabaseBranch($branch_name, $database_name, string $contentType = self::contentTypes['getDatabaseBranch'][0])
     {
-        list($response) = $this->getDatabaseBranchWithHttpInfo($database_name, $branch_name, $contentType);
+        list($response) = $this->getDatabaseBranchWithHttpInfo($branch_name, $database_name, $contentType);
         return $response;
     }
 
@@ -852,17 +852,17 @@ class DatabaseBranchApi
      *
      * Show details of a specific database branch
      *
-     * @param  string $database_name The databaseName parameter (required)
      * @param  string $branch_name The branchName parameter (required)
+     * @param  string $database_name The databaseName parameter (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getDatabaseBranch'] to see the possible values for this operation
      *
      * @throws \Litebase\Generated\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
      * @return array of \Litebase\Generated\Model\GetDatabaseBranch200Response|\Litebase\Generated\Model\ErrorResponse|\Litebase\Generated\Model\ErrorResponse|\Litebase\Generated\Model\ErrorResponse, HTTP status code, HTTP response headers (array of strings)
      */
-    public function getDatabaseBranchWithHttpInfo($database_name, $branch_name, string $contentType = self::contentTypes['getDatabaseBranch'][0])
+    public function getDatabaseBranchWithHttpInfo($branch_name, $database_name, string $contentType = self::contentTypes['getDatabaseBranch'][0])
     {
-        $request = $this->getDatabaseBranchRequest($database_name, $branch_name, $contentType);
+        $request = $this->getDatabaseBranchRequest($branch_name, $database_name, $contentType);
 
         try {
             $options = $this->createHttpClientOption();
@@ -980,16 +980,16 @@ class DatabaseBranchApi
      *
      * Show details of a specific database branch
      *
-     * @param  string $database_name The databaseName parameter (required)
      * @param  string $branch_name The branchName parameter (required)
+     * @param  string $database_name The databaseName parameter (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getDatabaseBranch'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function getDatabaseBranchAsync($database_name, $branch_name, string $contentType = self::contentTypes['getDatabaseBranch'][0])
+    public function getDatabaseBranchAsync($branch_name, $database_name, string $contentType = self::contentTypes['getDatabaseBranch'][0])
     {
-        return $this->getDatabaseBranchAsyncWithHttpInfo($database_name, $branch_name, $contentType)
+        return $this->getDatabaseBranchAsyncWithHttpInfo($branch_name, $database_name, $contentType)
             ->then(
                 function ($response) {
                     return $response[0];
@@ -1002,17 +1002,17 @@ class DatabaseBranchApi
      *
      * Show details of a specific database branch
      *
-     * @param  string $database_name The databaseName parameter (required)
      * @param  string $branch_name The branchName parameter (required)
+     * @param  string $database_name The databaseName parameter (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getDatabaseBranch'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function getDatabaseBranchAsyncWithHttpInfo($database_name, $branch_name, string $contentType = self::contentTypes['getDatabaseBranch'][0])
+    public function getDatabaseBranchAsyncWithHttpInfo($branch_name, $database_name, string $contentType = self::contentTypes['getDatabaseBranch'][0])
     {
         $returnType = '\Litebase\Generated\Model\GetDatabaseBranch200Response';
-        $request = $this->getDatabaseBranchRequest($database_name, $branch_name, $contentType);
+        $request = $this->getDatabaseBranchRequest($branch_name, $database_name, $contentType);
 
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
@@ -1053,27 +1053,27 @@ class DatabaseBranchApi
     /**
      * Create request for operation 'getDatabaseBranch'
      *
-     * @param  string $database_name The databaseName parameter (required)
      * @param  string $branch_name The branchName parameter (required)
+     * @param  string $database_name The databaseName parameter (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getDatabaseBranch'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
      */
-    public function getDatabaseBranchRequest($database_name, $branch_name, string $contentType = self::contentTypes['getDatabaseBranch'][0])
+    public function getDatabaseBranchRequest($branch_name, $database_name, string $contentType = self::contentTypes['getDatabaseBranch'][0])
     {
-
-        // verify the required parameter 'database_name' is set
-        if ($database_name === null || (is_array($database_name) && count($database_name) === 0)) {
-            throw new \InvalidArgumentException(
-                'Missing the required parameter $database_name when calling getDatabaseBranch'
-            );
-        }
 
         // verify the required parameter 'branch_name' is set
         if ($branch_name === null || (is_array($branch_name) && count($branch_name) === 0)) {
             throw new \InvalidArgumentException(
                 'Missing the required parameter $branch_name when calling getDatabaseBranch'
+            );
+        }
+
+        // verify the required parameter 'database_name' is set
+        if ($database_name === null || (is_array($database_name) && count($database_name) === 0)) {
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $database_name when calling getDatabaseBranch'
             );
         }
 
@@ -1088,18 +1088,18 @@ class DatabaseBranchApi
 
 
         // path params
-        if ($database_name !== null) {
-            $resourcePath = str_replace(
-                '{' . 'databaseName' . '}',
-                ObjectSerializer::toPathValue($database_name),
-                $resourcePath
-            );
-        }
-        // path params
         if ($branch_name !== null) {
             $resourcePath = str_replace(
                 '{' . 'branchName' . '}',
                 ObjectSerializer::toPathValue($branch_name),
+                $resourcePath
+            );
+        }
+        // path params
+        if ($database_name !== null) {
+            $resourcePath = str_replace(
+                '{' . 'databaseName' . '}',
+                ObjectSerializer::toPathValue($database_name),
                 $resourcePath
             );
         }

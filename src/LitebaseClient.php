@@ -174,20 +174,21 @@ class LitebaseClient
 
         // Store the last insert ID if available
         $lastInsertRowId = $firstResult->getLastInsertRowId();
+
         if ($lastInsertRowId !== null) {
             $this->lastInsertId = (string) $lastInsertRowId;
         }
 
-        // Return the data as an associative array
-        return dd([
+        return [
             'changes' => $firstResult->getChanges(),
+            'columns' => $firstResult->getColumns(),
             'id' => $firstResult->getId(),
             'last_insert_row_id' => $firstResult->getLastInsertRowId(),
             'latency' => $firstResult->getLatency(),
             'row_count' => $firstResult->getRowCount(),
             'rows' => $firstResult->getRows(),
             'transaction_id' => $firstResult->getTransactionId(),
-        ]);
+        ];
     }
 
     /**
