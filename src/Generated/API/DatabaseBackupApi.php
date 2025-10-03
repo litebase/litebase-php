@@ -118,8 +118,8 @@ class DatabaseBackupApi
      *
      * Create a new database backup
      *
-     * @param  string $branch_name The branchName parameter (required)
      * @param  string $database_name The databaseName parameter (required)
+     * @param  string $branch_name The branchName parameter (required)
      * @param  object $body Database backup creation data (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['createDatabaseBackup'] to see the possible values for this operation
      *
@@ -127,9 +127,9 @@ class DatabaseBackupApi
      * @throws \InvalidArgumentException
      * @return \Litebase\Generated\Model\CreateDatabaseBackup200Response|\Litebase\Generated\Model\ErrorResponse|\Litebase\Generated\Model\ErrorResponse|\Litebase\Generated\Model\ErrorResponse|\Litebase\Generated\Model\ValidationErrorResponse|\Litebase\Generated\Model\ErrorResponse
      */
-    public function createDatabaseBackup($branch_name, $database_name, $body, string $contentType = self::contentTypes['createDatabaseBackup'][0])
+    public function createDatabaseBackup($database_name, $branch_name, $body, string $contentType = self::contentTypes['createDatabaseBackup'][0])
     {
-        list($response) = $this->createDatabaseBackupWithHttpInfo($branch_name, $database_name, $body, $contentType);
+        list($response) = $this->createDatabaseBackupWithHttpInfo($database_name, $branch_name, $body, $contentType);
         return $response;
     }
 
@@ -138,8 +138,8 @@ class DatabaseBackupApi
      *
      * Create a new database backup
      *
-     * @param  string $branch_name The branchName parameter (required)
      * @param  string $database_name The databaseName parameter (required)
+     * @param  string $branch_name The branchName parameter (required)
      * @param  object $body Database backup creation data (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['createDatabaseBackup'] to see the possible values for this operation
      *
@@ -147,9 +147,9 @@ class DatabaseBackupApi
      * @throws \InvalidArgumentException
      * @return array of \Litebase\Generated\Model\CreateDatabaseBackup200Response|\Litebase\Generated\Model\ErrorResponse|\Litebase\Generated\Model\ErrorResponse|\Litebase\Generated\Model\ErrorResponse|\Litebase\Generated\Model\ValidationErrorResponse|\Litebase\Generated\Model\ErrorResponse, HTTP status code, HTTP response headers (array of strings)
      */
-    public function createDatabaseBackupWithHttpInfo($branch_name, $database_name, $body, string $contentType = self::contentTypes['createDatabaseBackup'][0])
+    public function createDatabaseBackupWithHttpInfo($database_name, $branch_name, $body, string $contentType = self::contentTypes['createDatabaseBackup'][0])
     {
-        $request = $this->createDatabaseBackupRequest($branch_name, $database_name, $body, $contentType);
+        $request = $this->createDatabaseBackupRequest($database_name, $branch_name, $body, $contentType);
 
         try {
             $options = $this->createHttpClientOption();
@@ -295,17 +295,17 @@ class DatabaseBackupApi
      *
      * Create a new database backup
      *
-     * @param  string $branch_name The branchName parameter (required)
      * @param  string $database_name The databaseName parameter (required)
+     * @param  string $branch_name The branchName parameter (required)
      * @param  object $body Database backup creation data (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['createDatabaseBackup'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function createDatabaseBackupAsync($branch_name, $database_name, $body, string $contentType = self::contentTypes['createDatabaseBackup'][0])
+    public function createDatabaseBackupAsync($database_name, $branch_name, $body, string $contentType = self::contentTypes['createDatabaseBackup'][0])
     {
-        return $this->createDatabaseBackupAsyncWithHttpInfo($branch_name, $database_name, $body, $contentType)
+        return $this->createDatabaseBackupAsyncWithHttpInfo($database_name, $branch_name, $body, $contentType)
             ->then(
                 function ($response) {
                     return $response[0];
@@ -318,18 +318,18 @@ class DatabaseBackupApi
      *
      * Create a new database backup
      *
-     * @param  string $branch_name The branchName parameter (required)
      * @param  string $database_name The databaseName parameter (required)
+     * @param  string $branch_name The branchName parameter (required)
      * @param  object $body Database backup creation data (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['createDatabaseBackup'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function createDatabaseBackupAsyncWithHttpInfo($branch_name, $database_name, $body, string $contentType = self::contentTypes['createDatabaseBackup'][0])
+    public function createDatabaseBackupAsyncWithHttpInfo($database_name, $branch_name, $body, string $contentType = self::contentTypes['createDatabaseBackup'][0])
     {
         $returnType = '\Litebase\Generated\Model\CreateDatabaseBackup200Response';
-        $request = $this->createDatabaseBackupRequest($branch_name, $database_name, $body, $contentType);
+        $request = $this->createDatabaseBackupRequest($database_name, $branch_name, $body, $contentType);
 
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
@@ -370,28 +370,28 @@ class DatabaseBackupApi
     /**
      * Create request for operation 'createDatabaseBackup'
      *
-     * @param  string $branch_name The branchName parameter (required)
      * @param  string $database_name The databaseName parameter (required)
+     * @param  string $branch_name The branchName parameter (required)
      * @param  object $body Database backup creation data (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['createDatabaseBackup'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
      */
-    public function createDatabaseBackupRequest($branch_name, $database_name, $body, string $contentType = self::contentTypes['createDatabaseBackup'][0])
+    public function createDatabaseBackupRequest($database_name, $branch_name, $body, string $contentType = self::contentTypes['createDatabaseBackup'][0])
     {
-
-        // verify the required parameter 'branch_name' is set
-        if ($branch_name === null || (is_array($branch_name) && count($branch_name) === 0)) {
-            throw new \InvalidArgumentException(
-                'Missing the required parameter $branch_name when calling createDatabaseBackup'
-            );
-        }
 
         // verify the required parameter 'database_name' is set
         if ($database_name === null || (is_array($database_name) && count($database_name) === 0)) {
             throw new \InvalidArgumentException(
                 'Missing the required parameter $database_name when calling createDatabaseBackup'
+            );
+        }
+
+        // verify the required parameter 'branch_name' is set
+        if ($branch_name === null || (is_array($branch_name) && count($branch_name) === 0)) {
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $branch_name when calling createDatabaseBackup'
             );
         }
 
@@ -413,18 +413,18 @@ class DatabaseBackupApi
 
 
         // path params
-        if ($branch_name !== null) {
-            $resourcePath = str_replace(
-                '{' . 'branchName' . '}',
-                ObjectSerializer::toPathValue($branch_name),
-                $resourcePath
-            );
-        }
-        // path params
         if ($database_name !== null) {
             $resourcePath = str_replace(
                 '{' . 'databaseName' . '}',
                 ObjectSerializer::toPathValue($database_name),
+                $resourcePath
+            );
+        }
+        // path params
+        if ($branch_name !== null) {
+            $resourcePath = str_replace(
+                '{' . 'branchName' . '}',
+                ObjectSerializer::toPathValue($branch_name),
                 $resourcePath
             );
         }
@@ -1216,17 +1216,17 @@ class DatabaseBackupApi
      *
      * List all database backups
      *
-     * @param  string $branch_name The branchName parameter (required)
      * @param  string $database_name The databaseName parameter (required)
+     * @param  string $branch_name The branchName parameter (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['listDatabaseBackups'] to see the possible values for this operation
      *
      * @throws \Litebase\Generated\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
      * @return \Litebase\Generated\Model\ListDatabaseBackups200Response|\Litebase\Generated\Model\ErrorResponse|\Litebase\Generated\Model\ErrorResponse|\Litebase\Generated\Model\ErrorResponse
      */
-    public function listDatabaseBackups($branch_name, $database_name, string $contentType = self::contentTypes['listDatabaseBackups'][0])
+    public function listDatabaseBackups($database_name, $branch_name, string $contentType = self::contentTypes['listDatabaseBackups'][0])
     {
-        list($response) = $this->listDatabaseBackupsWithHttpInfo($branch_name, $database_name, $contentType);
+        list($response) = $this->listDatabaseBackupsWithHttpInfo($database_name, $branch_name, $contentType);
         return $response;
     }
 
@@ -1235,17 +1235,17 @@ class DatabaseBackupApi
      *
      * List all database backups
      *
-     * @param  string $branch_name The branchName parameter (required)
      * @param  string $database_name The databaseName parameter (required)
+     * @param  string $branch_name The branchName parameter (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['listDatabaseBackups'] to see the possible values for this operation
      *
      * @throws \Litebase\Generated\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
      * @return array of \Litebase\Generated\Model\ListDatabaseBackups200Response|\Litebase\Generated\Model\ErrorResponse|\Litebase\Generated\Model\ErrorResponse|\Litebase\Generated\Model\ErrorResponse, HTTP status code, HTTP response headers (array of strings)
      */
-    public function listDatabaseBackupsWithHttpInfo($branch_name, $database_name, string $contentType = self::contentTypes['listDatabaseBackups'][0])
+    public function listDatabaseBackupsWithHttpInfo($database_name, $branch_name, string $contentType = self::contentTypes['listDatabaseBackups'][0])
     {
-        $request = $this->listDatabaseBackupsRequest($branch_name, $database_name, $contentType);
+        $request = $this->listDatabaseBackupsRequest($database_name, $branch_name, $contentType);
 
         try {
             $options = $this->createHttpClientOption();
@@ -1363,16 +1363,16 @@ class DatabaseBackupApi
      *
      * List all database backups
      *
-     * @param  string $branch_name The branchName parameter (required)
      * @param  string $database_name The databaseName parameter (required)
+     * @param  string $branch_name The branchName parameter (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['listDatabaseBackups'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function listDatabaseBackupsAsync($branch_name, $database_name, string $contentType = self::contentTypes['listDatabaseBackups'][0])
+    public function listDatabaseBackupsAsync($database_name, $branch_name, string $contentType = self::contentTypes['listDatabaseBackups'][0])
     {
-        return $this->listDatabaseBackupsAsyncWithHttpInfo($branch_name, $database_name, $contentType)
+        return $this->listDatabaseBackupsAsyncWithHttpInfo($database_name, $branch_name, $contentType)
             ->then(
                 function ($response) {
                     return $response[0];
@@ -1385,17 +1385,17 @@ class DatabaseBackupApi
      *
      * List all database backups
      *
-     * @param  string $branch_name The branchName parameter (required)
      * @param  string $database_name The databaseName parameter (required)
+     * @param  string $branch_name The branchName parameter (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['listDatabaseBackups'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function listDatabaseBackupsAsyncWithHttpInfo($branch_name, $database_name, string $contentType = self::contentTypes['listDatabaseBackups'][0])
+    public function listDatabaseBackupsAsyncWithHttpInfo($database_name, $branch_name, string $contentType = self::contentTypes['listDatabaseBackups'][0])
     {
         $returnType = '\Litebase\Generated\Model\ListDatabaseBackups200Response';
-        $request = $this->listDatabaseBackupsRequest($branch_name, $database_name, $contentType);
+        $request = $this->listDatabaseBackupsRequest($database_name, $branch_name, $contentType);
 
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
@@ -1436,27 +1436,27 @@ class DatabaseBackupApi
     /**
      * Create request for operation 'listDatabaseBackups'
      *
-     * @param  string $branch_name The branchName parameter (required)
      * @param  string $database_name The databaseName parameter (required)
+     * @param  string $branch_name The branchName parameter (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['listDatabaseBackups'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
      */
-    public function listDatabaseBackupsRequest($branch_name, $database_name, string $contentType = self::contentTypes['listDatabaseBackups'][0])
+    public function listDatabaseBackupsRequest($database_name, $branch_name, string $contentType = self::contentTypes['listDatabaseBackups'][0])
     {
-
-        // verify the required parameter 'branch_name' is set
-        if ($branch_name === null || (is_array($branch_name) && count($branch_name) === 0)) {
-            throw new \InvalidArgumentException(
-                'Missing the required parameter $branch_name when calling listDatabaseBackups'
-            );
-        }
 
         // verify the required parameter 'database_name' is set
         if ($database_name === null || (is_array($database_name) && count($database_name) === 0)) {
             throw new \InvalidArgumentException(
                 'Missing the required parameter $database_name when calling listDatabaseBackups'
+            );
+        }
+
+        // verify the required parameter 'branch_name' is set
+        if ($branch_name === null || (is_array($branch_name) && count($branch_name) === 0)) {
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $branch_name when calling listDatabaseBackups'
             );
         }
 
@@ -1471,18 +1471,18 @@ class DatabaseBackupApi
 
 
         // path params
-        if ($branch_name !== null) {
-            $resourcePath = str_replace(
-                '{' . 'branchName' . '}',
-                ObjectSerializer::toPathValue($branch_name),
-                $resourcePath
-            );
-        }
-        // path params
         if ($database_name !== null) {
             $resourcePath = str_replace(
                 '{' . 'databaseName' . '}',
                 ObjectSerializer::toPathValue($database_name),
+                $resourcePath
+            );
+        }
+        // path params
+        if ($branch_name !== null) {
+            $resourcePath = str_replace(
+                '{' . 'branchName' . '}',
+                ObjectSerializer::toPathValue($branch_name),
                 $resourcePath
             );
         }

@@ -76,6 +76,7 @@ docs/Model/Privilege.md
 docs/Model/QueryInput.md
 docs/Model/Statement.md
 docs/Model/StatementEffect.md
+docs/Model/SuccessResponse.md
 docs/Model/UpdateAccessKey200Response.md
 docs/Model/UpdateToken200Response.md
 docs/Model/ValidationErrorResponse.md
@@ -162,6 +163,7 @@ src/Generated/Model/Privilege.php
 src/Generated/Model/QueryInput.php
 src/Generated/Model/Statement.php
 src/Generated/Model/StatementEffect.php
+src/Generated/Model/SuccessResponse.php
 src/Generated/Model/UpdateAccessKey200Response.php
 src/Generated/Model/UpdateToken200Response.php
 src/Generated/Model/ValidationErrorResponse.php
