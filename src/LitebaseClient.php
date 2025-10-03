@@ -231,32 +231,33 @@ class LitebaseClient
         return true;
     }
 
-    public function withTransport(string $transportType, array $clientConfig = []): LitebaseClient
+    public function withTransport(string $transportType): LitebaseClient
     {
-        if ($transportType === 'http') {
-            $this->transport = new HttpTransport(
-                config: $this->configuration,
-                clientConfig: $clientConfig
-            );
+        switch ($transportType) {
+            case 'http':
+                $this->transport = new HttpTransport($this->configuration);
+                break;
+            case 'http_streaming':
+                $this->transport = new HttpStreamingTransport($this->configuration);
+                break;
+            default:
+                throw new Exception('Invalid transport type: ' . $transportType);
         }
-
-        // if ($transportType === 'http_streaming') {
-        //     $this->transport = new HttpStreamingTransport(
-        //         host: $this->host,
-        //         port: $this->port,
-        //         database: $this->database,
-        //         key: $this->key,
-        //         secret: $this->secret,
-        //     );
-        // }
 
         return $this;
     }
 
-    public function withAccessKey(string $key, string $secret): LitebaseClient
+    public function withAccessKey(string $accessKeyID, string $accessKeySecret): LitebaseClient
     {
-        $this->key = $key;
-        $this->secret = $secret;
+        $this->configuration->setAccessKey($accessKeyID, $accessKeySecret);
+
+        return $this;
+    }
+
+    public function withBasicAuth(string $username, string $password): LitebaseClient
+    {
+        $this->configuration->setUsername($username);
+        $this->configuration->setPassword($password);
 
         return $this;
     }

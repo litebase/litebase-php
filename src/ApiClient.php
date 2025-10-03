@@ -19,7 +19,6 @@ use Litebase\Generated\API\QueryStreamApi;
 use Litebase\Generated\API\TokenApi;
 use Litebase\Generated\API\UserApi;
 use Litebase\Middleware\AuthMiddleware;
-use Litebase\Middleware\LitebaseAuthMiddleware;
 
 /**
  * Litebase API Client Factory

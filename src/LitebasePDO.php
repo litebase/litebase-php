@@ -45,8 +45,8 @@ class LitebasePDO extends Sqlite
                 ->setPassword($config['password']);
         }
 
-        $this->client = new LitebaseClient($configuration);
-        $this->client->withTransport($transport);
+        $this->client = new LitebaseClient($configuration)
+            ->withTransport($transport);
     }
 
     /**

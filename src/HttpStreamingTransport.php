@@ -13,20 +13,25 @@ class HttpStreamingTransport implements TransportInterface
 
     protected Connection $connection;
 
+    /**
+     * Create a new instance of the transport.
+     */
     public function __construct(
-        private string $host,
-        private int $port = 0,
-        protected string $database = '',
-        private string $key = '',
-        private string $secret = '',
+        protected Configuration $config,
     ) {}
 
     public function send(Query $query): array
     {
-        $path = sprintf('%s/query/stream', $this->database);
+        $path = sprintf(
+            '%s/branches/%s/query/stream',
+            $this->config->getDatabase(),
+            $this->config->getBranch()
+        );
 
         if (!isset($this->connection) || !$this->connection->isOpen()) {
             $headers = $this->requestHeaders(
+                host: $this->config->getHost(),
+                port: $this->config->getPort(),
                 contentLength: 0,
                 headers: [
                     'Content-Type' => 'application/octet-stream',
@@ -34,15 +39,17 @@ class HttpStreamingTransport implements TransportInterface
             );
 
             $token = $this->getToken(
+                accessKeyID: $this->config->getAccessKeyId(),
+                accessKeySecret: $this->config->getAccessKeySecret(),
                 method: 'POST',
                 path: $path,
                 headers: $headers,
                 data: null,
             );
 
-            $url = $this->port === null
-                ? sprintf('https://%s/%s', $this->host, $path)
-                : sprintf('http://%s:%d/%s', $this->host, $this->port, $path);
+            $url = $this->config->getPort() === null
+                ? sprintf('https://%s/%s', $this->config->getHost(), $path)
+                : sprintf('http://%s:%d/%s', $this->config->getHost(), $this->config->getPort(), $path);
 
             $this->connection = new Connection(
                 $url,
