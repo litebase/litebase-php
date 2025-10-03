@@ -9,3 +9,5 @@ developerOrganizationUrl: https://litebase.com
 licenseName: MIT
 packageName: Litebase PHP SDK
 templateDir: templates
+inputSpec: https://raw.githubusercontent.com/litebase/litebase/refs/heads/main/api/generated_openapi.json
+generatorName: php
