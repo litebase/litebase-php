@@ -1,6 +1,8 @@
 # Litebase PHP SDK
 
-This is where your description should go. Try and limit it to a paragraph or two, and maybe throw in a mention of what PSRs you support to avoid any confusion with users and contributors.
+[![tests](https://github.com/litebase/litebase-php/actions/workflows/tests.yml/badge.svg)](https://github.com/litebase/litebase-php/actions/workflows/tests.yml)
+
+A PHP SDK for interacting with [Litebase](https://github.com/litebase/litebase), an open source distributed database built on SQLite, distributed file systems, and object storage.
 
 ## Installation
 
