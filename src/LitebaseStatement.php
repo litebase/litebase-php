@@ -289,9 +289,10 @@ class LitebaseStatement extends PDOStatement implements IteratorAggregate
     /**
      * {@inheritDoc}
      */
-    public function setFetchMode(int $mode, mixed ...$args)
+    public function setFetchMode(int $mode, mixed ...$args): true
     {
         $this->fetchMode = $mode;
+
         // Optionally handle $args for fetchArgument, ctorArgs, etc.
         return true;
     }
