@@ -4,6 +4,9 @@ namespace Litebase;
 
 class QueryResponseDecoder
 {
+    /**
+     * Create a new instance of the decoder.
+     */
     public function __construct(
         protected QueryStreamMessageType $messageType,
         protected string $message,
