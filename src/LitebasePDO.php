@@ -16,16 +16,16 @@ class LitebasePDO extends Sqlite
     /**
      * Create a new instance of the PDO connection.
      *
-     * @param array<string, string>
+     * @param array<string, string|null> $config
      */
     public function __construct(array $config)
     {
-        $host = $config['host'] ?? null;
+        $host = $config['host'] ?? '';
         $port = $config['port'] ?? null;
         $database = $config['database'] ?? null;
         $transport = $config['transport'] ?? 'http';
 
-        $configuration  = new Configuration();
+        $configuration = new Configuration;
 
         $configuration
             ->setHost($host)
@@ -68,13 +68,15 @@ class LitebasePDO extends Sqlite
     /**
      * Return the last error code.
      */
-    public function errorCode(): null|string
+    public function errorCode(): ?string
     {
         return $this->client->errorCode();
     }
 
     /**
      * Return the error info.
+     *
+     * @return array<int, int|string|null>
      */
     public function errorInfo(): array
     {
@@ -90,20 +92,28 @@ class LitebasePDO extends Sqlite
             'statement' => $statement,
         ]);
 
-        if (isset($result['error']) || ($result['status'] ?? null) === 'error') {
+        if (! empty($result->errorMessage)) {
             return false;
         }
 
-        return $result['changes'] ?? 0;
+        return $result->changes ?? 0;
     }
 
     public function getAttribute(int $attribute): mixed
     {
         return match ($attribute) {
-            PDO::ATTR_SERVER_VERSION => "0.0.0",
-            PDO::ATTR_CLIENT_VERSION => "0.0.0",
+            PDO::ATTR_SERVER_VERSION => '0.0.0',
+            PDO::ATTR_CLIENT_VERSION => '0.0.0',
             default => null,
         };
+    }
+
+    /**
+     * Get the Litebase client instance.
+     */
+    public function getClient(): LitebaseClient
+    {
+        return $this->client;
     }
 
     /**
@@ -117,7 +127,7 @@ class LitebasePDO extends Sqlite
             return false;
         }
 
-        return  $code >= 0;
+        return $code >= 0;
     }
 
     /**
@@ -133,13 +143,15 @@ class LitebasePDO extends Sqlite
      */
     public function lastInsertId($name = null): string|false
     {
-        return $this->client->lastInsertId();
+        return $this->client->lastInsertId() ?? false;
     }
 
     /**
      * Create a new prepared statement.
+     *
+     * @param array<string, mixed>|null $options Driver options.
      */
-    public function prepare($statement, $options = null): PDOStatement
+    public function prepare(string $statement, $options = null): PDOStatement
     {
         return new LitebaseStatement($this->client, $statement);
     }
@@ -150,5 +162,15 @@ class LitebasePDO extends Sqlite
     public function rollBack(): bool
     {
         return $this->client->rollback();
+    }
+
+    /**
+     * Set the Litebase client instance.
+     */
+    public function setClient(LitebaseClient $client): self
+    {
+        $this->client = $client;
+
+        return $this;
     }
 }

@@ -8,35 +8,39 @@ use Litebase\Exceptions\QueryException;
 use PDO;
 use PDOStatement;
 
+/**
+ * Class LitebaseStatement
+ *
+ * A custom PDOStatement implementation for Litebase.
+ *
+ * @implements IteratorAggregate<int, array<string, mixed>>
+ */
 class LitebaseStatement extends PDOStatement implements IteratorAggregate
 {
-    protected $boundParams = [];
-
     /**
-     * The Litebase Client instance.
-     *
-     * @var LitebaseClient
+     * @var array<int|string, array{type: ColumnTypeString, value: int|float|string|null}|mixed>
      */
-    protected $client;
+    protected array $boundParams = [];
 
-    protected $columns;
-    protected $fetchMode;
-    protected $query = '';
-    protected $result;
-    protected $rows = [];
-    protected $rowCount = 0;
+    /** @var array<int, array{type: ColumnType, name: string}> */
+    protected array $columns;
+
+    protected int $fetchMode;
+
+    protected ?QueryResult $result = null;
+
+    /** @var array<int, array<string, mixed>> */
+    protected array $rows = [];
+
+    protected int $rowCount = 0;
 
     /**
      * Create a new instance of the prepare statement.
      */
-    public function __construct(LitebaseClient $client, $query)
-    {
-        $this->client = $client;
-        $this->query = $query;
-    }
+    public function __construct(protected LitebaseClient $client, protected string $statement) {}
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function bindParam(
         int|string $param,
@@ -51,33 +55,33 @@ class LitebaseStatement extends PDOStatement implements IteratorAggregate
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function bindValue(int|string $parameter, mixed $value, int $data_type = PDO::PARAM_STR): bool
     {
-        $type = "NULL";
+        $type = 'NULL';
 
         switch ($data_type) {
             case PDO::PARAM_BOOL:
             case PDO::PARAM_INT:
-                $type = "INTEGER";
+                $type = 'INTEGER';
                 break;
             case PDO::PARAM_STR:
-                $type = "TEXT";
+                $type = 'TEXT';
                 break;
             case PDO::PARAM_NULL:
-                $type = "NULL";
+                $type = 'NULL';
                 break;
             // TODO: Test BLOB type
             case PDO::PARAM_LOB:
-                $type = "BLOB";
+                $type = 'BLOB';
                 break;
             // TODO: Add a case for float type
             // case PDO::PARAM_FLOAT:
             // $type = "REAL";
             // break;
             default:
-                $type = "TEXT"; // Default to TEXT if no match
+                $type = 'TEXT'; // Default to TEXT if no match
                 break;
         }
 
@@ -93,24 +97,23 @@ class LitebaseStatement extends PDOStatement implements IteratorAggregate
             ];
         }
 
-
         return true;
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function closeCursor(): bool
     {
-        if (isset($this->result['records'])) {
-            $this->result['records'] = null;
+        if (!empty($this->result->rows)) {
+            $this->result->rows = [];
         }
 
         return true;
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function columnCount(): int
     {
@@ -118,25 +121,27 @@ class LitebaseStatement extends PDOStatement implements IteratorAggregate
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
-    public function debugDumpParams(): null|bool
+    public function debugDumpParams(): ?bool
     {
-        var_dump($this->query, $this->boundParams);
+        var_dump($this->statement, $this->boundParams);
 
         return null;
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
-    public function errorCode(): null | string
+    public function errorCode(): ?string
     {
         return $this->client->errorCode();
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
+     *
+     * @return array<int|string|null>
      */
     public function errorInfo(): array
     {
@@ -144,26 +149,58 @@ class LitebaseStatement extends PDOStatement implements IteratorAggregate
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
+     *
+     * @param array<int|string, mixed>|null $params
      */
-    public function execute($params = []): bool
+    public function execute(?array $params = null): bool
     {
+        // Transform incoming parameters to the expected API shape
+        /** @var array<int|string, array{type: ColumnTypeString, value: int|float|string|null}> $transformedParams */
+        $transformedParams = [];
+
+        if ($params !== null) {
+            foreach ($params as $key => $value) {
+                // Determine the type based on the value
+                $type = match (true) {
+                    $value === null => 'NULL',
+                    is_int($value) => 'INTEGER',
+                    is_float($value) => 'REAL',
+                    is_bool($value) => 'INTEGER',
+                    default => 'TEXT',
+                };
+
+                $transformedParams[$key] = [
+                    'type' => $type,
+                    'value' => $value,
+                ];
+            }
+        }
+
+        // Merge with bound parameters
+        /** @var array<array{type: string, value: int|float|string|null}> $allParams */
+        $allParams = array_merge($this->boundParams, $transformedParams);
+
         $response = $this->client->exec([
-            "statement" => $this->query,
-            "parameters" => $params = array_merge($this->boundParams, $params),
+            'statement' => $this->statement,
+            'parameters' => $allParams,
         ]);
 
         if ($this->errorInfo()) {
-            list($errorCode, $statusCode, $message) = $this->errorInfo();
+            [$errorCode, $statusCode, $message] = $this->errorInfo();
 
-            throw new QueryException($message, $this->query, $params);
+            if ($message === null || $message === '') {
+                $message = 'An unknown error occurred during query execution.';
+            }
+
+            throw new QueryException((string) $message, $this->statement, $params ?? []);
         }
 
         if (isset($response->errorMessage)) {
-            throw new QueryException($response->errorMessage, $this->query, $params);
+            throw new QueryException($response->errorMessage, $this->statement, $allParams);
         }
 
-        $this->result = $response ?? [];
+        $this->result = $response ?? null;
 
         if (isset($this->result->columns)) {
             $this->columns = $this->result->columns;
@@ -171,7 +208,11 @@ class LitebaseStatement extends PDOStatement implements IteratorAggregate
 
         if (isset($this->result->rows)) {
             $this->rows = array_map(function ($row) {
-                return array_combine($this->columns, $row);
+                $columns = $this->columns ?? [];
+                return array_combine(
+                    array_map(fn($col) => $col['name'], $columns),
+                    $row
+                );
             }, $this->result->rows);
         }
 
@@ -183,7 +224,7 @@ class LitebaseStatement extends PDOStatement implements IteratorAggregate
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function fetch(
         $fetchMode = PDO::ATTR_DEFAULT_FETCH_MODE,
@@ -191,16 +232,16 @@ class LitebaseStatement extends PDOStatement implements IteratorAggregate
         $cursorOffset = 0
     ): mixed {
         if ($cursorOrientation !== PDO::FETCH_ORI_NEXT) {
-            throw new \RuntimeException("Cursor direction not implemented");
+            throw new \RuntimeException('Cursor direction not implemented');
         }
 
         $result = current($this->rows);
 
-        if (!is_array($result)) {
+        if (! is_array($result)) {
             return $result;
         }
 
-        $fetchMode = $fetchMode !== null ? [$fetchMode, null] : $this->fetchMode;
+        $fetchMode = $fetchMode !== PDO::FETCH_DEFAULT ? [$fetchMode, null] : $this->fetchMode;
 
         next($this->rows);
 
@@ -208,41 +249,35 @@ class LitebaseStatement extends PDOStatement implements IteratorAggregate
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
+     *
+     * @return array<int, mixed>
      */
     public function fetchAll(int $mode = PDO::FETCH_DEFAULT, mixed ...$args): array
     {
-        if ($mode !== null) {
+        if ($mode !== PDO::FETCH_DEFAULT) {
             $this->setFetchMode($mode, $args['fetchArgument'] ?? 0, $args['ctorArgs'] ?? null);
         }
+        // dd($this);
+        // $result = iterator_to_array($this);
 
-        $result = iterator_to_array($this);
-
-        return $result;
+        return $this->rows;
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function fetchColumn($columnIndex = 0): mixed
     {
         $row = $this->fetch();
 
-        if (!is_array($row)) {
+        if (! is_array($row)) {
             return false;
         }
 
-        return array_search($columnIndex, array_keys($row)) ?? false;
-    }
+        $value = array_search($columnIndex, array_keys($row));
 
-    /**
-     * @return \Iterator
-     */
-    public function getIterator(): Iterator
-    {
-        while (($row = $this->fetch()) !== false) {
-            yield $row;
-        }
+        return $value !== false ? $row[$value] : null;
     }
 
     public function rowCount(): int
@@ -250,13 +285,14 @@ class LitebaseStatement extends PDOStatement implements IteratorAggregate
         return $this->rowCount;
     }
 
+
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
-    public function setFetchMode(int $mode, mixed ...$args): true
+    public function setFetchMode(int $mode, mixed ...$args)
     {
         $this->fetchMode = $mode;
-
+        // Optionally handle $args for fetchArgument, ctorArgs, etc.
         return true;
     }
 }

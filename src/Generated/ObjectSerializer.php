@@ -17,14 +17,6 @@ namespace Litebase\Generated;
 use GuzzleHttp\Psr7\Utils;
 use Litebase\Generated\Model\ModelInterface;
 
-/**
- * ObjectSerializer Class Doc Comment
- *
- * @category Class
- * @package  Litebase\Generated
- * @author   OpenAPI Generator team
- * @link     https://openapi-generator.tech
- */
 class ObjectSerializer
 {
     /** @var string */

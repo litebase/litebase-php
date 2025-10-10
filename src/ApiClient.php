@@ -27,13 +27,11 @@ use Litebase\Middleware\AuthMiddleware;
  */
 class ApiClient
 {
-    private Configuration $config;
-    private ?Client $httpClient = null;
-
-    public function __construct(Configuration $config)
-    {
-        $this->config = $config;
-    }
+    // Create a new instance of the API client.
+    public function __construct(
+        protected Configuration $config,
+        protected ?Client $httpClient = null,
+    ) {}
 
     /**
      * Get the underlying configuration
@@ -62,7 +60,7 @@ class ApiClient
                     ? sprintf('https://%s', $this->config->getHost())
                     : sprintf('http://%s:%s', $this->config->getHost(), $this->config->getPort()),
                 // 'http_errors' => false,
-                'timeout'  => 30,
+                'timeout' => 30,
                 'headers' => [
                     'Connection' => 'keep-alive',
                 ],

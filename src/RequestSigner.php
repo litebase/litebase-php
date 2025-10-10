@@ -4,6 +4,13 @@ namespace Litebase;
 
 class RequestSigner
 {
+    /**
+     * Sign a request and return the authorization token.
+     *
+     * @param array<string, string> $headers
+     * @param array<string, mixed> $data
+     * @param array<string, string> $queryParams
+     */
     public static function handle(
         string $accessKeyID,
         string $accessKeySecret,
@@ -24,7 +31,7 @@ class RequestSigner
         $queryParams = array_change_key_case($queryParams);
         ksort($queryParams);
 
-        $bodyHash = hash('sha256', (empty($data) ? "" : json_encode($data, JSON_UNESCAPED_SLASHES)));
+        $bodyHash = hash('sha256', (empty($data) ? '' : (json_encode($data, JSON_UNESCAPED_SLASHES) ?: '')));
 
         $requestString = implode('', [
             $method,

@@ -10,11 +10,14 @@ use Litebase\Generated\Configuration as BaseConfiguration;
 class Configuration extends BaseConfiguration
 {
     protected string $accessKeyId = '';
-    protected string $accessKeySecret = '';
-    protected $database = '';
-    protected $branch = '';
-    protected ?string $port = null;
 
+    protected string $accessKeySecret = '';
+
+    protected ?string $database = '';
+
+    protected ?string $branch = '';
+
+    protected ?string $port = null;
 
     /**
      * Get the access key ID
@@ -35,7 +38,7 @@ class Configuration extends BaseConfiguration
     /**
      * Get the database name
      */
-    public function getDatabase(): string
+    public function getDatabase(): ?string
     {
         return $this->database;
     }
@@ -43,7 +46,7 @@ class Configuration extends BaseConfiguration
     /**
      * Get the branch name
      */
-    public function getBranch(): string
+    public function getBranch(): ?string
     {
         return $this->branch;
     }
@@ -53,17 +56,16 @@ class Configuration extends BaseConfiguration
      */
     public function hasAccessKey(): bool
     {
-        return !empty($this->accessKeyId) && !empty($this->accessKeySecret);
+        return ! empty($this->accessKeyId) && ! empty($this->accessKeySecret);
     }
 
     /**
      * Get the port
      */
-    public function getPort(): string
+    public function getPort(): ?string
     {
         return $this->port;
     }
-
 
     /**
      * Set access key credentials for HMAC-SHA256 authentication
@@ -79,9 +81,11 @@ class Configuration extends BaseConfiguration
     /**
      * Set the database name (and optional branch) in the format "database/branch"
      */
-    public function setDatabase(string $database): self
+    public function setDatabase(?string $database): self
     {
-        [$this->database, $this->branch] = explode('/', $database);
+        if ($database) {
+            [$this->database, $this->branch] = explode('/', $database);
+        }
 
         return $this;
     }

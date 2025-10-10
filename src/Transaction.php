@@ -5,6 +5,6 @@ namespace Litebase;
 class Transaction
 {
     public function __construct(
-        readonly public string $id,
+        public readonly string $id,
     ) {}
 }

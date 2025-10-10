@@ -21,14 +21,6 @@ use Psr\Http\Message\StreamInterface;
 use SplFileObject;
 use Litebase\Generated\Model\ModelInterface;
 
-/**
- * FormDataProcessor Class Doc Comment
- *
- * @category Class
- * @package  Litebase\Generated
- * @author   OpenAPI Generator team
- * @link     https://openapi-generator.tech
- */
 class FormDataProcessor
 {
     /**

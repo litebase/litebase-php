@@ -16,14 +16,6 @@ namespace Litebase\Generated;
 
 use \Exception;
 
-/**
- * ApiException Class Doc Comment
- *
- * @category Class
- * @package  Litebase\Generated
- * @author   OpenAPI Generator team
- * @link     https://openapi-generator.tech
- */
 class ApiException extends Exception
 {
     /**

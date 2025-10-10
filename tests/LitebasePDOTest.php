@@ -1,132 +1,126 @@
 <?php
 
-namespace Litebase\Tests;
+uses(\Litebase\Tests\TestCase::class);
 
+use Litebase\ColumnType;
 use Litebase\LitebaseClient;
 use Litebase\LitebasePDO;
 use Litebase\LitebaseStatement;
-use Mockery;
+use Litebase\QueryResult;
 
-class LitebasePDOTest extends TestCase
+test('it can be created', function () {
+    expect(new LitebasePDO(['access_key_id' => 'key', 'access_key_secret' => 'secret', 'url' => 'http://litebase.test']))->toBeInstanceOf(LitebasePDO::class);
+});
+
+test('it can begin a transaction', function () {
+    $client = Mockery::mock(LitebaseClient::class);
+    $pdo = createPDO($client);
+    $client->shouldReceive('beginTransaction')->andReturn(true);
+    $result = $pdo->beginTransaction();
+    expect($result)->toBeTrue();
+});
+
+test('it can commit a transaction', function () {
+    $client = Mockery::mock(LitebaseClient::class);
+    $pdo = createPDO($client);
+    $client->shouldReceive('commit')->andReturn(true);
+    $result = $pdo->commit();
+    expect($result)->toBeTrue();
+});
+
+test('it can return an error code', function () {
+    $client = Mockery::mock(LitebaseClient::class);
+    $pdo = createPDO($client);
+    $client->shouldReceive('errorCode')->andReturn(500);
+    $result = $pdo->errorCode();
+    expect($result)->toEqual(500);
+});
+
+test('it can return error info', function () {
+    $client = Mockery::mock(LitebaseClient::class);
+    $pdo = createPDO($client);
+    $client->shouldReceive('errorInfo')->andReturn([0, 0, 'Server error']);
+    $result = $pdo->errorInfo();
+    expect($result)->toEqual([0, 0, 'Server error']);
+});
+
+test('it can execute a statment', function () {
+    $client = Mockery::mock(LitebaseClient::class);
+    $pdo = createPDO($client);
+
+    $client->shouldReceive('exec')->andReturn(new QueryResult(
+        changes: 0,
+        columns: [['type' => ColumnType::INTEGER, 'name' => 'id']],
+        id: '1',
+        lastInsertRowID: 0,
+        latency: 0.1,
+        rowsCount: 2,
+        rows: [[1], [2]],
+        transactionID: '',
+        errorMessage: null,
+    ));
+
+    $result = $pdo->exec('select * from users');
+
+    expect($result)->not->toBeFalse();
+});
+
+test('it can return its client', function () {
+    $client = Mockery::mock(LitebaseClient::class);
+    expect(createPDO($client)->getClient())->toBeInstanceOf(LitebaseClient::class);
+});
+
+test('it can return if it has error', function () {
+    $client = Mockery::mock(LitebaseClient::class);
+    $pdo = createPDO($client);
+    $client->shouldReceive('errorCode')->andReturn(null, 500);
+    expect($pdo->hasError())->toBeFalse();
+    expect($pdo->hasError())->toBeTrue();
+});
+
+test('it indicates if it has a transaction', function () {
+    $client = Mockery::mock(LitebaseClient::class);
+    $pdo = createPDO($client);
+    $client->shouldReceive('inTransaction')->andReturn(true);
+    expect($pdo->inTransaction())->toBeTrue();
+});
+
+test('it returns the last inserted id', function () {
+    $client = Mockery::mock(LitebaseClient::class);
+    $pdo = createPDO($client);
+    $client->shouldReceive('lastInsertId')->andReturn('1');
+    expect($pdo->lastInsertId())->toEqual('1');
+});
+
+test('it can prepre a statement', function () {
+    $query = 'select * from users';
+    $client = Mockery::mock(LitebaseClient::class);
+    $pdo = createPDO($client);
+    $client->shouldReceive('prepare')
+        ->andReturn(new LitebaseStatement($client, $query));
+
+    $statement = $pdo->prepare($query);
+    expect($statement)->not->toBeNull();
+    expect($statement)->toBeInstanceOf(LitebaseStatement::class);
+});
+
+test('it can roll back a transaction', function () {
+    $client = Mockery::mock(LitebaseClient::class);
+    $pdo = createPDO($client);
+    $client->shouldReceive('rollback')->andReturn(true);
+    $result = $pdo->rollBack();
+    expect($result)->toBeTrue();
+});
+
+test('the client can be set', function () {
+    $client = Mockery::mock(LitebaseClient::class);
+    $pdo = createPDO($client);
+    expect($pdo->getClient())->toBeInstanceOf(LitebaseClient::class);
+});
+
+function createPDO(LitebaseClient $client): LitebasePDO
 {
-    public function test_it_can_be_created()
-    {
-        $this->assertInstanceOf(
-            LitebasePDO::class,
-            new LitebasePDO(['access_key_id' => 'key', 'access_key_secret' => 'secret', 'url' => 'http://litebase.test'])
-        );
-    }
+    $pdo = new LitebasePDO(['access_key_id' => 'key', 'access_key_secret' => 'secret', 'url' => 'http://litebase.test']);
 
-    public function test_it_can_begin_a_transaction()
-    {
-        $pdo = $this->createPDO();
-        $this->client->shouldReceive('beginTransaction')->andReturn(true);
-        $result = $pdo->beginTransaction();
-        $this->assertTrue($result);
-    }
-
-    public function test_it_can_commit_a_transaction()
-    {
-        $pdo = $this->createPDO();
-        $this->client->shouldReceive('commit')->andReturn(true);
-        $result = $pdo->commit();
-        $this->assertTrue($result);
-    }
-
-    public function test_it_can_return_an_error_code()
-    {
-        $pdo = $this->createPDO();
-        $this->client->shouldReceive('errorCode')->andReturn(500);
-        $result = $pdo->errorCode();
-        $this->assertEquals(500, $result);
-    }
-
-    public function test_it_can_return_error_info()
-    {
-        $pdo = $this->createPDO();
-        $this->client->shouldReceive('errorInfo')->andReturn('Server error');
-        $result = $pdo->errorInfo();
-        $this->assertEquals('Server error', $result);
-    }
-
-    public function test_it_can_execute_a_statment()
-    {
-        $pdo = $this->createPDO();
-
-        $this->client->shouldReceive('exec')->andReturn([
-            'data' => [
-                ['id' => 1],
-                ['id' => 2],
-            ],
-        ]);
-
-        $result = $pdo->exec([
-            'statement' => '* from users'
-        ]);
-
-        $this->assertNotNull($result);
-        $this->assertCount(2, $result['data']);
-    }
-
-    public function test_it_can_return_its_client()
-    {
-        $this->assertInstanceOf(LitebaseClient::class, $this->createPDO()->getClient());
-    }
-
-    public function test_it_can_return_if_it_has_error()
-    {
-        $pdo = $this->createPDO();
-        $this->client->shouldReceive('errorCode')->andReturn(null, 500);
-        $this->assertFalse($pdo->hasError());
-        $this->assertTrue($pdo->hasError());
-    }
-
-    public function test_it_indicates_if_it_has_a_transaction()
-    {
-        $pdo = $this->createPDO();
-        $this->client->shouldReceive('inTransaction')->andReturn(true);
-        $this->assertTrue($pdo->inTransaction());
-    }
-
-    public function test_it_returns_the_last_inserted_id()
-    {
-        $pdo = $this->createPDO();
-        $this->client->shouldReceive('lastInsertId')->andReturn('1');
-        $this->assertEquals('1', $pdo->lastInsertId());
-    }
-
-    public function test_it_can_prepre_a_statement()
-    {
-        $query = 'select * from users';
-        $pdo = $this->createPDO();
-        $this->client->shouldReceive('prepare')
-            ->andReturn(new LitebaseStatement($this->client, $query));
-
-        $statement = $pdo->prepare($query);
-        $this->assertNotNull($statement);
-        $this->assertInstanceOf(LitebaseStatement::class, $statement);
-    }
-
-    public function test_it_can_roll_back_a_transaction()
-    {
-        $pdo = $this->createPDO();
-        $this->client->shouldReceive('rollback')->andReturn(true);
-        $result = $pdo->rollBack();
-        $this->assertTrue($result);
-    }
-
-    public function test_the_client_can_be_set()
-    {
-        $pdo = $this->createPDO();
-        $this->assertEquals($this->client, $pdo->getClient());
-    }
-
-    protected function createPDO()
-    {
-        $this->client = Mockery::mock(LitebaseClient::class);
-
-        $pdo = new LitebasePDO(['access_key_id' => 'key', 'access_key_secret' => 'secret', 'url' => 'http://litebase.test']);
-
-        return $pdo->setClient($this->client);
-    }
+    return $pdo->setClient($client);
 }

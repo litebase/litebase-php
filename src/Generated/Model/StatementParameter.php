@@ -5,7 +5,7 @@ namespace Litebase\Generated\Model;
 use \ArrayAccess;
 use \Litebase\Generated\ObjectSerializer;
 
-class QueryInput implements ModelInterface, ArrayAccess, \JsonSerializable
+class StatementParameter implements ModelInterface, ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
@@ -14,7 +14,7 @@ class QueryInput implements ModelInterface, ArrayAccess, \JsonSerializable
       *
       * @var string
       */
-    protected static $openAPIModelName = 'QueryInput';
+    protected static $openAPIModelName = 'StatementParameter';
 
     /**
       * Array of property to type mappings. Used for (de)serialization
@@ -22,10 +22,9 @@ class QueryInput implements ModelInterface, ArrayAccess, \JsonSerializable
       * @var string[]
       */
     protected static $openAPITypes = [
-        'id' => 'string',
-        'parameters' => '\Litebase\Generated\Model\StatementParameter[]',
-        'statement' => 'string',
-        'transaction_id' => 'string'
+        'name' => 'string',
+        'type' => 'string',
+        'value' => '\Litebase\Generated\Model\Any'
     ];
 
     /**
@@ -36,10 +35,9 @@ class QueryInput implements ModelInterface, ArrayAccess, \JsonSerializable
       * @psalm-var array<string, string|null>
       */
     protected static $openAPIFormats = [
-        'id' => null,
-        'parameters' => null,
-        'statement' => null,
-        'transaction_id' => null
+        'name' => null,
+        'type' => null,
+        'value' => null
     ];
 
     /**
@@ -48,10 +46,9 @@ class QueryInput implements ModelInterface, ArrayAccess, \JsonSerializable
       * @var boolean[]
       */
     protected static array $openAPINullables = [
-        'id' => false,
-        'parameters' => false,
-        'statement' => false,
-        'transaction_id' => false
+        'name' => false,
+        'type' => false,
+        'value' => true
     ];
 
     /**
@@ -140,10 +137,9 @@ class QueryInput implements ModelInterface, ArrayAccess, \JsonSerializable
      * @var string[]
      */
     protected static $attributeMap = [
-        'id' => 'id',
-        'parameters' => 'parameters',
-        'statement' => 'statement',
-        'transaction_id' => 'transaction_id'
+        'name' => 'name',
+        'type' => 'type',
+        'value' => 'value'
     ];
 
     /**
@@ -152,10 +148,9 @@ class QueryInput implements ModelInterface, ArrayAccess, \JsonSerializable
      * @var string[]
      */
     protected static $setters = [
-        'id' => 'setId',
-        'parameters' => 'setParameters',
-        'statement' => 'setStatement',
-        'transaction_id' => 'setTransactionId'
+        'name' => 'setName',
+        'type' => 'setType',
+        'value' => 'setValue'
     ];
 
     /**
@@ -164,10 +159,9 @@ class QueryInput implements ModelInterface, ArrayAccess, \JsonSerializable
      * @var string[]
      */
     protected static $getters = [
-        'id' => 'getId',
-        'parameters' => 'getParameters',
-        'statement' => 'getStatement',
-        'transaction_id' => 'getTransactionId'
+        'name' => 'getName',
+        'type' => 'getType',
+        'value' => 'getValue'
     ];
 
     /**
@@ -211,6 +205,27 @@ class QueryInput implements ModelInterface, ArrayAccess, \JsonSerializable
         return self::$openAPIModelName;
     }
 
+    public const TYPE_TEXT = 'TEXT';
+    public const TYPE_INTEGER = 'INTEGER';
+    public const TYPE_FLOAT = 'FLOAT';
+    public const TYPE_BLOB = 'BLOB';
+    public const TYPE_NULL = 'NULL';
+
+    /**
+     * Gets allowable values of the enum
+     *
+     * @return string[]
+     */
+    public function getTypeAllowableValues()
+    {
+        return [
+            self::TYPE_TEXT,
+            self::TYPE_INTEGER,
+            self::TYPE_FLOAT,
+            self::TYPE_BLOB,
+            self::TYPE_NULL,
+        ];
+    }
 
     /**
      * Associative array for storing property values
@@ -227,10 +242,9 @@ class QueryInput implements ModelInterface, ArrayAccess, \JsonSerializable
      */
     public function __construct(?array $data = null)
     {
-        $this->setIfExists('id', $data ?? [], null);
-        $this->setIfExists('parameters', $data ?? [], null);
-        $this->setIfExists('statement', $data ?? [], null);
-        $this->setIfExists('transaction_id', $data ?? [], null);
+        $this->setIfExists('name', $data ?? [], null);
+        $this->setIfExists('type', $data ?? [], null);
+        $this->setIfExists('value', $data ?? [], null);
     }
 
     /**
@@ -260,18 +274,18 @@ class QueryInput implements ModelInterface, ArrayAccess, \JsonSerializable
     {
         $invalidProperties = [];
 
-        if ($this->container['id'] === null) {
-            $invalidProperties[] = "'id' can't be null";
+        if ($this->container['type'] === null) {
+            $invalidProperties[] = "'type' can't be null";
         }
-        if ($this->container['parameters'] === null) {
-            $invalidProperties[] = "'parameters' can't be null";
+        $allowedValues = $this->getTypeAllowableValues();
+        if (!is_null($this->container['type']) && !in_array($this->container['type'], $allowedValues, true)) {
+            $invalidProperties[] = sprintf(
+                "invalid value '%s' for 'type', must be one of '%s'",
+                $this->container['type'],
+                implode("', '", $allowedValues)
+            );
         }
-        if ($this->container['statement'] === null) {
-            $invalidProperties[] = "'statement' can't be null";
-        }
-        if ($this->container['transaction_id'] === null) {
-            $invalidProperties[] = "'transaction_id' can't be null";
-        }
+
         return $invalidProperties;
     }
 
@@ -288,109 +302,99 @@ class QueryInput implements ModelInterface, ArrayAccess, \JsonSerializable
 
 
     /**
-     * Gets id
+     * Gets name
      *
-     * @return string
+     * @return string|null
      */
-    public function getId()
+    public function getName()
     {
-        return $this->container['id'];
+        return $this->container['name'];
     }
 
     /**
-     * Sets id
+     * Sets name
      *
-     * @param string $id id
+     * @param string|null $name name
      *
      * @return self
      */
-    public function setId($id)
+    public function setName($name)
     {
-        if (is_null($id)) {
-            throw new \InvalidArgumentException('non-nullable id cannot be null');
+        if (is_null($name)) {
+            throw new \InvalidArgumentException('non-nullable name cannot be null');
         }
-        $this->container['id'] = $id;
+        $this->container['name'] = $name;
 
         return $this;
     }
 
     /**
-     * Gets parameters
+     * Gets type
      *
-     * @return \Litebase\Generated\Model\StatementParameter[]
+     * @return string
      */
-    public function getParameters()
+    public function getType()
     {
-        return $this->container['parameters'];
+        return $this->container['type'];
     }
 
     /**
-     * Sets parameters
+     * Sets type
      *
-     * @param \Litebase\Generated\Model\StatementParameter[] $parameters parameters
+     * @param string $type type
      *
      * @return self
      */
-    public function setParameters($parameters)
+    public function setType($type)
     {
-        if (is_null($parameters)) {
-            throw new \InvalidArgumentException('non-nullable parameters cannot be null');
+        if (is_null($type)) {
+            throw new \InvalidArgumentException('non-nullable type cannot be null');
         }
-        $this->container['parameters'] = $parameters;
+        $allowedValues = $this->getTypeAllowableValues();
+        if (!in_array($type, $allowedValues, true)) {
+            throw new \InvalidArgumentException(
+                sprintf(
+                    "Invalid value '%s' for 'type', must be one of '%s'",
+                    $type,
+                    implode("', '", $allowedValues)
+                )
+            );
+        }
+        $this->container['type'] = $type;
 
         return $this;
     }
 
     /**
-     * Gets statement
+     * Gets value
      *
-     * @return string
+     * @return \Litebase\Generated\Model\Any|null
      */
-    public function getStatement()
+    public function getValue()
     {
-        return $this->container['statement'];
+        return $this->container['value'];
     }
 
     /**
-     * Sets statement
+     * Sets value
      *
-     * @param string $statement statement
+     * @param \Litebase\Generated\Model\Any|null $value value
      *
      * @return self
      */
-    public function setStatement($statement)
+    public function setValue($value)
     {
-        if (is_null($statement)) {
-            throw new \InvalidArgumentException('non-nullable statement cannot be null');
+        if (is_null($value)) {
+            array_push($this->openAPINullablesSetToNull, 'value');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('value', $nullablesSetToNull);
+            if ($index !== FALSE) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
         }
-        $this->container['statement'] = $statement;
-
-        return $this;
-    }
-
-    /**
-     * Gets transaction_id
-     *
-     * @return string
-     */
-    public function getTransactionId()
-    {
-        return $this->container['transaction_id'];
-    }
-
-    /**
-     * Sets transaction_id
-     *
-     * @param string $transaction_id transaction_id
-     *
-     * @return self
-     */
-    public function setTransactionId($transaction_id)
-    {
-        if (is_null($transaction_id)) {
-            throw new \InvalidArgumentException('non-nullable transaction_id cannot be null');
-        }
-        $this->container['transaction_id'] = $transaction_id;
+        $this->container['value'] = $value;
 
         return $this;
     }

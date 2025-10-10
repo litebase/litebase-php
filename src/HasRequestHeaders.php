@@ -4,10 +4,14 @@ namespace Litebase;
 
 trait HasRequestHeaders
 {
-    protected function requestHeaders(string $host, ?string $port, int $contentLength, ?array $headers = []): array
+    /**
+     * @param array<string, string> $headers
+     * @return array<string, string>
+     */
+    protected function requestHeaders(string $host, ?string $port, int $contentLength, array $headers = []): array
     {
         // Include port if non standard port is used
-        if ($port !== null && !in_array($port, [80, 443])) {
+        if ($port !== null && ! in_array($port, [80, 443])) {
             $host = sprintf('%s:%d', $host, $port);
         } else {
             $host = $host;
@@ -15,7 +19,7 @@ trait HasRequestHeaders
 
         return [
             'Content-Type' => 'application/json',
-            'Content-Length' =>  $contentLength,
+            'Content-Length' => (string) $contentLength,
             'Host' => $host,
             'X-Litebase-Date' => date('U'),
             ...$headers,

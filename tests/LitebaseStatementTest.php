@@ -1,133 +1,150 @@
 <?php
 
-namespace Litebase\Tests;
+uses(\Litebase\Tests\TestCase::class);
 
-use PDO;
+use Litebase\ColumnType;
+use Mockery\MockInterface;
 use Litebase\LitebaseClient;
 use Litebase\LitebaseStatement;
-use Mockery;
+use Litebase\QueryResult;
 
-class LitebaseStatementTest extends TestCase
+test('it can be created', function () {
+    $client = Mockery::mock(LitebaseClient::class);
+    $statement = createStatement($client);
+
+    expect($statement)->toBeInstanceOf(LitebaseStatement::class);
+});
+
+test('it can bind a param', function () {
+    $client = Mockery::mock(LitebaseClient::class);
+    $statement = createStatement($client);
+    $sessionId = '1';
+    $statement->bindParam(':id', $sessionId);
+
+    ob_start();
+    $statement->debugDumpParams();
+    $debug = ob_get_clean();
+
+    $this->assertStringContainsString(':id', $debug ?: '');
+    $this->assertStringContainsString('1', $debug ?: '');
+});
+
+test('it can bind values without keys', function () {
+    $client = Mockery::mock(LitebaseClient::class);
+    $statement = createStatement($client);
+
+    expect($statement->bindValue(1, '?'))->toBeTrue();
+    expect($statement->bindValue(2, '?'))->toBeTrue();
+    expect($statement->bindValue(3, '?'))->toBeTrue();
+
+    ob_start();
+    $statement->debugDumpParams();
+    $debug = ob_get_clean();
+
+    $this->assertStringContainsString('1', $debug ?: '');
+    $this->assertStringContainsString('2', $debug ?: '');
+    $this->assertStringContainsString('3', $debug ?: '');
+});
+
+test('it can bind values with keys', function () {
+    $client = Mockery::mock(LitebaseClient::class);
+    $statement = createStatement($client);
+
+    expect($statement->bindValue(':id', '1', PDO::PARAM_INT))->toBeTrue();
+    expect($statement->bindValue(':name', 'John'))->toBeTrue();
+
+    ob_start();
+    $statement->debugDumpParams();
+    $debug = ob_get_clean();
+
+    $this->assertStringContainsString(':id', $debug ?: '');
+    $this->assertStringContainsString('1', $debug ?: '');
+    $this->assertStringContainsString(':name', $debug ?: '');
+    $this->assertStringContainsString('John', $debug ?: '');
+});
+
+test('it can return a column count', function () {
+    $client = Mockery::mock(LitebaseClient::class);
+    $statement = createStatement($client);
+
+    $client->shouldReceive('errorInfo')->andReturn([]);
+    $client->shouldReceive('exec')->andReturn(new QueryResult(
+        changes: 0,
+        columns: [['name' => 'id', 'type' => ColumnType::INTEGER], ['name' => 'name', 'type' => ColumnType::TEXT]],
+        id: '1',
+        lastInsertRowID: 0,
+        latency: 0.1,
+        rowsCount: 2,
+        rows: [
+            ['1', 'John'],
+            ['2', 'Jane'],
+        ],
+        transactionID: '',
+        errorMessage: null,
+    ));
+
+    $statement->execute();
+    expect($statement->columnCount())->toEqual(2);
+});
+
+test('it can return debug params', function () {
+    $client = Mockery::mock(LitebaseClient::class);
+    $statement = createStatement($client);
+
+    ob_start();
+    $statement->debugDumpParams();
+    $debug = ob_get_clean();
+    $this->assertStringContainsString('SELECT * FROM users', $debug ?: '');
+});
+
+test('it should return an error code', function () {
+    $client = Mockery::mock(LitebaseClient::class);
+    $statement = createStatement($client);
+
+    $client->shouldReceive('errorCode')->andReturn(500);
+    expect($statement->errorCode())->toEqual(500);
+});
+
+test('it should return error info', function () {
+    $client = Mockery::mock(LitebaseClient::class);
+    $statement = createStatement($client);
+
+    $client->shouldReceive('errorInfo')->andReturn([0, 0, 'Server error']);
+    expect($statement->errorInfo()[2])->toEqual('Server error');
+});
+
+test('it can return the row count', function () {
+    $client = Mockery::mock(LitebaseClient::class);
+    $statement = createStatement($client);
+
+    $client->shouldReceive('errorInfo')->andReturn([]);
+    $client->shouldReceive('exec')->andReturn(new QueryResult(
+        changes: 0,
+        columns: [['type' => ColumnType::INTEGER, 'name' => 'id'], ['type' => ColumnType::TEXT, 'name' => 'name']],
+        id: '1',
+        lastInsertRowID: 0,
+        latency: 0.1,
+        rowsCount: 2,
+        rows: [
+            ['1', 'John'],
+            ['2', 'Jane'],
+        ],
+        transactionID: '',
+    ));
+
+    $statement->execute();
+    expect($statement->rowCount())->toEqual(2);
+});
+
+test('it can set the fetch mode', function () {
+    $client = Mockery::mock(LitebaseClient::class);
+    $statement = createStatement($client);
+    expect($statement->setFetchMode(PDO::FETCH_COLUMN))->toBeTrue();
+});
+
+function createStatement(LitebaseClient $client): LitebaseStatement
 {
-    public function test_it_can_be_created()
-    {
-        $statement = $this->createStatement();
+    $query = 'SELECT * FROM users';
 
-        $this->assertInstanceOf(LitebaseStatement::class, $statement);
-    }
-
-    public function test_it_can_bind_a_param()
-    {
-        $statement = $this->createStatement();
-        $sessionId = '1';
-        $statement->bindParam(':id', $sessionId);
-        $this->assertEquals($statement->getBoundParams()[':id'], $sessionId);
-    }
-
-    public function test_it_can_bind_values_without_keys()
-    {
-        $statement = $this->createStatement();
-        $this->assertTrue($statement->bindValue(1, '?'));
-        $this->assertTrue($statement->bindValue(2, '?'));
-        $this->assertTrue($statement->bindValue(3, '?'));
-        $this->assertCount(3, $statement->getBoundParams());
-        $this->assertEquals($statement->getBoundParams()[0], '?');
-        $this->assertEquals($statement->getBoundParams()[1], '?');
-        $this->assertEquals($statement->getBoundParams()[2], '?');
-    }
-
-    public function test_it_can_bind_values_with_keys()
-    {
-        $statement = $this->createStatement();
-        $this->assertTrue($statement->bindValue(':id', '1', PDO::PARAM_INT));
-        $this->assertTrue($statement->bindValue(':name', 'John'));
-        $this->assertCount(2, $statement->getBoundParams());
-        $this->assertEquals($statement->getBoundParams()[':id'], '1');
-        $this->assertEquals($statement->getBoundParams()[':name'], 'John');
-    }
-
-    public function test_it_can_return_a_column_count()
-    {
-        $statement = $this->createStatement();
-        $this->client->shouldReceive('errorInfo')->andReturn(null);
-        $this->client->shouldReceive('exec')->andReturn([
-            'data' => [
-                'rows' => [
-                    [
-                        'id' => '1',
-                        'name' => 'John',
-                    ],
-                    [
-                        'id' => '2',
-                        'name' => 'Jane',
-                    ],
-                ],
-            ],
-        ]);
-
-        $statement->execute();
-        $this->assertEquals(2, $statement->columnCount());
-    }
-
-    public function test_it_can_return_debug_params()
-    {
-        $statement = $this->createStatement();
-        ob_start();
-        $statement->debugDumpParams();
-        $debug = ob_get_clean();
-        $this->assertStringContainsString('SELECT * FROM users', $debug);
-    }
-
-    public function test_it_should_return_an_error_code()
-    {
-        $statement = $this->createStatement();
-        $this->client->shouldReceive('errorCode')->andReturn(500);
-        $this->assertEquals(500, $statement->errorCode());
-    }
-
-    public function test_it_should_return_error_info()
-    {
-        $statement = $this->createStatement();
-        $this->client->shouldReceive('errorInfo')->andReturn('Server error');
-        $this->assertEquals('Server error', $statement->errorInfo());
-    }
-
-    public function test_it_can_return_the_row_count()
-    {
-        $statement = $this->createStatement();
-        $this->client->shouldReceive('errorInfo')->andReturn(null);
-        $this->client->shouldReceive('exec')->andReturn([
-            'status' => 'success',
-            'data' => [
-                'rows' => [
-                    [
-                        'id' => '1',
-                        'name' => 'John',
-                    ],
-                    [
-                        'id' => '2',
-                        'name' => 'Jane',
-                    ],
-                ],
-                'rowCount' => 2,
-            ],
-        ]);
-
-        $statement->execute();
-        $this->assertEquals(2, $statement->rowCount());
-    }
-
-    public function test_it_can_set_the_fetch_mode()
-    {
-        $statement = $this->createStatement();
-        $this->assertTrue($statement->setFetchMode(PDO::FETCH_COLUMN));
-    }
-
-    protected function createStatement()
-    {
-        /**  @var LitebaseClient */
-        $this->client = Mockery::mock(LitebaseClient::class);
-        $query = 'SELECT * FROM users';
-        return new LitebaseStatement($this->client, $query);
-    }
+    return new LitebaseStatement($client, $query);
 }

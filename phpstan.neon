@@ -1,0 +1,18 @@
+parameters:
+    level: 9
+    excludePaths:
+        - src/Generated/*
+    paths:
+        - src
+        - tests
+    ignoreErrors:
+        -
+            message: '#^Call to an undefined method Mockery\\(.*)$#'
+            paths:
+                - tests/*
+        -
+            message: '#expects (.*), Mockery\\MockInterface given.$#'
+            paths:
+                - tests/*
+
+    tmpDir: /tmp/phpstan

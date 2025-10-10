@@ -3,7 +3,6 @@
 namespace Litebase;
 
 use Exception;
-use Litebase\Exceptions\LitebaseConnectionClosedException;
 use Litebase\Exceptions\LitebaseConnectionException;
 
 class HttpStreamingTransport implements TransportInterface
@@ -28,7 +27,7 @@ class HttpStreamingTransport implements TransportInterface
             $this->config->getBranch()
         );
 
-        if (!isset($this->connection) || !$this->connection->isOpen()) {
+        if (! isset($this->connection) || ! $this->connection->isOpen()) {
             $headers = $this->requestHeaders(
                 host: $this->config->getHost(),
                 port: $this->config->getPort(),
@@ -42,15 +41,15 @@ class HttpStreamingTransport implements TransportInterface
                 ? sprintf('https://%s/%s', $this->config->getHost(), $path)
                 : sprintf('http://%s:%d/%s', $this->config->getHost(), $this->config->getPort(), $path);
 
-            if (!empty($this->config->getUsername()) || !(empty($this->config->getPassword()))) {
-                $headers['Authorization'] = 'Basic ' . base64_encode($this->config->getUsername() . ":" . $this->config->getPassword());
+            if (! empty($this->config->getUsername()) || ! (empty($this->config->getPassword()))) {
+                $headers['Authorization'] = 'Basic ' . base64_encode($this->config->getUsername() . ':' . $this->config->getPassword());
             }
 
-            if (!empty($this->config->getAccessToken())) {
+            if (! empty($this->config->getAccessToken())) {
                 $headers['Authorization'] = 'Bearer ' . $this->config->getAccessToken();
             }
 
-            if (!empty($this->config->getAccessKeyId())) {
+            if (! empty($this->config->getAccessKeyId())) {
                 $token = $this->getToken(
                     accessKeyID: $this->config->getAccessKeyId(),
                     accessKeySecret: $this->config->getAccessKeySecret(),
@@ -66,8 +65,6 @@ class HttpStreamingTransport implements TransportInterface
             $this->connection = new Connection($url, $headers);
         }
 
-        $result = null;
-
         try {
             $result = $this->connection->send($query);
         } catch (Exception $e) {
@@ -75,41 +72,26 @@ class HttpStreamingTransport implements TransportInterface
                 code: $e->getCode(),
                 message: $e->getMessage(),
             );
-
-            return null;
         }
 
-        if ($result === null) {
-            $this->connection->close();
+        // if ($result === null) {
+        //     $this->connection->close();
 
-            throw new LitebaseConnectionClosedException(
-                code: 0,
-                message: 'Connection closed',
-            );
-        }
+        //     throw new LitebaseConnectionClosedException(
+        //         code: 0,
+        //         message: 'Connection closed',
+        //     );
+        // }
 
-        if (($result['status'] ?? null) === 'error') {
+        if (($result->errorMessage ?? null) === 'error') {
             $this->connection->close();
 
             throw new LitebaseConnectionException(
-                code: $result['error_code'] ?? 0,
-                message: $result['message'] ?? 'Unknown error',
+                code: $result->errorCode ?? 0,
+                message: $result->errorMessage ?? 'Unknown error',
             );
         }
 
-        if (empty($result['data'])) {
-            return null;
-        }
-
-        return new QueryResult(
-            changes: $result['data']['changes'] ?? 0,
-            columns: $result['data']['columns'] ?? [],
-            id: $result['data']['id'] ?? '',
-            lastInsertRowID: $result['data']['last_insert_row_id'] ?? null,
-            latency: $result['data']['latency'] ?? 0.0,
-            rowsCount: $result['data']['row_count'] ?? 0,
-            rows: $result['data']['rows'] ?? [],
-            transactionID: $result['data']['transaction_id'] ?? null,
-        );
+        return $result;
     }
 }

@@ -5,7 +5,7 @@ namespace Litebase\Generated\Model;
 use \ArrayAccess;
 use \Litebase\Generated\ObjectSerializer;
 
-class QueryInput implements ModelInterface, ArrayAccess, \JsonSerializable
+class Any implements ModelInterface, ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
@@ -14,7 +14,7 @@ class QueryInput implements ModelInterface, ArrayAccess, \JsonSerializable
       *
       * @var string
       */
-    protected static $openAPIModelName = 'QueryInput';
+    protected static $openAPIModelName = 'any';
 
     /**
       * Array of property to type mappings. Used for (de)serialization
@@ -22,10 +22,7 @@ class QueryInput implements ModelInterface, ArrayAccess, \JsonSerializable
       * @var string[]
       */
     protected static $openAPITypes = [
-        'id' => 'string',
-        'parameters' => '\Litebase\Generated\Model\StatementParameter[]',
-        'statement' => 'string',
-        'transaction_id' => 'string'
+        
     ];
 
     /**
@@ -36,10 +33,7 @@ class QueryInput implements ModelInterface, ArrayAccess, \JsonSerializable
       * @psalm-var array<string, string|null>
       */
     protected static $openAPIFormats = [
-        'id' => null,
-        'parameters' => null,
-        'statement' => null,
-        'transaction_id' => null
+        
     ];
 
     /**
@@ -48,10 +42,7 @@ class QueryInput implements ModelInterface, ArrayAccess, \JsonSerializable
       * @var boolean[]
       */
     protected static array $openAPINullables = [
-        'id' => false,
-        'parameters' => false,
-        'statement' => false,
-        'transaction_id' => false
+        
     ];
 
     /**
@@ -140,10 +131,7 @@ class QueryInput implements ModelInterface, ArrayAccess, \JsonSerializable
      * @var string[]
      */
     protected static $attributeMap = [
-        'id' => 'id',
-        'parameters' => 'parameters',
-        'statement' => 'statement',
-        'transaction_id' => 'transaction_id'
+        
     ];
 
     /**
@@ -152,10 +140,7 @@ class QueryInput implements ModelInterface, ArrayAccess, \JsonSerializable
      * @var string[]
      */
     protected static $setters = [
-        'id' => 'setId',
-        'parameters' => 'setParameters',
-        'statement' => 'setStatement',
-        'transaction_id' => 'setTransactionId'
+        
     ];
 
     /**
@@ -164,10 +149,7 @@ class QueryInput implements ModelInterface, ArrayAccess, \JsonSerializable
      * @var string[]
      */
     protected static $getters = [
-        'id' => 'getId',
-        'parameters' => 'getParameters',
-        'statement' => 'getStatement',
-        'transaction_id' => 'getTransactionId'
+        
     ];
 
     /**
@@ -227,10 +209,6 @@ class QueryInput implements ModelInterface, ArrayAccess, \JsonSerializable
      */
     public function __construct(?array $data = null)
     {
-        $this->setIfExists('id', $data ?? [], null);
-        $this->setIfExists('parameters', $data ?? [], null);
-        $this->setIfExists('statement', $data ?? [], null);
-        $this->setIfExists('transaction_id', $data ?? [], null);
     }
 
     /**
@@ -260,18 +238,6 @@ class QueryInput implements ModelInterface, ArrayAccess, \JsonSerializable
     {
         $invalidProperties = [];
 
-        if ($this->container['id'] === null) {
-            $invalidProperties[] = "'id' can't be null";
-        }
-        if ($this->container['parameters'] === null) {
-            $invalidProperties[] = "'parameters' can't be null";
-        }
-        if ($this->container['statement'] === null) {
-            $invalidProperties[] = "'statement' can't be null";
-        }
-        if ($this->container['transaction_id'] === null) {
-            $invalidProperties[] = "'transaction_id' can't be null";
-        }
         return $invalidProperties;
     }
 
@@ -286,114 +252,6 @@ class QueryInput implements ModelInterface, ArrayAccess, \JsonSerializable
         return count($this->listInvalidProperties()) === 0;
     }
 
-
-    /**
-     * Gets id
-     *
-     * @return string
-     */
-    public function getId()
-    {
-        return $this->container['id'];
-    }
-
-    /**
-     * Sets id
-     *
-     * @param string $id id
-     *
-     * @return self
-     */
-    public function setId($id)
-    {
-        if (is_null($id)) {
-            throw new \InvalidArgumentException('non-nullable id cannot be null');
-        }
-        $this->container['id'] = $id;
-
-        return $this;
-    }
-
-    /**
-     * Gets parameters
-     *
-     * @return \Litebase\Generated\Model\StatementParameter[]
-     */
-    public function getParameters()
-    {
-        return $this->container['parameters'];
-    }
-
-    /**
-     * Sets parameters
-     *
-     * @param \Litebase\Generated\Model\StatementParameter[] $parameters parameters
-     *
-     * @return self
-     */
-    public function setParameters($parameters)
-    {
-        if (is_null($parameters)) {
-            throw new \InvalidArgumentException('non-nullable parameters cannot be null');
-        }
-        $this->container['parameters'] = $parameters;
-
-        return $this;
-    }
-
-    /**
-     * Gets statement
-     *
-     * @return string
-     */
-    public function getStatement()
-    {
-        return $this->container['statement'];
-    }
-
-    /**
-     * Sets statement
-     *
-     * @param string $statement statement
-     *
-     * @return self
-     */
-    public function setStatement($statement)
-    {
-        if (is_null($statement)) {
-            throw new \InvalidArgumentException('non-nullable statement cannot be null');
-        }
-        $this->container['statement'] = $statement;
-
-        return $this;
-    }
-
-    /**
-     * Gets transaction_id
-     *
-     * @return string
-     */
-    public function getTransactionId()
-    {
-        return $this->container['transaction_id'];
-    }
-
-    /**
-     * Sets transaction_id
-     *
-     * @param string $transaction_id transaction_id
-     *
-     * @return self
-     */
-    public function setTransactionId($transaction_id)
-    {
-        if (is_null($transaction_id)) {
-            throw new \InvalidArgumentException('non-nullable transaction_id cannot be null');
-        }
-        $this->container['transaction_id'] = $transaction_id;
-
-        return $this;
-    }
     /**
      * Returns true if offset exists. False otherwise.
      *

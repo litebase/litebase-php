@@ -23,12 +23,12 @@ class CreateQuery200ResponseDataInner implements ModelInterface, ArrayAccess, \J
       */
     protected static $openAPITypes = [
         'changes' => 'int',
-        'columns' => 'string[]',
+        'columns' => '\Litebase\Generated\Model\ColumnDefinition[]',
         'id' => 'string',
         'last_insert_row_id' => 'int',
         'latency' => 'float',
         'row_count' => 'int',
-        'rows' => 'object[]',
+        'rows' => 'mixed[]',
         'transaction_id' => 'string'
     ];
 
@@ -333,7 +333,7 @@ class CreateQuery200ResponseDataInner implements ModelInterface, ArrayAccess, \J
     /**
      * Gets columns
      *
-     * @return string[]|null
+     * @return \Litebase\Generated\Model\ColumnDefinition[]|null
      */
     public function getColumns()
     {
@@ -343,7 +343,7 @@ class CreateQuery200ResponseDataInner implements ModelInterface, ArrayAccess, \J
     /**
      * Sets columns
      *
-     * @param string[]|null $columns columns
+     * @param \Litebase\Generated\Model\ColumnDefinition[]|null $columns columns
      *
      * @return self
      */
@@ -468,7 +468,7 @@ class CreateQuery200ResponseDataInner implements ModelInterface, ArrayAccess, \J
     /**
      * Gets rows
      *
-     * @return object[]|null
+     * @return mixed[]|null
      */
     public function getRows()
     {
@@ -478,7 +478,7 @@ class CreateQuery200ResponseDataInner implements ModelInterface, ArrayAccess, \J
     /**
      * Sets rows
      *
-     * @param object[]|null $rows rows
+     * @param mixed[]|null $rows rows
      *
      * @return self
      */

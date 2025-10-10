@@ -6,6 +6,10 @@ trait SignsRequests
 {
     /**
      * Get an authorization token for a request.
+     *
+     * @param array<string, string> $headers
+     * @param array<mixed, mixed> $data
+     * @param array<string, string> $queryParams
      */
     public function getToken(
         string $accessKeyID,
@@ -16,7 +20,7 @@ trait SignsRequests
         array $headers,
         ?array $data,
         array $queryParams = [],
-    ) {
+    ): string {
         return RequestSigner::handle(
             accessKeyID: $accessKeyID,
             accessKeySecret: $accessKeySecret,

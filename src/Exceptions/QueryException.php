@@ -10,9 +10,9 @@ class QueryException extends Exception
     /**
      * The parameters of the query.
      *
-     * @var array
+     * @var array<int|string, mixed>
      */
-    protected $parameters;
+    protected array $parameters;
 
     /**
      * The statement of the query.
@@ -23,6 +23,8 @@ class QueryException extends Exception
 
     /**
      * Create a new QueryException instance.
+     *
+     * @param array<int|string, mixed> $parameters
      */
     public function __construct(string $message, string $statement, array $parameters, ?Throwable $previous = null)
     {

@@ -4,53 +4,83 @@ namespace Litebase;
 
 use Exception;
 use Fiber;
-use Litebase\QueryResponseDecoder;
 use Throwable;
 
 class Connection
 {
+    /** @var array<int, string> */
     protected $headers = [
         'Content-Type: application/octet-stream',
         'Transfer-Encoding: chunked',
         'Connection: close',
     ];
 
-    protected string $host;
+    protected ?string $host;
+
     protected string $buffer = '';
+
+    /** @var array<int, string> */
     protected array $messages = [];
-    protected $open = false;
+
+    protected bool $open = false;
+
     protected string $path;
+
     protected int $port;
+
     protected QueryRequestEncoder $queryRequestEncoder;
+
+    /** @var \Fiber<never, void, \Throwable|null, \Throwable|null>|null */
     protected ?Fiber $reader;
+
+    /** @var array<int, array<string, mixed>> */
     protected array $responses = [];
-    protected mixed $socket;
+
+    /** @var resource|false */
+    protected $socket;
+
+    /** @var \Fiber<never, void, \Throwable|null, \Throwable|null>|null */
     protected ?Fiber $writer;
 
     /**
      * Create a new connection instance.
+     *
+     * @param array<string, int|string> $requestHeaders
      */
-    public function __construct(public $url, public $requestHeaders = [])
+    public function __construct(public string $url, public array $requestHeaders = [])
     {
-        $this->host = parse_url($url, PHP_URL_HOST);
+        $host = parse_url($url, PHP_URL_HOST);
+
+        if ($host === false || $host === null) {
+            throw new Exception('[Litebase Client Error]: Invalid URL provided');
+        }
+        $this->host = $host;
+
         $this->port = parse_url($url, PHP_URL_PORT) ?: 80;
-        $this->path = parse_url($url, PHP_URL_PATH);
+
+        $path = parse_url($url, PHP_URL_PATH);
+
+        if ($path === false || $path === null) {
+            throw new Exception('[Litebase Client Error]: Invalid URL provided');
+        }
+
+        $this->path = $path;
 
         foreach ($requestHeaders as $key => $value) {
             $this->headers[] = "$key: $value";
         }
 
-        $this->queryRequestEncoder = new QueryRequestEncoder();
+        $this->queryRequestEncoder = new QueryRequestEncoder;
     }
 
     /**
      * Close the connection.
      */
-    public function close()
+    public function close(): void
     {
         $this->open = false;
 
-        if (is_resource($this->socket) && !feof($this->socket)) {
+        if (is_resource($this->socket) && ! feof($this->socket)) {
             fwrite($this->socket, "0\r\n\r\n");
         }
 
@@ -58,7 +88,7 @@ class Connection
             fclose($this->socket);
         }
 
-        $this->socket = null;
+        $this->socket = false;
         $this->messages = [];
         $this->responses = [];
         $this->reader = null;
@@ -68,16 +98,16 @@ class Connection
     /**
      * Create the reader and writer fibers for handling the connection.
      */
-    protected function createThreads()
+    protected function createThreads(): void
     {
         $this->writer = new Fiber(function () {
-            while (true) {
+            while ($this->open) {
                 $message = array_shift($this->messages);
 
                 if ($message) {
                     // Check for broken connection before writing
                     if ($this->isBrokenConnection()) {
-                        Fiber::suspend(new Exception("[Litebase Client Error]: Connection broken - server disconnected"));
+                        Fiber::suspend(new Exception('[Litebase Client Error]: Connection broken - server disconnected'));
                     }
 
                     $this->writeMessage($message);
@@ -95,23 +125,23 @@ class Connection
             while ($this->isOpen()) {
                 // Check for broken connection before reading
                 if ($this->isBrokenConnection()) {
-                    Fiber::suspend(new Exception("[Litebase Client Error]: Connection broken - server disconnected"));
+                    Fiber::suspend(new Exception('[Litebase Client Error]: Connection broken - server disconnected'));
                 }
 
                 // Check if we have buffered data first
-                if (!empty($this->buffer)) {
+                if (! empty($this->buffer)) {
                     $line = $this->buffer;
                     $this->buffer = '';
                 } else {
-                    $line = fgets($this->socket);
+                    $line = $this->socket ? fgets($this->socket) : false;
                 }
 
                 if ($line === false) {
                     // Check if connection was broken
                     if ($this->isBrokenConnection()) {
-                        Fiber::suspend(new Exception("[Litebase Client Error]: Connection broken - server disconnected"));
+                        Fiber::suspend(new Exception('[Litebase Client Error]: Connection broken - server disconnected'));
                     } else {
-                        Fiber::suspend(new Exception("[Litebase Client Error]: Unable to read request headers from socket"));
+                        Fiber::suspend(new Exception('[Litebase Client Error]: Unable to read request headers from socket'));
                     }
                 }
 
@@ -133,31 +163,32 @@ class Connection
             while ($this->isOpen()) {
                 // Check for broken connection before reading chunks
                 if ($this->isBrokenConnection()) {
-                    Fiber::suspend(new Exception("[Litebase Client Error]: Connection broken - server disconnected"));
+                    Fiber::suspend(new Exception('[Litebase Client Error]: Connection broken - server disconnected'));
                 }
 
                 // Read the chunk size
                 $chunkSizeHex = '';
 
                 while (true) {
-                    $byte = fread($this->socket, 1);
+                    $byte = $this->socket ? fread($this->socket, 1) : false;
 
                     if ($byte === false) {
                         // Check if connection was broken
                         if ($this->isBrokenConnection()) {
-                            Fiber::suspend(new Exception("[Litebase Client Error]: Connection broken - server disconnected"));
+                            Fiber::suspend(new Exception('[Litebase Client Error]: Connection broken - server disconnected'));
                         } else {
-                            Fiber::suspend(new Exception("[Litebase Client Error]: Unable to read from socket"));
+                            Fiber::suspend(new Exception('[Litebase Client Error]: Unable to read from socket'));
                         }
                     }
 
                     if ($byte === "\r") {
                         // Expecting "\n" after "\r"
-                        $nextByte = fread($this->socket, 1);
+                        $nextByte = $this->socket ?  fread($this->socket, 1) : false;
+
                         if ($nextByte === "\n") {
                             break;
                         } else {
-                            Fiber::suspend(new Exception("[Litebase Client Error]: Invalid chunk size format"));
+                            Fiber::suspend(new Exception('[Litebase Client Error]: Invalid chunk size format'));
                         }
                     }
 
@@ -170,7 +201,10 @@ class Connection
                 // If chunk size is 0, this indicates end of chunked transfer
                 if ($chunkSize === 0) {
                     // Read the final "\r\n"
-                    fread($this->socket, 2);
+                    if ($this->socket) {
+                        fread($this->socket, 2);
+                    }
+
                     break;
                 }
 
@@ -180,35 +214,45 @@ class Connection
 
                 while ($bytesRead < $chunkSize) {
                     $remainingBytes = $chunkSize - $bytesRead;
-                    $data = fread($this->socket, $remainingBytes);
+                    $readLength = max(1, (int)$remainingBytes);
+
+                    $data = $this->socket && $remainingBytes > 0 ?
+                        fread($this->socket, $readLength) :
+                        false;
 
                     if ($data === false) {
                         // Check if connection was broken
                         if ($this->isBrokenConnection()) {
-                            Fiber::suspend(new Exception("[Litebase Client Error]: Connection broken - server disconnected"));
+                            Fiber::suspend(new Exception('[Litebase Client Error]: Connection broken - server disconnected'));
                         } else {
-                            Fiber::suspend(new Exception("[Litebase Client Error]: Unable to read from socket"));
+                            Fiber::suspend(new Exception('[Litebase Client Error]: Unable to read from socket'));
                         }
                     }
 
-                    $buffer[] = $data;
-                    $bytesRead += strlen($data);
+                    if ($data !== false) {
+                        $buffer[] = $data;
+                        $bytesRead += strlen($data);
+                    }
                 }
 
                 $messageBytes = implode('', $buffer);
 
                 // Read the trailing "\r\n" after the chunk data
-                fread($this->socket, 2);
+                if ($this->socket) {
+                    fread($this->socket, 2);
+                }
 
                 // Begin reading the frame
                 $messageTypeByte = substr($messageBytes, 0, 1);
-                $messageType = unpack('C',  $messageTypeByte)[1];
+                $messageType = unpack('C', $messageTypeByte)[1] ?? 0;
 
                 $lengthBytes = substr($messageBytes, 1, 4);
-                $length = unpack('V', $lengthBytes)[1];
+                $lengthUnpacked = unpack('V', $lengthBytes)[1] ?? 0;
+                $length = is_int($lengthUnpacked) ? $lengthUnpacked : 0;
                 $frameBytes = substr($messageBytes, 5, $length);
 
-                $response = (new QueryResponseDecoder(QueryStreamMessageType::from($messageType), $frameBytes))->decode();
+                $messageTypeValue = is_int($messageType) ? $messageType : 0;
+                $response = (new QueryResponseDecoder(QueryStreamMessageType::from($messageTypeValue), $frameBytes))->decode();
 
                 if ($messageType === QueryStreamMessageType::FRAME->value) {
                     foreach ($response as $item) {
@@ -222,7 +266,7 @@ class Connection
             $this->close();
         });
 
-        $this->writer->start();
+        $this->writer?->start();
         $this->reader->start();
     }
 
@@ -231,7 +275,7 @@ class Connection
      */
     protected function debug(): bool
     {
-        return isset($_ENV['LITEBASE_DEBUG']) ? filter_var($_ENV['LITEBASE_DEBUG'] ?? false, FILTER_VALIDATE_BOOLEAN) === true : false;
+        return isset($_ENV['LITEBASE_DEBUG']) ? filter_var($_ENV['LITEBASE_DEBUG'], FILTER_VALIDATE_BOOLEAN) === true : false;
     }
 
     /**
@@ -239,7 +283,7 @@ class Connection
      */
     protected function isBrokenConnection(): bool
     {
-        if (!is_resource($this->socket)) {
+        if (! is_resource($this->socket)) {
             return true;
         }
 
@@ -264,13 +308,14 @@ class Connection
      */
     public function isOpen(): bool
     {
-        if (!$this->open || !is_resource($this->socket)) {
+        if (! $this->open || ! is_resource($this->socket)) {
             return false;
         }
 
         // Check for broken connection
         if ($this->isBrokenConnection()) {
             $this->close();
+
             return false;
         }
 
@@ -280,21 +325,21 @@ class Connection
     /**
      * Open the connection.
      */
-    public function open()
+    public function open(): void
     {
         $context = stream_context_create([
             'socket' => [
                 'tcp_nodelay' => true,
             ],
             'ssl' => [
-                'verify_peer' =>  $this->debug() ? false : true,
+                'verify_peer' => $this->debug() ? false : true,
                 'verify_peer_name' => $this->debug() ? false : true,
             ],
         ]);
 
         try {
             $this->socket = stream_socket_client(
-                str_starts_with($this->url, "https://") ? "tls://{$this->host}:{$this->port}" : "{$this->host}:{$this->port}",
+                str_starts_with($this->url, 'https://') ? "tls://{$this->host}:{$this->port}" : "{$this->host}:{$this->port}",
                 $errno,
                 $errstr,
                 5,
@@ -302,11 +347,11 @@ class Connection
                 $context
             );
         } catch (Exception $e) {
-            throw new Exception("[Litebase Client Error]: Unable to connect to server");
+            throw new Exception('[Litebase Client Error]: Unable to connect to server');
         }
 
-        if (!$this->socket) {
-            throw new Exception("[Litebase Client Error]: Unable to connect to server");
+        if (! $this->socket) {
+            throw new Exception('[Litebase Client Error]: Unable to connect to server');
         }
 
         stream_set_timeout($this->socket, 5);
@@ -316,7 +361,7 @@ class Connection
         $error = fwrite($this->socket, "\r\n");
 
         if ($error === false) {
-            throw new Exception("[Litebase Client Error]: Unable to write to socket");
+            throw new Exception('[Litebase Client Error]: Unable to write to socket');
         }
 
         $this->open = true;
@@ -332,7 +377,7 @@ class Connection
     /**
      * Send a request to the data api.
      */
-    public function send(Query $query)
+    public function send(Query $query): QueryResult
     {
         $queryRequest = $this->queryRequestEncoder->encode($query);
 
@@ -340,7 +385,7 @@ class Connection
 
         $this->messages[] = $frame;
 
-        if (!$this->isOpen()) {
+        if (! $this->isOpen()) {
             $this->open();
         }
 
@@ -362,9 +407,10 @@ class Connection
                         try {
                             $this->open();
                             $tries++;
+
                             continue;
                         } catch (Exception $reconnectException) {
-                            throw new Exception("[Litebase Client Error]: Failed to reconnect after connection loss: " . $reconnectException->getMessage());
+                            throw new Exception('[Litebase Client Error]: Failed to reconnect after connection loss: ' . $reconnectException->getMessage());
                         }
                     }
                 }
@@ -372,7 +418,7 @@ class Connection
                 throw $e;
             }
 
-            if (!$this->isOpen()) {
+            if (! $this->isOpen()) {
                 if ($tries < $maxTries) {
                     // Re-add the message to the queue for retry
                     array_unshift($this->messages, $frame);
@@ -391,95 +437,154 @@ class Connection
 
         $response = array_shift($this->responses);
 
+        if (! is_array($response)) {
+            return new QueryResult(
+                errorMessage: 'no response found',
+            );
+        }
+
         if ($response['close'] ?? false) {
             $this->close();
 
-            return [
-                'error' => 'connection closed',
-            ];
+            return new QueryResult(
+                errorMessage: 'connection closed',
+            );
         }
 
         if (isset($response['error'])) {
-            return [
-                'error' => $response['error']
-            ];
+            $errorValue = $response['error'];
+            $errorMessage = is_scalar($errorValue) ? (string) $errorValue : 'Unknown error';
+
+            return new QueryResult(
+                errorMessage: $errorMessage,
+            );
         }
 
         if (isset($response['id']) && $response['id'] === $query->id) {
-            return [
-                'data' => $response,
-            ];
+            /** @var array<int, array{type: ColumnType, name: string}> $columns */
+            $columns = [];
+
+            if (isset($response['columns'])) {
+                $rawColumns = $response['columns'];
+                if (is_array($rawColumns)) {
+                    foreach ($rawColumns as $col) {
+                        if (is_array($col) && isset($col['type'], $col['name'])) {
+                            $type = $col['type'] instanceof ColumnType ? $col['type'] : ColumnType::TEXT;
+                            $name = is_string($col['name']) ? $col['name'] : '';
+                            $columns[] = [
+                                'type' => $type,
+                                'name' => $name,
+                            ];
+                        }
+                    }
+                }
+            }
+
+            $id = (string) $response['id'];
+
+            $changesValue = $response['changes'] ?? 0;
+            $changes = is_int($changesValue) || is_float($changesValue) || is_string($changesValue) ? (int) $changesValue : 0;
+
+            $lastInsertRowIDValue = $response['last_insert_row_id'] ?? 0;
+            $lastInsertRowID = is_int($lastInsertRowIDValue) || is_float($lastInsertRowIDValue) || is_string($lastInsertRowIDValue) ? (int) $lastInsertRowIDValue : 0;
+
+            $latencyValue = $response['latency'] ?? 0;
+            $latency = is_int($latencyValue) || is_float($latencyValue) || is_string($latencyValue) ? (float) $latencyValue : 0.0;
+
+            $rowsCountValue = $response['rowsCount'] ?? 0;
+            $rowsCount = is_int($rowsCountValue) || is_float($rowsCountValue) || is_string($rowsCountValue) ? (int) $rowsCountValue : 0;
+
+            /** @var array<int, array<int, bool|float|int|string|null>> $rows */
+            $rows = isset($response['rows']) && is_array($response['rows']) ? $response['rows'] : [];
+
+            $transactionIDValue = $response['transactionID'] ?? '';
+            $transactionID = is_scalar($transactionIDValue) ? (string) $transactionIDValue : '';
+
+            $errorMessageValue = $response['errorMessage'] ?? null;
+            $errorMessage = $errorMessageValue !== null && is_scalar($errorMessageValue) ? (string) $errorMessageValue : null;
+
+            return new QueryResult(
+                id: $id,
+                changes: $changes,
+                columns: $columns,
+                lastInsertRowID: $lastInsertRowID,
+                latency: $latency,
+                rowsCount: $rowsCount,
+                rows: $rows,
+                transactionID: $transactionID,
+                errorMessage: $errorMessage,
+            );
         }
 
-        return [
-            'error' => 'no response found'
-        ];
+        return new QueryResult(
+            errorMessage: 'no response found',
+        );
     }
 
     /**
      * Process the connection by resuming the reader and writer fibers.
      */
-    protected function tick()
+    protected function tick(): void
     {
         // Check if connection is broken before processing
         if ($this->isBrokenConnection()) {
             $this->close();
-            throw new Exception("[Litebase Client Error]: Connection broken - server disconnected");
+            throw new Exception('[Litebase Client Error]: Connection broken - server disconnected');
         }
 
-        if (!$this->reader?->isSuspended() || !$this->writer?->isSuspended()) {
+        if (! $this->reader?->isSuspended() || ! $this->writer?->isSuspended()) {
             $this->close();
+
             return;
         }
 
         // Important: resume the writer first
-        if ($this->writer?->isSuspended()) {
-            $return = $this->writer->resume();
+        $return = $this->writer->resume();
 
-            if ($return instanceof Throwable) {
-                throw $return;
-            }
+        if ($return instanceof Throwable) {
+            throw $return;
         }
 
-        if ($this->reader?->isSuspended()) {
-            $return = $this->reader->resume();
+        $return = $this->reader->resume();
 
-            if ($return instanceof Throwable) {
-                throw $return;
-            }
+        if ($return instanceof Throwable) {
+            throw $return;
         }
     }
 
     /**
      * Write a message to the socket with proper chunked encoding.
      */
-    protected function writeMessage(string $message)
+    protected function writeMessage(string $message): void
     {
         // Check for broken connection before writing
         if ($this->isBrokenConnection()) {
-            Fiber::suspend(new Exception("[Litebase Client Error]: Connection broken - server disconnected"));
+            Fiber::suspend(new Exception('[Litebase Client Error]: Connection broken - server disconnected'));
         }
 
         $chunkSize = dechex(strlen($message));
-        $n = fwrite($this->socket, $chunkSize . "\r\n" . $message . "\r\n");
+
+        $n = $this->socket ?
+            fwrite($this->socket, $chunkSize . "\r\n" . $message . "\r\n") :
+            false;
 
         if ($n === false) {
             // Check if the failure was due to broken connection
             if ($this->isBrokenConnection()) {
-                Fiber::suspend(new Exception("[Litebase Client Error]: Connection broken - server disconnected"));
+                Fiber::suspend(new Exception('[Litebase Client Error]: Connection broken - server disconnected'));
             } else {
-                Fiber::suspend(new Exception("[Litebase Client Error]: Unable to write to socket"));
+                Fiber::suspend(new Exception('[Litebase Client Error]: Unable to write to socket'));
             }
         }
 
-        $flushed = fflush($this->socket);
+        $flushed = $this->socket ? fflush($this->socket) : false;
 
         if ($flushed === false) {
             // Check if the failure was due to broken connection
             if ($this->isBrokenConnection()) {
-                Fiber::suspend(new Exception("[Litebase Client Error]: Connection broken - server disconnected"));
+                Fiber::suspend(new Exception('[Litebase Client Error]: Connection broken - server disconnected'));
             } else {
-                Fiber::suspend(new Exception("[Litebase Client Error]: Unable to flush data to socket"));
+                Fiber::suspend(new Exception('[Litebase Client Error]: Unable to flush data to socket'));
             }
         }
     }

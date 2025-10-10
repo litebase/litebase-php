@@ -14,15 +14,6 @@
 
 namespace Litebase\Generated;
 
-/**
- * Configuration Class Doc Comment
- * PHP version 8.1
- *
- * @category Class
- * @package  Litebase\Generated
- * @author   OpenAPI Generator team
- * @link     https://openapi-generator.tech
- */
 class Configuration
 {
     public const BOOLEAN_FORMAT_INT = 'int';

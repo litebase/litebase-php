@@ -8,14 +8,6 @@
 
 namespace {{invokerPackage}};
 
-/**
- * HeaderSelector Class Doc Comment
- *
- * @category Class
- * @package  {{invokerPackage}}
- * @author   OpenAPI Generator team
- * @link     https://openapi-generator.tech
- */
 class HeaderSelector
 {
     /**
@@ -86,7 +78,7 @@ class HeaderSelector
     {
         return preg_match('~^application/(json|[\w!#$&.+-^_]+\+json)\s*(;|$)~', $searchString) === 1;
     }
-    
+
     /**
     * Select all items from a list containing a JSON mime type
     *

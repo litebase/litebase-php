@@ -2,26 +2,35 @@
 
 namespace Litebase;
 
+use Litebase\Generated\Model\CreateQueryRequest;
+
 class Query
 {
+    /**
+     * @param \Litebase\Generated\Model\StatementParameter[] $parameters
+     */
     public function __construct(
         public string $id,
         public string $statement,
-        public ?array $parameters = [],
+        public array $parameters = [],
         public ?string $transactionId = null,
     ) {}
 
-    function toArray(): array
+    /**
+     * Convert the Query object to an associative array.
+     */
+    public function toRequest(): CreateQueryRequest
     {
-        return [
-            "queries" => [
-                [
-                    'id' => $this->id,
-                    'transaction_id' => $this->transactionId,
-                    'statement' => $this->statement,
-                    'parameters' => $this->parameters ?? [],
-                ]
-            ],
-        ];
+        $request = new CreateQueryRequest();
+
+        $request->setQueries([
+            (new \Litebase\Generated\Model\QueryInput())
+                ->setId($this->id)
+                ->setTransactionId($this->transactionId ?? '')
+                ->setStatement($this->statement)
+                ->setParameters($this->parameters),
+        ]);
+
+        return $request;
     }
 }

@@ -3,6 +3,9 @@
 namespace Litebase;
 
 use Exception;
+use GuzzleHttp\Client;
+use Litebase\Generated\Model\Any;
+use Litebase\Generated\Model\StatementParameter;
 use Throwable;
 
 class LitebaseClient
@@ -10,7 +13,7 @@ class LitebaseClient
     /**
      * Error info received from a request.
      *
-     * @var array
+     * @var array<int, int|string|null>
      */
     protected array $errorInfo = [];
 
@@ -37,7 +40,7 @@ class LitebaseClient
     /**
      * The active transaction of the client.
      */
-    protected null|Transaction $transaction = null;
+    protected ?Transaction $transaction = null;
 
     /**
      * Create a new instance of the client.
@@ -45,25 +48,6 @@ class LitebaseClient
     public function __construct(
         protected Configuration $configuration,
     ) {}
-
-    // /**
-    //  * Ensure the require attributes to create a client connection are provided
-    //  * before creating a new instance.
-    //  */
-    // protected function ensureRequiredAttributesAreProvided(array $attributes)
-    // {
-    //     if (!isset($attributes['access_key_id'])) {
-    //         throw new Exception('The Litebase database connection cannot be created without a valid access key id.');
-    //     }
-
-    //     if (!isset($attributes['access_key_secret'])) {
-    //         throw new Exception('The Litebase database connection cannot be created without a valid secret access key.');
-    //     }
-
-    //     if (!isset($attributes['url'])) {
-    //         throw new Exception('The Litebase database connection cannot be created without a valid url.');
-    //     }
-    // }
 
     /**
      * Begin a transaction.
@@ -83,19 +67,19 @@ class LitebaseClient
                 )
             );
 
-            if ($response['error'] ?? false) {
-                $this->errorInfo = [0, 0, $response['error']];
+            if (! empty($response->errorMessage)) {
+                $this->errorInfo = [0, 0, $response->errorMessage];
 
                 return false;
             }
 
-            if (!isset($response['data']['transaction_id'])) {
+            if (empty($response->transactionID)) {
                 $this->errorInfo = [0, 0, 'Transaction ID not found'];
 
                 return false;
             }
 
-            $this->transaction = new Transaction($response['data']['transaction_id']);
+            $this->transaction = new Transaction($response->transactionID);
 
             return true;
         } catch (Exception $e) {
@@ -108,9 +92,9 @@ class LitebaseClient
     /**
      * Commit a transaction.
      */
-    public function commit()
+    public function commit(): bool
     {
-        if (!$this->transaction) {
+        if (! $this->transaction) {
             return false;
         }
 
@@ -128,15 +112,19 @@ class LitebaseClient
             return true;
         } catch (Throwable $th) {
             throw $th;
-            return false;
         }
     }
 
-    public function errorCode(): null | string
+    public function errorCode(): ?string
     {
-        return $this->errorInfo()[0];
+        return (string) $this->errorInfo()[0];
     }
 
+    /**
+     * Return the error info.
+     *
+     * @return array<int, int|string|null>
+     */
     public function errorInfo(): array
     {
         return $this->errorInfo;
@@ -144,8 +132,14 @@ class LitebaseClient
 
     /**
      * Exectute a statement on the database.
+     *
+     * @param array{
+     *      statement: string,
+     *      parameters?: array<array{type: string, value: int|float|string|null}>,
+     *      transaction_id?: string,
+     * } $input
      */
-    public function exec(array $input = []): ?QueryResult
+    public function exec(array $input): ?QueryResult
     {
         // Set a unique id for the request.
         $input['id'] = uniqid();
@@ -154,11 +148,15 @@ class LitebaseClient
             $input['transaction_id'] = $this->transaction->id;
         }
 
+        foreach ($input['parameters'] ?? [] as $param) {
+            $parameters[] = new StatementParameter($param);
+        }
+
         $result = $this->transport->send(new Query(
             id: $input['id'],
             transactionId: $input['transaction_id'] ?? null,
             statement: $input['statement'],
-            parameters: $input['parameters'] ?? [],
+            parameters: $parameters ?? [],
         ));
 
         // Store the last insert ID if available
@@ -177,12 +175,12 @@ class LitebaseClient
         return $this->transaction !== null;
     }
 
-    public function lastInsertId(): null|string
+    public function lastInsertId(): ?string
     {
         return $this->lastInsertId;
     }
 
-    public function prepare($statement): LitebaseStatement
+    public function prepare(string $statement): LitebaseStatement
     {
         return new LitebaseStatement($this, $statement);
     }
@@ -190,9 +188,9 @@ class LitebaseClient
     /**
      * Rollback a transaction.
      */
-    public function rollback()
+    public function rollback(): bool
     {
-        if (!$this->transaction) {
+        if (! $this->transaction) {
             return false;
         }
 
@@ -221,6 +219,15 @@ class LitebaseClient
             default:
                 throw new Exception('Invalid transport type: ' . $transportType);
         }
+
+        return $this;
+    }
+
+    public function withHttpTransport(?Client $httpClient): LitebaseClient
+    {
+        $transport = new HttpTransport($this->configuration, $httpClient);
+
+        $this->transport = $transport;
 
         return $this;
     }

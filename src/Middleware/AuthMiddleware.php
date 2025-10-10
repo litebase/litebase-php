@@ -4,7 +4,6 @@ namespace Litebase\Middleware;
 
 use Litebase\Configuration;
 use Litebase\HasRequestHeaders;
-use Litebase\LitebaseConfiguration;
 use Litebase\SignsRequests;
 use Psr\Http\Message\RequestInterface;
 
@@ -24,7 +23,7 @@ class AuthMiddleware
     public function __invoke(callable $handler): callable
     {
         return function (RequestInterface $request, array $options) use ($handler) {
-            if (!$this->config->hasAccessKey()) {
+            if (! $this->config->hasAccessKey()) {
                 return $handler($request, $options);
             }
 
@@ -43,9 +42,12 @@ class AuthMiddleware
 
         $headers = $this->requestHeaders(
             host: $request->getUri()->getHost(),
-            port: $request->getUri()->getPort(),
+            port: (string) $request->getUri()->getPort(),
             contentLength: strlen($body)
         );
+
+        $decodedBody = json_decode($body, true);
+        $data = is_array($decodedBody) ? $decodedBody : null;
 
         $token = $this->getToken(
             accessKeyID: $this->config->getAccessKeyId(),
@@ -53,7 +55,7 @@ class AuthMiddleware
             method: $request->getMethod(),
             path: $request->getUri()->getPath(),
             headers: $headers,
-            data: json_decode($body, true),
+            data: $data,
         );
 
         // Add signed headers to request

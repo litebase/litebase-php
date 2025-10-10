@@ -13,7 +13,9 @@ docs/Api/QueryLogApi.md
 docs/Api/QueryStreamApi.md
 docs/Api/TokenApi.md
 docs/Api/UserApi.md
+docs/Model/Any.md
 docs/Model/BranchSettings.md
+docs/Model/ColumnDefinition.md
 docs/Model/CreateAccessKey201Response.md
 docs/Model/CreateAccessKey201ResponseData.md
 docs/Model/CreateAccessKeyRequest.md
@@ -76,6 +78,7 @@ docs/Model/Privilege.md
 docs/Model/QueryInput.md
 docs/Model/Statement.md
 docs/Model/StatementEffect.md
+docs/Model/StatementParameter.md
 docs/Model/SuccessResponse.md
 docs/Model/UpdateAccessKey200Response.md
 docs/Model/UpdateToken200Response.md
@@ -99,7 +102,9 @@ src/Generated/ApiException.php
 src/Generated/Configuration.php
 src/Generated/FormDataProcessor.php
 src/Generated/HeaderSelector.php
+src/Generated/Model/Any.php
 src/Generated/Model/BranchSettings.php
+src/Generated/Model/ColumnDefinition.php
 src/Generated/Model/CreateAccessKey201Response.php
 src/Generated/Model/CreateAccessKey201ResponseData.php
 src/Generated/Model/CreateAccessKeyRequest.php
@@ -163,6 +168,7 @@ src/Generated/Model/Privilege.php
 src/Generated/Model/QueryInput.php
 src/Generated/Model/Statement.php
 src/Generated/Model/StatementEffect.php
+src/Generated/Model/StatementParameter.php
 src/Generated/Model/SuccessResponse.php
 src/Generated/Model/UpdateAccessKey200Response.php
 src/Generated/Model/UpdateToken200Response.php

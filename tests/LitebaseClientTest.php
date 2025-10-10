@@ -1,215 +1,338 @@
 <?php
 
-namespace Litebase\Tests;
+uses(\Litebase\Tests\TestCase::class);
 
-use Exception;
 use GuzzleHttp\Client;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Response;
+use Litebase\ColumnTypeString;
+use Litebase\Configuration;
 use Litebase\LitebaseClient;
 
-class LitebaseClientTest extends TestCase
-{
-    public function afterSetup(): void
-    {
-        $this->mock = new MockHandler();
+describe('LitebaseClient', function () {
+    $configuration = (new Configuration)
+        ->setAccessKey('key', 'secret')
+        ->setDatabase('test/main')
+        ->setHost('litebase.localhost');
 
-        $this->client = new LitebaseClient(
-            [
-                'access_key_id' => 'key',
-                'access_key_secret' => 'secret',
-                'database' => 'test',
-                'host' => 'us-east-1.litebase.test',
-            ],
-            [
-                'handler' => HandlerStack::create($this->mock),
-            ]
-        );
-    }
+    $client = new LitebaseClient($configuration);
 
-    public function afterTest(): void
-    {
-        $this->mock->reset();
-    }
+    $mock = new MockHandler;
 
-    public function test_it_cant_be_created_without_an_access_key_id()
-    {
-        $this->expectException(Exception::class);
-        $this->expectExceptionMessage('The Litebase database connection cannot be created without a valid access key id.');
+    beforeEach(function () {});
 
-        new LitebaseClient([]);
-    }
+    afterEach(function () use ($mock) {
+        $mock->reset();
+    });
 
-    public function test_it_cant_be_created_without_an_access_key_secret()
-    {
-        $this->expectException(Exception::class);
-        $this->expectExceptionMessage('The Litebase database connection cannot be created without a valid secret access key.');
+    test('it can be created', function () {
+        $client = new LitebaseClient(new Configuration);
+        expect($client)->toBeInstanceOf(LitebaseClient::class);
+    });
 
-        new LitebaseClient(['access_key_id' => 'key']);
-    }
-
-    public function test_it_cant_be_created_without_a_database()
-    {
-        $this->expectException(Exception::class);
-        $this->expectExceptionMessage('The Litebase database connection cannot be created without a valid database.');
-
-        new LitebaseClient([
-            'access_key_id' => 'key',
-            'access_key_secret' => 'secret',
-        ]);
-    }
-
-    public function test_it_configures_the_client()
-    {
-        $baseUri = $this->client->getGuzzleClient()->getConfig('base_uri');
-        $this->assertEquals((string) $baseUri, 'test.us-east-1.litebase.test/');
-    }
-
-    public function test_it_can_begin_a_transaction()
-    {
-        $this->mock->append(
-            new Response(200, [], json_encode(['status' => 'success', 'data' => ['rows' => [['id' => '1']]]]))
+    test('it can begin a transaction', function () use ($client, $mock) {
+        $mock->append(
+            new Response(200, [], json_encode([
+                'status' => 'success',
+                'data' => [
+                    [
+                        'id' => 'query-id',
+                        'changes' => 0,
+                        'columns' => [],
+                        'last_insert_row_id' => 0,
+                        'latency' => 0.0,
+                        'row_count' => 0,
+                        'rows' => [],
+                        'transaction_id' => 'transaction-id',
+                    ],
+                ],
+            ]) ?: null)
         );
 
-        $this->assertTrue($this->client->beginTransaction());
-        $this->assertTrue($this->client->inTransaction());
-    }
+        $client = $client->withHttpTransport(new Client(['handler' => HandlerStack::create($mock)]));
 
-    public function test_it_cant_begin_a_transaction_if_one_is_active()
-    {
-        $this->mock->append(
-            new Response(200, [], json_encode(['data' => ['rows' => [['id' => '1']]]]))
+        expect($client->beginTransaction())->toBeTrue();
+        expect($client->inTransaction())->toBeTrue();
+    });
+
+    test('it cant begin a transaction if one is active', function () use ($client, $mock) {
+        $mock->append(
+            new Response(200, [], json_encode([
+                'status' => 'success',
+                'data' => [
+                    [
+                        'id' => 'query-id',
+                        'changes' => 0,
+                        'columns' => [],
+                        'last_insert_row_id' => 0,
+                        'latency' => 0.0,
+                        'row_count' => 0,
+                        'rows' => [],
+                        'transaction_id' => 'transaction-id',
+                    ],
+                ],
+            ]) ?: null)
         );
 
-        $this->client->beginTransaction();
-
-        $this->assertFalse($this->client->beginTransaction());
-    }
-
-    public function test_it_can_commit_a_transaction()
-    {
-        $this->mock->append(
-            new Response(200, [], json_encode(['status' => 'success', 'data' => ['rows' => [['id' => 'test']]]]))
+        $mock->append(
+            new Response(200, [], json_encode([
+                'status' => 'success',
+                'data' => [
+                    [
+                        'id' => 'query-id',
+                        'changes' => 0,
+                        'columns' => [],
+                        'last_insert_row_id' => 0,
+                        'latency' => 0.0,
+                        'row_count' => 0,
+                        'rows' => [],
+                        'transaction_id' => 'transaction-id',
+                    ],
+                ],
+            ]) ?: null)
         );
 
-        $this->mock->append(
-            new Response(200, [], json_encode(['status' => 'success', 'data' => ['rows' => [['id' => 'test']]]]))
+        $client = $client->withHttpTransport(new Client(['handler' => HandlerStack::create($mock)]));
+
+        $client->beginTransaction();
+
+        expect($client->beginTransaction())->toBeFalse();
+        $client->rollback();
+    });
+
+    test('it can commit a transaction', function () use ($client, $mock) {
+        $mock->append(
+            new Response(200, [], json_encode([
+                'status' => 'success',
+                'data' => [
+                    [
+                        'id' => 'query-id-1',
+                        'changes' => 0,
+                        'columns' => [],
+                        'last_insert_row_id' => 0,
+                        'latency' => 0.0,
+                        'row_count' => 0,
+                        'rows' => [],
+                        'transaction_id' => 'transaction-id',
+                    ],
+                ],
+            ]) ?: null)
         );
 
-        $this->assertTrue($this->client->beginTransaction());
-        $this->assertTrue($this->client->commit());
-        $this->assertFalse($this->client->inTransaction());
-    }
+        $mock->append(
+            new Response(200, [], json_encode([
+                'status' => 'success',
+                'data' => [
+                    [
+                        'id' => 'query-id-2',
+                        'changes' => 0,
+                        'columns' => [],
+                        'last_insert_row_id' => 0,
+                        'latency' => 0.0,
+                        'row_count' => 0,
+                        'rows' => [],
+                        'transaction_id' => 'transaction-id',
+                    ],
+                ],
+            ]) ?: null)
+        );
 
-    public function test_it_cant_commit_a_transaction()
-    {
-        $this->assertFalse($this->client->commit());
-    }
+        $client = $client->withHttpTransport(new Client(['handler' => HandlerStack::create($mock)]));
 
-    public function test_it_returns_the_error_code()
-    {
-        $this->mock->append(
+        expect($client->beginTransaction())->toBeTrue();
+        expect($client->commit())->toBeTrue();
+        expect($client->inTransaction())->toBeFalse();
+    });
+
+    test('it cant commit a transaction', function () use ($client) {
+        expect($client->commit())->toBeFalse();
+    });
+
+    test('it returns the error code', function () use ($mock, $client) {
+        $mock->append(
             new Response(
                 400,
                 [],
                 json_encode([
                     'code' => '0000',
                     'status' => 'error',
-                    'message' => 'Test Error'
-                ])
+                    'message' => 'Test Error',
+                ]) ?: null
             )
         );
 
-        $this->client->beginTransaction();
+        $client = $client->withHttpTransport(new Client(['handler' => HandlerStack::create($mock)]));
 
-        $this->assertEquals('0000', $this->client->errorInfo()[0]);
-    }
+        $client->beginTransaction();
 
-    public function test_it_returns_the_error_info()
-    {
-        $this->mock->append(
+        expect($client->errorInfo()[0])->toEqual('0000');
+        $client->rollback();
+    });
+
+    test('it returns the error info', function () use ($mock, $client) {
+        $mock->append(
             new Response(500, [], json_encode([
                 'status' => 'error',
-                'message' => 'Test Error'
-            ]))
+                'message' => 'Test Error',
+            ]) ?: null)
         );
 
-        $this->client->beginTransaction();
+        $client = $client->withHttpTransport(new Client(['handler' => HandlerStack::create($mock)]));
 
-        $this->assertStringContainsString('Test Error', $this->client->errorInfo()[2]);
-    }
+        $client->beginTransaction();
 
-    public function test_it_can_execute_a_statment()
-    {
-        $this->mock->append(
+        $this->assertStringContainsString('Test Error', (string) $client->errorInfo()[2]);
+    });
+
+    test('it can execute a statment', function () use ($mock, $client) {
+        $mock->append(
             new Response(200, [], json_encode([
                 'status' => 'success',
                 'data' => [
-                    'lastID' => 1,
-                    'rows' => [['id' => 1]]
+                    [
+                        'id' => 'query-id',
+                        'changes' => 0,
+                        'columns' => ['id', 'name'],
+                        'last_insert_row_id' => 0,
+                        'latency' => 0.123,
+                        'row_count' => 1,
+                        'rows' => [
+                            [1, 'Test'],
+                        ],
+                        'transaction_id' => 'transaction-id',
+                    ],
                 ],
-            ]))
+            ]) ?: null)
         );
 
-        $this->assertNotNull($this->client->exec([
-            'statment' => 'select * from users',
-        ]));
-    }
+        $client = $client->withHttpTransport(new Client(['handler' => HandlerStack::create($mock)]));
 
-    public function test_it_returns_the_guzzle_client()
-    {
-        $this->assertInstanceOf(Client::class, $this->client->getGuzzleClient());
-    }
+        expect($client->exec([
+            'statement' => 'select * from users',
+        ]))->not->toBeNull();
+    });
 
-    public function test_it_indicates_if_a_transaction_is_in_progress()
-    {
-        $this->mock->append(
-            new Response(200, [], json_encode(['status' => 'success', 'data' => ['rows' => [['id' => 'test']]]]))
-        );
-
-        $this->assertFalse($this->client->inTransaction());
-        $this->assertTrue($this->client->beginTransaction());
-        $this->assertTrue($this->client->inTransaction());
-    }
-
-    public function test_it_returns_the_last_insert_id()
-    {
-        $this->mock->append(
+    test('it indicates if a transaction is in progress', function () use ($client, $mock) {
+        $mock->append(
             new Response(200, [], json_encode([
                 'status' => 'success',
                 'data' => [
-                    'insertId' => '1',
+                    [
+                        'id' => 'query-id-1',
+                        'changes' => 0,
+                        'columns' => [],
+                        'last_insert_row_id' => 0,
+                        'latency' => 0.0,
+                        'row_count' => 0,
+                        'rows' => [],
+                        'transaction_id' => 'transaction-id',
+                    ],
                 ],
-            ]))
+            ]) ?: null)
         );
 
-        $this->client->exec([
-            'statement' => "INSERT INTO users (name) values (?)",
-            'parameters' => ['John'],
+        $mock->append(
+            new Response(200, [], json_encode([
+                'status' => 'success',
+                'data' => [
+                    [
+                        'id' => 'query-id-2',
+                        'changes' => 0,
+                        'columns' => [],
+                        'last_insert_row_id' => 0,
+                        'latency' => 0.0,
+                        'row_count' => 0,
+                        'rows' => [],
+                        'transaction_id' => 'transaction-id',
+                    ],
+                ],
+            ]) ?: null)
+        );
+
+        $client = $client->withHttpTransport(new Client(['handler' => HandlerStack::create($mock)]));
+
+        expect($client->inTransaction())->toBeFalse();
+        expect($client->beginTransaction())->toBeTrue();
+        expect($client->inTransaction())->toBeTrue();
+        $client->rollback();
+    });
+
+    test('it returns the last insert id', function () use ($mock, $client) {
+        $mock->append(
+            new Response(200, [], json_encode([
+                'status' => 'success',
+                'data' => [
+                    [
+                        'id' => 'query-id',
+                        'changes' => 0,
+                        'columns' => [],
+                        'last_insert_row_id' => 1,
+                        'latency' => 0.0,
+                        'row_count' => 0,
+                        'rows' => [],
+                        'transaction_id' => 'transaction-id',
+                    ],
+                ],
+            ]) ?: null)
+        );
+
+        $client->withHttpTransport(new Client(['handler' => HandlerStack::create($mock)]));
+
+        $client->exec([
+            'statement' => 'INSERT INTO users (name) values (?)',
+            'parameters' => [['type' => ColumnTypeString::TEXT->value, 'value' => 'John']],
         ]);
 
-        $this->assertEquals('1', $this->client->lastInsertId());
-    }
+        expect($client->lastInsertId())->toEqual('1');
+    });
 
-    public function test_it_can_rollback_a_transaction()
-    {
-        $this->mock->append(new Response(200, [], json_encode(['status' => 'success', 'data' => ['rows' => [['id' => '1']]]])));
-        $this->mock->append(new Response(200, [], json_encode(['status' => 'success', 'data' => ['rows' => [['id' => '1']]]])));
+    test('it can rollback a transaction', function () use ($client, $mock) {
+        $mock->append(
+            new Response(200, [], json_encode([
+                'status' => 'success',
+                'data' => [
+                    [
+                        'id' => 'query-id',
+                        'changes' => 0,
+                        'columns' => [],
+                        'last_insert_row_id' => 0,
+                        'latency' => 0.0,
+                        'row_count' => 0,
+                        'rows' => [],
+                        'transaction_id' => 'transaction-id',
+                    ],
+                ],
+            ]) ?: null)
+        );
 
-        $this->assertTrue($this->client->beginTransaction());
-        $this->assertTrue($this->client->rollback());
-    }
+        $mock->append(
+            new Response(200, [], json_encode([
+                'status' => 'success',
+                'data' => [
+                    [
+                        'id' => 'query-id',
+                        'changes' => 0,
+                        'columns' => [],
+                        'last_insert_row_id' => 0,
+                        'latency' => 0.0,
+                        'row_count' => 0,
+                        'rows' => [],
+                        'transaction_id' => 'transaction-id',
+                    ],
+                ],
+            ]) ?: null)
+        );
 
-    public function test_it_cant_rollback_a_transaction()
-    {
-        $this->assertFalse($this->client->rollback());
-    }
+        $client = $client->withHttpTransport(new Client(['handler' => HandlerStack::create($mock)]));
 
-    public function test_it_sends_api_calls()
-    {
-        $this->mock->append(new Response(200, [], json_encode([])));
+        expect($client->beginTransaction())->toBeTrue();
+        expect($client->rollback())->toBeTrue();
+    });
 
-        $this->assertEquals([], $this->client->send('POST', '', []));
-    }
-}
+    test('it cant rollback a transaction', function () use ($client) {
+        // $client = Mockery::mock(LitebaseClient::class);
+        // $client->makePartial();
+        expect($client->rollback())->toBeFalse();
+    });
+});
