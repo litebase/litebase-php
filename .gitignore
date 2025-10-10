@@ -1,6 +1,7 @@
 .DS_Store
 .openapi-generator
 .phpunit.result.cache
+.vscode
 *.cache
 build
 composer.lock
