@@ -1,4 +1,5 @@
 .DS_Store
+.openapi-generator
 .phpunit.result.cache
 *.cache
 build
