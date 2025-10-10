@@ -18,7 +18,7 @@ composer require litebase/litebase-php
 
 ## Contributing
 
-Please see [CONTRIBUTING](CONTRIBUTING.md) for details.
+Please see [CONTRIBUTING](https://github.com/litebase/litebase-php?tab=contributing-ov-file) for details.
 
 ### Testing
 
@@ -28,11 +28,11 @@ composer test
 
 ## Code of Conduct
 
-...
+Please see [CODE OF CONDUCT](https://github.com/litebase/litebase-php?tab=coc-ov-file) for details.
 
 ## Security
 
-If you discover any security related issues, please email thiery@spacestud.io instead of using the issue tracker.
+All security related issues should be reported directly to [security@litebase.com](mailto:security@litebase.com).
 
 ## License
 
