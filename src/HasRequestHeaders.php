@@ -5,7 +5,7 @@ namespace Litebase;
 trait HasRequestHeaders
 {
     /**
-     * @param array<string, string> $headers
+     * @param  array<string, string>  $headers
      * @return array<string, string>
      */
     protected function requestHeaders(string $host, ?string $port, int $contentLength, array $headers = []): array

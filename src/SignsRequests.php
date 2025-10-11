@@ -7,9 +7,9 @@ trait SignsRequests
     /**
      * Get an authorization token for a request.
      *
-     * @param array<string, string> $headers
-     * @param array<mixed, mixed> $data
-     * @param array<string, string> $queryParams
+     * @param  array<string, string>  $headers
+     * @param  array<mixed, mixed>  $data
+     * @param  array<string, string>  $queryParams
      */
     public function getToken(
         string $accessKeyID,

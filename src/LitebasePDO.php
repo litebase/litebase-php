@@ -16,7 +16,7 @@ class LitebasePDO extends Sqlite
     /**
      * Create a new instance of the PDO connection.
      *
-     * @param array<string, string|null> $config
+     * @param  array<string, string|null>  $config
      */
     public function __construct(array $config)
     {
@@ -149,7 +149,7 @@ class LitebasePDO extends Sqlite
     /**
      * Create a new prepared statement.
      *
-     * @param array<string, mixed>|null $options Driver options.
+     * @param  array<string, mixed>|null  $options  Driver options.
      */
     public function prepare(string $statement, $options = null): PDOStatement
     {
