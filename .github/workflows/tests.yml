@@ -1,14 +1,6 @@
 name: tests
 
 on:
-    push:
-        branches: [main, develop]
-        paths:
-            - "src/**"
-            - "tests/**"
-            - "phpunit.xml.dist"
-        tags-ignore:
-            - "**"
     pull_request:
         branches: [main]
 
