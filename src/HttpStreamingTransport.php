@@ -42,11 +42,11 @@ class HttpStreamingTransport implements TransportInterface
                 : sprintf('http://%s:%d/%s', $this->config->getHost(), $this->config->getPort(), $path);
 
             if (! empty($this->config->getUsername()) || ! (empty($this->config->getPassword()))) {
-                $headers['Authorization'] = 'Basic ' . base64_encode($this->config->getUsername() . ':' . $this->config->getPassword());
+                $headers['Authorization'] = 'Basic '.base64_encode($this->config->getUsername().':'.$this->config->getPassword());
             }
 
             if (! empty($this->config->getAccessToken())) {
-                $headers['Authorization'] = 'Bearer ' . $this->config->getAccessToken();
+                $headers['Authorization'] = 'Bearer '.$this->config->getAccessToken();
             }
 
             if (! empty($this->config->getAccessKeyId())) {

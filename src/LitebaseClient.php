@@ -4,7 +4,6 @@ namespace Litebase;
 
 use Exception;
 use GuzzleHttp\Client;
-use Litebase\Generated\Model\Any;
 use Litebase\Generated\Model\StatementParameter;
 use Throwable;
 
@@ -217,7 +216,7 @@ class LitebaseClient
                 $this->transport = new HttpStreamingTransport($this->configuration);
                 break;
             default:
-                throw new Exception('Invalid transport type: ' . $transportType);
+                throw new Exception('Invalid transport type: '.$transportType);
         }
 
         return $this;

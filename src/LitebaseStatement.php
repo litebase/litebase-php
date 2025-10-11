@@ -2,7 +2,6 @@
 
 namespace Litebase;
 
-use Iterator;
 use IteratorAggregate;
 use Litebase\Exceptions\QueryException;
 use PDO;
@@ -72,14 +71,14 @@ class LitebaseStatement extends PDOStatement implements IteratorAggregate
             case PDO::PARAM_NULL:
                 $type = 'NULL';
                 break;
-            // TODO: Test BLOB type
+                // TODO: Test BLOB type
             case PDO::PARAM_LOB:
                 $type = 'BLOB';
                 break;
-            // TODO: Add a case for float type
-            // case PDO::PARAM_FLOAT:
-            // $type = "REAL";
-            // break;
+                // TODO: Add a case for float type
+                // case PDO::PARAM_FLOAT:
+                // $type = "REAL";
+                // break;
             default:
                 $type = 'TEXT'; // Default to TEXT if no match
                 break;
@@ -105,7 +104,7 @@ class LitebaseStatement extends PDOStatement implements IteratorAggregate
      */
     public function closeCursor(): bool
     {
-        if (!empty($this->result->rows)) {
+        if (! empty($this->result->rows)) {
             $this->result->rows = [];
         }
 
@@ -151,7 +150,7 @@ class LitebaseStatement extends PDOStatement implements IteratorAggregate
     /**
      * {@inheritDoc}
      *
-     * @param array<int|string, mixed>|null $params
+     * @param  array<int|string, mixed>|null  $params
      */
     public function execute(?array $params = null): bool
     {
@@ -209,8 +208,9 @@ class LitebaseStatement extends PDOStatement implements IteratorAggregate
         if (isset($this->result->rows)) {
             $this->rows = array_map(function ($row) {
                 $columns = $this->columns ?? [];
+
                 return array_combine(
-                    array_map(fn($col) => $col['name'], $columns),
+                    array_map(fn ($col) => $col['name'], $columns),
                     $row
                 );
             }, $this->result->rows);
@@ -284,7 +284,6 @@ class LitebaseStatement extends PDOStatement implements IteratorAggregate
     {
         return $this->rowCount;
     }
-
 
     /**
      * {@inheritDoc}

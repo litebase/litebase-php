@@ -3,7 +3,6 @@
 uses(\Litebase\Tests\TestCase::class);
 
 use Litebase\ColumnType;
-use Mockery\MockInterface;
 use Litebase\LitebaseClient;
 use Litebase\LitebaseStatement;
 use Litebase\QueryResult;

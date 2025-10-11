@@ -7,8 +7,8 @@ class QueryResult
     /**
      * Create a new QueryResult instance.
      *
-     * @param array<int, array{type: ColumnType, name: string}> $columns
-     * @param array<int, array<int, bool|float|int|string|null>> $rows
+     * @param  array<int, array{type: ColumnType, name: string}>  $columns
+     * @param  array<int, array<int, bool|float|int|string|null>>  $rows
      */
     public function __construct(
         public int $changes = 0,

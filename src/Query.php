@@ -7,7 +7,7 @@ use Litebase\Generated\Model\CreateQueryRequest;
 class Query
 {
     /**
-     * @param \Litebase\Generated\Model\StatementParameter[] $parameters
+     * @param  \Litebase\Generated\Model\StatementParameter[]  $parameters
      */
     public function __construct(
         public string $id,
@@ -21,10 +21,10 @@ class Query
      */
     public function toRequest(): CreateQueryRequest
     {
-        $request = new CreateQueryRequest();
+        $request = new CreateQueryRequest;
 
         $request->setQueries([
-            (new \Litebase\Generated\Model\QueryInput())
+            (new \Litebase\Generated\Model\QueryInput)
                 ->setId($this->id)
                 ->setTransactionId($this->transactionId ?? '')
                 ->setStatement($this->statement)
