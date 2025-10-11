@@ -1,0 +1,34 @@
+name: pint
+
+on:
+    pull_request:
+        branches: [main]
+
+jobs:
+    lint:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v5
+            - name: Run Pint
+              run: ./vendor/bin/pint --ci
+
+            - name: Check for changes
+              id: verify-changed-files
+              run: |
+                  if [ -n "$(git status --porcelain)" ]; then
+                      echo "changed=true" >> $GITHUB_OUTPUT
+                      echo "Changes detected after Pint"
+                      git status --porcelain
+                  else
+                      echo "changed=false" >> $GITHUB_OUTPUT
+                      echo "No changes detected after Pint"
+                  fi
+
+            - name: Commit and Push changes
+              if: steps.verify-changed-files.outputs.changed == 'true'
+              run: |
+                  git config --local user.email "action@github.com"
+                  git config --local user.name "GitHub Action"
+                  git add api/generated_openapi.json
+                  git commit -m "Apply PHP Pint fixes"
+                  git push
