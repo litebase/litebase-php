@@ -42,4 +42,4 @@ jobs:
                   git config --local user.name "GitHub Action"
                   git add -u
                   git commit -m "Apply PHP Pint fixes"
-                  git push
+                  git push origin HEAD:${{ github.head_ref }}
