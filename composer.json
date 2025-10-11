@@ -47,7 +47,7 @@
     },
     "scripts": {
         "generate_openapi": "openapi-generator-cli generate -c openapi_config.yaml",
-        "format": "vendor/bin/pint --no-interaction",
+        "pint": "vendor/bin/pint --no-interaction",
         "test": "vendor/bin/pest",
         "test-coverage": "vendor/bin/pest --coverage-html coverage"
     }
