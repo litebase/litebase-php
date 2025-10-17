@@ -1,0 +1,7 @@
+# OpenAPI Generator Ignore
+.gitignore
+.travis.yml
+composer.json
+git_push.sh
+phpunit.xml.dist
+README.md

@@ -4,7 +4,7 @@ namespace Litebase;
 
 use Exception;
 use GuzzleHttp\Client;
-use Litebase\Generated\Model\StatementParameter;
+use Litebase\OpenAPI\Model\StatementParameter;
 use Throwable;
 
 class LitebaseClient
@@ -147,6 +147,9 @@ class LitebaseClient
             $input['transaction_id'] = $this->transaction->id;
         }
 
+        /** @var array<int, StatementParameter> $parameters */
+        $parameters = [];
+
         foreach ($input['parameters'] ?? [] as $param) {
             $parameters[] = new StatementParameter($param);
         }
@@ -155,7 +158,7 @@ class LitebaseClient
             id: $input['id'],
             transactionId: $input['transaction_id'] ?? null,
             statement: $input['statement'],
-            parameters: $parameters ?? [],
+            parameters: $parameters,
         ));
 
         // Store the last insert ID if available
@@ -216,7 +219,7 @@ class LitebaseClient
                 $this->transport = new HttpStreamingTransport($this->configuration);
                 break;
             default:
-                throw new Exception('Invalid transport type: '.$transportType);
+                throw new Exception('Invalid transport type: ' . $transportType);
         }
 
         return $this;

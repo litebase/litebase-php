@@ -3,7 +3,7 @@
 namespace Litebase;
 
 use GuzzleHttp\Client;
-use Litebase\Generated\Model\CreateQuery200Response;
+use Litebase\OpenAPI\Model\CreateQuery200Response;
 
 class HttpTransport implements TransportInterface
 {
@@ -50,13 +50,13 @@ class HttpTransport implements TransportInterface
 
         /** @var array<int, array<int, bool|float|int|string|null>> $rows */
         $rows = array_values(array_map(
-            fn ($row) => is_array($row) ? array_values($row) : (array) $row,
+            fn($row) => is_array($row) ? array_values($row) : (array) $row,
             $firstResult->getRows() ?? []
         ));
 
         return new QueryResult(
             changes: $firstResult->getChanges() ?? 0,
-            columns: array_values(array_map(fn ($col) => [
+            columns: array_values(array_map(fn($col) => [
                 'type' => ColumnType::from($col->getType() ?? 1),
                 'name' => $col->getName() ?? '',
             ], $firstResult->getColumns() ?? [])),

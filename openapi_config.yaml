@@ -1,13 +1,14 @@
-srcBasePath: ./src/Generated
+srcBasePath: ./src
 apiPackage: API
 modelPackage: Model
-invokerPackage: Litebase\Generated
+invokerPackage: Litebase\OpenAPI
 artifactVersion: 1.0.0
 composerPackageName: litebase/litebase-php
 developerOrganization: Litebase
 developerOrganizationUrl: https://litebase.com
 licenseName: MIT
 packageName: Litebase PHP SDK
-templateDir: templates
+outputDir: ./api
+templateDir: ./api/templates
 inputSpec: https://raw.githubusercontent.com/litebase/litebase/refs/heads/main/api/generated_openapi.json
 generatorName: php

@@ -2,12 +2,12 @@
 
 namespace Litebase;
 
-use Litebase\Generated\Model\CreateQueryRequest;
+use Litebase\OpenAPI\Model\CreateQueryRequest;
 
 class Query
 {
     /**
-     * @param  \Litebase\Generated\Model\StatementParameter[]  $parameters
+     * @param  \Litebase\OpenAPI\Model\StatementParameter[]  $parameters
      */
     public function __construct(
         public string $id,
@@ -24,7 +24,7 @@ class Query
         $request = new CreateQueryRequest;
 
         $request->setQueries([
-            (new \Litebase\Generated\Model\QueryInput)
+            (new \Litebase\OpenAPI\Model\QueryInput)
                 ->setId($this->id)
                 ->setTransactionId($this->transactionId ?? '')
                 ->setStatement($this->statement)

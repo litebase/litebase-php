@@ -2,7 +2,7 @@
 
 namespace Litebase;
 
-use Litebase\Generated\Configuration as BaseConfiguration;
+use Litebase\OpenAPI\Configuration as BaseConfiguration;
 
 /**
  * Extended configuration class with HMAC-SHA256 authentication support

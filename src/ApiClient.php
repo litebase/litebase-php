@@ -4,20 +4,20 @@ namespace Litebase;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\HandlerStack;
-use Litebase\Generated\API\AccessKeyApi;
-use Litebase\Generated\API\ClusterStatusApi;
-use Litebase\Generated\API\DatabaseApi;
-use Litebase\Generated\API\DatabaseBackupApi;
-use Litebase\Generated\API\DatabaseBranchApi;
-use Litebase\Generated\API\DatabaseRestoreApi;
-use Litebase\Generated\API\DatabaseSnapshotApi;
-use Litebase\Generated\API\KeyActivateApi;
-use Litebase\Generated\API\KeyApi;
-use Litebase\Generated\API\QueryApi;
-use Litebase\Generated\API\QueryLogApi;
-use Litebase\Generated\API\QueryStreamApi;
-use Litebase\Generated\API\TokenApi;
-use Litebase\Generated\API\UserApi;
+use Litebase\OpenAPI\API\AccessKeyApi;
+use Litebase\OpenAPI\API\ClusterStatusApi;
+use Litebase\OpenAPI\API\DatabaseApi;
+use Litebase\OpenAPI\API\DatabaseBackupApi;
+use Litebase\OpenAPI\API\DatabaseBranchApi;
+use Litebase\OpenAPI\API\DatabaseRestoreApi;
+use Litebase\OpenAPI\API\DatabaseSnapshotApi;
+use Litebase\OpenAPI\API\KeyActivateApi;
+use Litebase\OpenAPI\API\KeyApi;
+use Litebase\OpenAPI\API\QueryApi;
+use Litebase\OpenAPI\API\QueryLogApi;
+use Litebase\OpenAPI\API\QueryStreamApi;
+use Litebase\OpenAPI\API\TokenApi;
+use Litebase\OpenAPI\API\UserApi;
 use Litebase\Middleware\AuthMiddleware;
 
 /**
