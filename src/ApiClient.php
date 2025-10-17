@@ -4,6 +4,7 @@ namespace Litebase;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\HandlerStack;
+use Litebase\Middleware\AuthMiddleware;
 use Litebase\OpenAPI\API\AccessKeyApi;
 use Litebase\OpenAPI\API\ClusterStatusApi;
 use Litebase\OpenAPI\API\DatabaseApi;
@@ -18,7 +19,6 @@ use Litebase\OpenAPI\API\QueryLogApi;
 use Litebase\OpenAPI\API\QueryStreamApi;
 use Litebase\OpenAPI\API\TokenApi;
 use Litebase\OpenAPI\API\UserApi;
-use Litebase\Middleware\AuthMiddleware;
 
 /**
  * Litebase API Client Factory
