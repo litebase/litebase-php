@@ -22,10 +22,10 @@ class ListUsers200ResponseDataInner implements ModelInterface, ArrayAccess, \Jso
       * @var string[]
       */
     protected static $openAPITypes = [
-        'created_at' => 'string',
+        'createdAt' => 'string',
         'description' => 'string',
         'statements' => '\Litebase\OpenAPI\Model\Statement[]',
-        'updated_at' => 'string',
+        'updatedAt' => 'string',
         'username' => 'string'
     ];
 
@@ -37,10 +37,10 @@ class ListUsers200ResponseDataInner implements ModelInterface, ArrayAccess, \Jso
       * @psalm-var array<string, string|null>
       */
     protected static $openAPIFormats = [
-        'created_at' => null,
+        'createdAt' => null,
         'description' => null,
         'statements' => null,
-        'updated_at' => null,
+        'updatedAt' => null,
         'username' => null
     ];
 
@@ -50,10 +50,10 @@ class ListUsers200ResponseDataInner implements ModelInterface, ArrayAccess, \Jso
       * @var boolean[]
       */
     protected static array $openAPINullables = [
-        'created_at' => false,
+        'createdAt' => false,
         'description' => false,
         'statements' => false,
-        'updated_at' => false,
+        'updatedAt' => false,
         'username' => false
     ];
 
@@ -143,10 +143,10 @@ class ListUsers200ResponseDataInner implements ModelInterface, ArrayAccess, \Jso
      * @var string[]
      */
     protected static $attributeMap = [
-        'created_at' => 'created_at',
+        'createdAt' => 'createdAt',
         'description' => 'description',
         'statements' => 'statements',
-        'updated_at' => 'updated_at',
+        'updatedAt' => 'updatedAt',
         'username' => 'username'
     ];
 
@@ -156,10 +156,10 @@ class ListUsers200ResponseDataInner implements ModelInterface, ArrayAccess, \Jso
      * @var string[]
      */
     protected static $setters = [
-        'created_at' => 'setCreatedAt',
+        'createdAt' => 'setCreatedAt',
         'description' => 'setDescription',
         'statements' => 'setStatements',
-        'updated_at' => 'setUpdatedAt',
+        'updatedAt' => 'setUpdatedAt',
         'username' => 'setUsername'
     ];
 
@@ -169,10 +169,10 @@ class ListUsers200ResponseDataInner implements ModelInterface, ArrayAccess, \Jso
      * @var string[]
      */
     protected static $getters = [
-        'created_at' => 'getCreatedAt',
+        'createdAt' => 'getCreatedAt',
         'description' => 'getDescription',
         'statements' => 'getStatements',
-        'updated_at' => 'getUpdatedAt',
+        'updatedAt' => 'getUpdatedAt',
         'username' => 'getUsername'
     ];
 
@@ -233,10 +233,10 @@ class ListUsers200ResponseDataInner implements ModelInterface, ArrayAccess, \Jso
      */
     public function __construct(?array $data = null)
     {
-        $this->setIfExists('created_at', $data ?? [], null);
+        $this->setIfExists('createdAt', $data ?? [], null);
         $this->setIfExists('description', $data ?? [], null);
         $this->setIfExists('statements', $data ?? [], null);
-        $this->setIfExists('updated_at', $data ?? [], null);
+        $this->setIfExists('updatedAt', $data ?? [], null);
         $this->setIfExists('username', $data ?? [], null);
     }
 
@@ -283,28 +283,28 @@ class ListUsers200ResponseDataInner implements ModelInterface, ArrayAccess, \Jso
 
 
     /**
-     * Gets created_at
+     * Gets createdAt
      *
      * @return string|null
      */
     public function getCreatedAt()
     {
-        return $this->container['created_at'];
+        return $this->container['createdAt'];
     }
 
     /**
-     * Sets created_at
+     * Sets createdAt
      *
-     * @param string|null $created_at created_at
+     * @param string|null $createdAt createdAt
      *
      * @return self
      */
-    public function setCreatedAt($created_at)
+    public function setCreatedAt($createdAt)
     {
-        if (is_null($created_at)) {
-            throw new \InvalidArgumentException('non-nullable created_at cannot be null');
+        if (is_null($createdAt)) {
+            throw new \InvalidArgumentException('non-nullable createdAt cannot be null');
         }
-        $this->container['created_at'] = $created_at;
+        $this->container['createdAt'] = $createdAt;
 
         return $this;
     }
@@ -364,28 +364,28 @@ class ListUsers200ResponseDataInner implements ModelInterface, ArrayAccess, \Jso
     }
 
     /**
-     * Gets updated_at
+     * Gets updatedAt
      *
      * @return string|null
      */
     public function getUpdatedAt()
     {
-        return $this->container['updated_at'];
+        return $this->container['updatedAt'];
     }
 
     /**
-     * Sets updated_at
+     * Sets updatedAt
      *
-     * @param string|null $updated_at updated_at
+     * @param string|null $updatedAt updatedAt
      *
      * @return self
      */
-    public function setUpdatedAt($updated_at)
+    public function setUpdatedAt($updatedAt)
     {
-        if (is_null($updated_at)) {
-            throw new \InvalidArgumentException('non-nullable updated_at cannot be null');
+        if (is_null($updatedAt)) {
+            throw new \InvalidArgumentException('non-nullable updatedAt cannot be null');
         }
-        $this->container['updated_at'] = $updated_at;
+        $this->container['updatedAt'] = $updatedAt;
 
         return $this;
     }

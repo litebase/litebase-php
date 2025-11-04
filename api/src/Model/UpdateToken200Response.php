@@ -22,7 +22,7 @@ class UpdateToken200Response implements ModelInterface, ArrayAccess, \JsonSerial
       * @var string[]
       */
     protected static $openAPITypes = [
-        'data' => '\Litebase\OpenAPI\Model\GetToken200ResponseData',
+        'data' => '\Litebase\OpenAPI\Model\TokenUpdateResponse',
         'message' => 'string',
         'status' => 'string'
     ];
@@ -280,7 +280,7 @@ class UpdateToken200Response implements ModelInterface, ArrayAccess, \JsonSerial
     /**
      * Gets data
      *
-     * @return \Litebase\OpenAPI\Model\GetToken200ResponseData
+     * @return \Litebase\OpenAPI\Model\TokenUpdateResponse
      */
     public function getData()
     {
@@ -290,7 +290,7 @@ class UpdateToken200Response implements ModelInterface, ArrayAccess, \JsonSerial
     /**
      * Sets data
      *
-     * @param \Litebase\OpenAPI\Model\GetToken200ResponseData $data data
+     * @param \Litebase\OpenAPI\Model\TokenUpdateResponse $data data
      *
      * @return self
      */

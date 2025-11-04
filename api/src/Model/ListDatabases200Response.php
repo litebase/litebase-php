@@ -22,7 +22,7 @@ class ListDatabases200Response implements ModelInterface, ArrayAccess, \JsonSeri
       * @var string[]
       */
     protected static $openAPITypes = [
-        'data' => 'object[]',
+        'data' => '\Litebase\OpenAPI\Model\DatabaseResponse[]',
         'message' => 'string',
         'status' => 'string'
     ];
@@ -280,7 +280,7 @@ class ListDatabases200Response implements ModelInterface, ArrayAccess, \JsonSeri
     /**
      * Gets data
      *
-     * @return object[]
+     * @return \Litebase\OpenAPI\Model\DatabaseResponse[]
      */
     public function getData()
     {
@@ -290,7 +290,7 @@ class ListDatabases200Response implements ModelInterface, ArrayAccess, \JsonSeri
     /**
      * Sets data
      *
-     * @param object[] $data Array of databases for list operations
+     * @param \Litebase\OpenAPI\Model\DatabaseResponse[] $data Array of databases for list operations
      *
      * @return self
      */

@@ -5,3 +5,4 @@ composer.json
 git_push.sh
 phpunit.xml.dist
 README.md
+test/Model/*

@@ -4,7 +4,7 @@
  *
  * Litebase Server OpenAPI specification
  *
- * The version of the OpenAPI document: 1.0.0
+ * The version of the OpenAPI document: 0.5.0
  */
 
 
@@ -121,16 +121,16 @@ class UserApi
      *
      * Create a new user
      *
-     * @param  \Litebase\OpenAPI\Model\CreateUserRequest $create_user_request User creation data (required)
+     * @param  \Litebase\OpenAPI\Model\UserStoreRequest $userStoreRequest User creation data (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['createUser'] to see the possible values for this operation
      *
      * @throws \Litebase\OpenAPI\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
      * @return \Litebase\OpenAPI\Model\CreateUser201Response|\Litebase\OpenAPI\Model\ErrorResponse|\Litebase\OpenAPI\Model\ErrorResponse|\Litebase\OpenAPI\Model\ValidationErrorResponse|\Litebase\OpenAPI\Model\ErrorResponse
      */
-    public function createUser($create_user_request, string $contentType = self::contentTypes['createUser'][0])
+    public function createUser($userStoreRequest, string $contentType = self::contentTypes['createUser'][0])
     {
-        list($response) = $this->createUserWithHttpInfo($create_user_request, $contentType);
+        list($response) = $this->createUserWithHttpInfo($userStoreRequest, $contentType);
         return $response;
     }
 
@@ -139,16 +139,16 @@ class UserApi
      *
      * Create a new user
      *
-     * @param  \Litebase\OpenAPI\Model\CreateUserRequest $create_user_request User creation data (required)
+     * @param  \Litebase\OpenAPI\Model\UserStoreRequest $userStoreRequest User creation data (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['createUser'] to see the possible values for this operation
      *
      * @throws \Litebase\OpenAPI\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
      * @return array of \Litebase\OpenAPI\Model\CreateUser201Response|\Litebase\OpenAPI\Model\ErrorResponse|\Litebase\OpenAPI\Model\ErrorResponse|\Litebase\OpenAPI\Model\ValidationErrorResponse|\Litebase\OpenAPI\Model\ErrorResponse, HTTP status code, HTTP response headers (array of strings)
      */
-    public function createUserWithHttpInfo($create_user_request, string $contentType = self::contentTypes['createUser'][0])
+    public function createUserWithHttpInfo($userStoreRequest, string $contentType = self::contentTypes['createUser'][0])
     {
-        $request = $this->createUserRequest($create_user_request, $contentType);
+        $request = $this->createUserRequest($userStoreRequest, $contentType);
 
         try {
             $options = $this->createHttpClientOption();
@@ -280,15 +280,15 @@ class UserApi
      *
      * Create a new user
      *
-     * @param  \Litebase\OpenAPI\Model\CreateUserRequest $create_user_request User creation data (required)
+     * @param  \Litebase\OpenAPI\Model\UserStoreRequest $userStoreRequest User creation data (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['createUser'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function createUserAsync($create_user_request, string $contentType = self::contentTypes['createUser'][0])
+    public function createUserAsync($userStoreRequest, string $contentType = self::contentTypes['createUser'][0])
     {
-        return $this->createUserAsyncWithHttpInfo($create_user_request, $contentType)
+        return $this->createUserAsyncWithHttpInfo($userStoreRequest, $contentType)
             ->then(
                 function ($response) {
                     return $response[0];
@@ -301,16 +301,16 @@ class UserApi
      *
      * Create a new user
      *
-     * @param  \Litebase\OpenAPI\Model\CreateUserRequest $create_user_request User creation data (required)
+     * @param  \Litebase\OpenAPI\Model\UserStoreRequest $userStoreRequest User creation data (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['createUser'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function createUserAsyncWithHttpInfo($create_user_request, string $contentType = self::contentTypes['createUser'][0])
+    public function createUserAsyncWithHttpInfo($userStoreRequest, string $contentType = self::contentTypes['createUser'][0])
     {
         $returnType = '\Litebase\OpenAPI\Model\CreateUser201Response';
-        $request = $this->createUserRequest($create_user_request, $contentType);
+        $request = $this->createUserRequest($userStoreRequest, $contentType);
 
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
@@ -351,19 +351,19 @@ class UserApi
     /**
      * Create request for operation 'createUser'
      *
-     * @param  \Litebase\OpenAPI\Model\CreateUserRequest $create_user_request User creation data (required)
+     * @param  \Litebase\OpenAPI\Model\UserStoreRequest $userStoreRequest User creation data (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['createUser'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
      */
-    public function createUserRequest($create_user_request, string $contentType = self::contentTypes['createUser'][0])
+    public function createUserRequest($userStoreRequest, string $contentType = self::contentTypes['createUser'][0])
     {
 
-        // verify the required parameter 'create_user_request' is set
-        if ($create_user_request === null || (is_array($create_user_request) && count($create_user_request) === 0)) {
+        // verify the required parameter 'userStoreRequest' is set
+        if ($userStoreRequest === null || (is_array($userStoreRequest) && count($userStoreRequest) === 0)) {
             throw new \InvalidArgumentException(
-                'Missing the required parameter $create_user_request when calling createUser'
+                'Missing the required parameter $userStoreRequest when calling createUser'
             );
         }
 
@@ -386,12 +386,12 @@ class UserApi
         );
 
         // for model (json/xml)
-        if (isset($create_user_request)) {
+        if (isset($userStoreRequest)) {
             if (stripos($headers['Content-Type'], 'application/json') !== false) {
                 # if Content-Type contains "application/json", json_encode the body
-                $httpBody = \GuzzleHttp\Utils::jsonEncode(ObjectSerializer::sanitizeForSerialization($create_user_request));
+                $httpBody = \GuzzleHttp\Utils::jsonEncode(ObjectSerializer::sanitizeForSerialization($userStoreRequest));
             } else {
-                $httpBody = $create_user_request;
+                $httpBody = $userStoreRequest;
             }
         } elseif (count($formParams) > 0) {
             if ($multipart) {
@@ -1355,16 +1355,16 @@ class UserApi
      * Update an existing user
      *
      * @param  string $username The username parameter (required)
-     * @param  \Litebase\OpenAPI\Model\CreateAccessKeyRequest $create_access_key_request User update data (required)
+     * @param  \Litebase\OpenAPI\Model\UserUpdateRequest $userUpdateRequest User update data (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['updateUser'] to see the possible values for this operation
      *
      * @throws \Litebase\OpenAPI\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
-     * @return \Litebase\OpenAPI\Model\GetUser200Response|\Litebase\OpenAPI\Model\ErrorResponse|\Litebase\OpenAPI\Model\ErrorResponse|\Litebase\OpenAPI\Model\ErrorResponse|\Litebase\OpenAPI\Model\ValidationErrorResponse|\Litebase\OpenAPI\Model\ErrorResponse
+     * @return \Litebase\OpenAPI\Model\UpdateUser200Response|\Litebase\OpenAPI\Model\ErrorResponse|\Litebase\OpenAPI\Model\ErrorResponse|\Litebase\OpenAPI\Model\ErrorResponse|\Litebase\OpenAPI\Model\ValidationErrorResponse|\Litebase\OpenAPI\Model\ErrorResponse
      */
-    public function updateUser($username, $create_access_key_request, string $contentType = self::contentTypes['updateUser'][0])
+    public function updateUser($username, $userUpdateRequest, string $contentType = self::contentTypes['updateUser'][0])
     {
-        list($response) = $this->updateUserWithHttpInfo($username, $create_access_key_request, $contentType);
+        list($response) = $this->updateUserWithHttpInfo($username, $userUpdateRequest, $contentType);
         return $response;
     }
 
@@ -1374,16 +1374,16 @@ class UserApi
      * Update an existing user
      *
      * @param  string $username The username parameter (required)
-     * @param  \Litebase\OpenAPI\Model\CreateAccessKeyRequest $create_access_key_request User update data (required)
+     * @param  \Litebase\OpenAPI\Model\UserUpdateRequest $userUpdateRequest User update data (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['updateUser'] to see the possible values for this operation
      *
      * @throws \Litebase\OpenAPI\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
-     * @return array of \Litebase\OpenAPI\Model\GetUser200Response|\Litebase\OpenAPI\Model\ErrorResponse|\Litebase\OpenAPI\Model\ErrorResponse|\Litebase\OpenAPI\Model\ErrorResponse|\Litebase\OpenAPI\Model\ValidationErrorResponse|\Litebase\OpenAPI\Model\ErrorResponse, HTTP status code, HTTP response headers (array of strings)
+     * @return array of \Litebase\OpenAPI\Model\UpdateUser200Response|\Litebase\OpenAPI\Model\ErrorResponse|\Litebase\OpenAPI\Model\ErrorResponse|\Litebase\OpenAPI\Model\ErrorResponse|\Litebase\OpenAPI\Model\ValidationErrorResponse|\Litebase\OpenAPI\Model\ErrorResponse, HTTP status code, HTTP response headers (array of strings)
      */
-    public function updateUserWithHttpInfo($username, $create_access_key_request, string $contentType = self::contentTypes['updateUser'][0])
+    public function updateUserWithHttpInfo($username, $userUpdateRequest, string $contentType = self::contentTypes['updateUser'][0])
     {
-        $request = $this->updateUserRequest($username, $create_access_key_request, $contentType);
+        $request = $this->updateUserRequest($username, $userUpdateRequest, $contentType);
 
         try {
             $options = $this->createHttpClientOption();
@@ -1411,7 +1411,7 @@ class UserApi
             switch($statusCode) {
                 case 200:
                     return $this->handleResponseWithDataType(
-                        '\Litebase\OpenAPI\Model\GetUser200Response',
+                        '\Litebase\OpenAPI\Model\UpdateUser200Response',
                         $request,
                         $response,
                     );
@@ -1463,7 +1463,7 @@ class UserApi
             }
 
             return $this->handleResponseWithDataType(
-                '\Litebase\OpenAPI\Model\GetUser200Response',
+                '\Litebase\OpenAPI\Model\UpdateUser200Response',
                 $request,
                 $response,
             );
@@ -1472,7 +1472,7 @@ class UserApi
                 case 200:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\Litebase\OpenAPI\Model\GetUser200Response',
+                        '\Litebase\OpenAPI\Model\UpdateUser200Response',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -1530,15 +1530,15 @@ class UserApi
      * Update an existing user
      *
      * @param  string $username The username parameter (required)
-     * @param  \Litebase\OpenAPI\Model\CreateAccessKeyRequest $create_access_key_request User update data (required)
+     * @param  \Litebase\OpenAPI\Model\UserUpdateRequest $userUpdateRequest User update data (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['updateUser'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function updateUserAsync($username, $create_access_key_request, string $contentType = self::contentTypes['updateUser'][0])
+    public function updateUserAsync($username, $userUpdateRequest, string $contentType = self::contentTypes['updateUser'][0])
     {
-        return $this->updateUserAsyncWithHttpInfo($username, $create_access_key_request, $contentType)
+        return $this->updateUserAsyncWithHttpInfo($username, $userUpdateRequest, $contentType)
             ->then(
                 function ($response) {
                     return $response[0];
@@ -1552,16 +1552,16 @@ class UserApi
      * Update an existing user
      *
      * @param  string $username The username parameter (required)
-     * @param  \Litebase\OpenAPI\Model\CreateAccessKeyRequest $create_access_key_request User update data (required)
+     * @param  \Litebase\OpenAPI\Model\UserUpdateRequest $userUpdateRequest User update data (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['updateUser'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function updateUserAsyncWithHttpInfo($username, $create_access_key_request, string $contentType = self::contentTypes['updateUser'][0])
+    public function updateUserAsyncWithHttpInfo($username, $userUpdateRequest, string $contentType = self::contentTypes['updateUser'][0])
     {
-        $returnType = '\Litebase\OpenAPI\Model\GetUser200Response';
-        $request = $this->updateUserRequest($username, $create_access_key_request, $contentType);
+        $returnType = '\Litebase\OpenAPI\Model\UpdateUser200Response';
+        $request = $this->updateUserRequest($username, $userUpdateRequest, $contentType);
 
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
@@ -1603,13 +1603,13 @@ class UserApi
      * Create request for operation 'updateUser'
      *
      * @param  string $username The username parameter (required)
-     * @param  \Litebase\OpenAPI\Model\CreateAccessKeyRequest $create_access_key_request User update data (required)
+     * @param  \Litebase\OpenAPI\Model\UserUpdateRequest $userUpdateRequest User update data (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['updateUser'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
      */
-    public function updateUserRequest($username, $create_access_key_request, string $contentType = self::contentTypes['updateUser'][0])
+    public function updateUserRequest($username, $userUpdateRequest, string $contentType = self::contentTypes['updateUser'][0])
     {
 
         // verify the required parameter 'username' is set
@@ -1619,10 +1619,10 @@ class UserApi
             );
         }
 
-        // verify the required parameter 'create_access_key_request' is set
-        if ($create_access_key_request === null || (is_array($create_access_key_request) && count($create_access_key_request) === 0)) {
+        // verify the required parameter 'userUpdateRequest' is set
+        if ($userUpdateRequest === null || (is_array($userUpdateRequest) && count($userUpdateRequest) === 0)) {
             throw new \InvalidArgumentException(
-                'Missing the required parameter $create_access_key_request when calling updateUser'
+                'Missing the required parameter $userUpdateRequest when calling updateUser'
             );
         }
 
@@ -1653,12 +1653,12 @@ class UserApi
         );
 
         // for model (json/xml)
-        if (isset($create_access_key_request)) {
+        if (isset($userUpdateRequest)) {
             if (stripos($headers['Content-Type'], 'application/json') !== false) {
                 # if Content-Type contains "application/json", json_encode the body
-                $httpBody = \GuzzleHttp\Utils::jsonEncode(ObjectSerializer::sanitizeForSerialization($create_access_key_request));
+                $httpBody = \GuzzleHttp\Utils::jsonEncode(ObjectSerializer::sanitizeForSerialization($userUpdateRequest));
             } else {
-                $httpBody = $create_access_key_request;
+                $httpBody = $userUpdateRequest;
             }
         } elseif (count($formParams) > 0) {
             if ($multipart) {
@@ -1706,7 +1706,7 @@ class UserApi
 
         $query = ObjectSerializer::buildQuery($queryParams);
         return new Request(
-            'PUT',
+            'PATCH',
             $resourcePath . ($query ? "?{$query}" : ''),
             $headers,
             $httpBody

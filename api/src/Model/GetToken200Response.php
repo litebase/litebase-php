@@ -22,7 +22,7 @@ class GetToken200Response implements ModelInterface, ArrayAccess, \JsonSerializa
       * @var string[]
       */
     protected static $openAPITypes = [
-        'data' => '\Litebase\OpenAPI\Model\GetToken200ResponseData',
+        'data' => '\Litebase\OpenAPI\Model\TokenControllerShowResponse',
         'message' => 'string',
         'status' => 'string'
     ];
@@ -280,7 +280,7 @@ class GetToken200Response implements ModelInterface, ArrayAccess, \JsonSerializa
     /**
      * Gets data
      *
-     * @return \Litebase\OpenAPI\Model\GetToken200ResponseData
+     * @return \Litebase\OpenAPI\Model\TokenControllerShowResponse
      */
     public function getData()
     {
@@ -290,7 +290,7 @@ class GetToken200Response implements ModelInterface, ArrayAccess, \JsonSerializa
     /**
      * Sets data
      *
-     * @param \Litebase\OpenAPI\Model\GetToken200ResponseData $data data
+     * @param \Litebase\OpenAPI\Model\TokenControllerShowResponse $data data
      *
      * @return self
      */

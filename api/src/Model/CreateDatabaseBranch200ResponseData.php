@@ -22,14 +22,15 @@ class CreateDatabaseBranch200ResponseData implements ModelInterface, ArrayAccess
       * @var string[]
       */
     protected static $openAPITypes = [
-        'created_at' => '\DateTime',
-        'database_branch_id' => 'string',
-        'database_id' => 'string',
+        'createdAt' => '\DateTime',
+        'databaseBranchId' => 'string',
+        'databaseId' => 'string',
+        'databaseName' => 'string',
         'id' => 'int',
         'name' => 'string',
-        'parent_name' => 'string',
+        'parentName' => 'string',
         'settings' => '\Litebase\OpenAPI\Model\BranchSettings',
-        'updated_at' => '\DateTime'
+        'updatedAt' => '\DateTime'
     ];
 
     /**
@@ -40,14 +41,15 @@ class CreateDatabaseBranch200ResponseData implements ModelInterface, ArrayAccess
       * @psalm-var array<string, string|null>
       */
     protected static $openAPIFormats = [
-        'created_at' => 'date-time',
-        'database_branch_id' => null,
-        'database_id' => null,
+        'createdAt' => 'date-time',
+        'databaseBranchId' => null,
+        'databaseId' => null,
+        'databaseName' => null,
         'id' => null,
         'name' => null,
-        'parent_name' => null,
+        'parentName' => null,
         'settings' => null,
-        'updated_at' => 'date-time'
+        'updatedAt' => 'date-time'
     ];
 
     /**
@@ -56,14 +58,15 @@ class CreateDatabaseBranch200ResponseData implements ModelInterface, ArrayAccess
       * @var boolean[]
       */
     protected static array $openAPINullables = [
-        'created_at' => false,
-        'database_branch_id' => false,
-        'database_id' => false,
+        'createdAt' => false,
+        'databaseBranchId' => false,
+        'databaseId' => false,
+        'databaseName' => false,
         'id' => false,
         'name' => false,
-        'parent_name' => false,
+        'parentName' => false,
         'settings' => false,
-        'updated_at' => false
+        'updatedAt' => false
     ];
 
     /**
@@ -152,14 +155,15 @@ class CreateDatabaseBranch200ResponseData implements ModelInterface, ArrayAccess
      * @var string[]
      */
     protected static $attributeMap = [
-        'created_at' => 'created_at',
-        'database_branch_id' => 'database_branch_id',
-        'database_id' => 'database_id',
+        'createdAt' => 'createdAt',
+        'databaseBranchId' => 'databaseBranchId',
+        'databaseId' => 'databaseId',
+        'databaseName' => 'databaseName',
         'id' => 'id',
         'name' => 'name',
-        'parent_name' => 'parent_name',
+        'parentName' => 'parentName',
         'settings' => 'settings',
-        'updated_at' => 'updated_at'
+        'updatedAt' => 'updatedAt'
     ];
 
     /**
@@ -168,14 +172,15 @@ class CreateDatabaseBranch200ResponseData implements ModelInterface, ArrayAccess
      * @var string[]
      */
     protected static $setters = [
-        'created_at' => 'setCreatedAt',
-        'database_branch_id' => 'setDatabaseBranchId',
-        'database_id' => 'setDatabaseId',
+        'createdAt' => 'setCreatedAt',
+        'databaseBranchId' => 'setDatabaseBranchId',
+        'databaseId' => 'setDatabaseId',
+        'databaseName' => 'setDatabaseName',
         'id' => 'setId',
         'name' => 'setName',
-        'parent_name' => 'setParentName',
+        'parentName' => 'setParentName',
         'settings' => 'setSettings',
-        'updated_at' => 'setUpdatedAt'
+        'updatedAt' => 'setUpdatedAt'
     ];
 
     /**
@@ -184,14 +189,15 @@ class CreateDatabaseBranch200ResponseData implements ModelInterface, ArrayAccess
      * @var string[]
      */
     protected static $getters = [
-        'created_at' => 'getCreatedAt',
-        'database_branch_id' => 'getDatabaseBranchId',
-        'database_id' => 'getDatabaseId',
+        'createdAt' => 'getCreatedAt',
+        'databaseBranchId' => 'getDatabaseBranchId',
+        'databaseId' => 'getDatabaseId',
+        'databaseName' => 'getDatabaseName',
         'id' => 'getId',
         'name' => 'getName',
-        'parent_name' => 'getParentName',
+        'parentName' => 'getParentName',
         'settings' => 'getSettings',
-        'updated_at' => 'getUpdatedAt'
+        'updatedAt' => 'getUpdatedAt'
     ];
 
     /**
@@ -251,14 +257,15 @@ class CreateDatabaseBranch200ResponseData implements ModelInterface, ArrayAccess
      */
     public function __construct(?array $data = null)
     {
-        $this->setIfExists('created_at', $data ?? [], null);
-        $this->setIfExists('database_branch_id', $data ?? [], null);
-        $this->setIfExists('database_id', $data ?? [], null);
+        $this->setIfExists('createdAt', $data ?? [], null);
+        $this->setIfExists('databaseBranchId', $data ?? [], null);
+        $this->setIfExists('databaseId', $data ?? [], null);
+        $this->setIfExists('databaseName', $data ?? [], null);
         $this->setIfExists('id', $data ?? [], null);
         $this->setIfExists('name', $data ?? [], null);
-        $this->setIfExists('parent_name', $data ?? [], null);
+        $this->setIfExists('parentName', $data ?? [], null);
         $this->setIfExists('settings', $data ?? [], null);
-        $this->setIfExists('updated_at', $data ?? [], null);
+        $this->setIfExists('updatedAt', $data ?? [], null);
     }
 
     /**
@@ -304,82 +311,109 @@ class CreateDatabaseBranch200ResponseData implements ModelInterface, ArrayAccess
 
 
     /**
-     * Gets created_at
+     * Gets createdAt
      *
      * @return \DateTime|null
      */
     public function getCreatedAt()
     {
-        return $this->container['created_at'];
+        return $this->container['createdAt'];
     }
 
     /**
-     * Sets created_at
+     * Sets createdAt
      *
-     * @param \DateTime|null $created_at Creation timestamp
+     * @param \DateTime|null $createdAt Creation timestamp
      *
      * @return self
      */
-    public function setCreatedAt($created_at)
+    public function setCreatedAt($createdAt)
     {
-        if (is_null($created_at)) {
-            throw new \InvalidArgumentException('non-nullable created_at cannot be null');
+        if (is_null($createdAt)) {
+            throw new \InvalidArgumentException('non-nullable createdAt cannot be null');
         }
-        $this->container['created_at'] = $created_at;
+        $this->container['createdAt'] = $createdAt;
 
         return $this;
     }
 
     /**
-     * Gets database_branch_id
+     * Gets databaseBranchId
      *
      * @return string|null
      */
     public function getDatabaseBranchId()
     {
-        return $this->container['database_branch_id'];
+        return $this->container['databaseBranchId'];
     }
 
     /**
-     * Sets database_branch_id
+     * Sets databaseBranchId
      *
-     * @param string|null $database_branch_id database_branch_id
+     * @param string|null $databaseBranchId databaseBranchId
      *
      * @return self
      */
-    public function setDatabaseBranchId($database_branch_id)
+    public function setDatabaseBranchId($databaseBranchId)
     {
-        if (is_null($database_branch_id)) {
-            throw new \InvalidArgumentException('non-nullable database_branch_id cannot be null');
+        if (is_null($databaseBranchId)) {
+            throw new \InvalidArgumentException('non-nullable databaseBranchId cannot be null');
         }
-        $this->container['database_branch_id'] = $database_branch_id;
+        $this->container['databaseBranchId'] = $databaseBranchId;
 
         return $this;
     }
 
     /**
-     * Gets database_id
+     * Gets databaseId
      *
      * @return string|null
      */
     public function getDatabaseId()
     {
-        return $this->container['database_id'];
+        return $this->container['databaseId'];
     }
 
     /**
-     * Sets database_id
+     * Sets databaseId
      *
-     * @param string|null $database_id database_id
+     * @param string|null $databaseId databaseId
      *
      * @return self
      */
-    public function setDatabaseId($database_id)
+    public function setDatabaseId($databaseId)
     {
-        if (is_null($database_id)) {
-            throw new \InvalidArgumentException('non-nullable database_id cannot be null');
+        if (is_null($databaseId)) {
+            throw new \InvalidArgumentException('non-nullable databaseId cannot be null');
         }
-        $this->container['database_id'] = $database_id;
+        $this->container['databaseId'] = $databaseId;
+
+        return $this;
+    }
+
+    /**
+     * Gets databaseName
+     *
+     * @return string|null
+     */
+    public function getDatabaseName()
+    {
+        return $this->container['databaseName'];
+    }
+
+    /**
+     * Sets databaseName
+     *
+     * @param string|null $databaseName databaseName
+     *
+     * @return self
+     */
+    public function setDatabaseName($databaseName)
+    {
+        if (is_null($databaseName)) {
+            throw new \InvalidArgumentException('non-nullable databaseName cannot be null');
+        }
+        $this->container['databaseName'] = $databaseName;
 
         return $this;
     }
@@ -439,28 +473,28 @@ class CreateDatabaseBranch200ResponseData implements ModelInterface, ArrayAccess
     }
 
     /**
-     * Gets parent_name
+     * Gets parentName
      *
      * @return string|null
      */
     public function getParentName()
     {
-        return $this->container['parent_name'];
+        return $this->container['parentName'];
     }
 
     /**
-     * Sets parent_name
+     * Sets parentName
      *
-     * @param string|null $parent_name parent_name
+     * @param string|null $parentName parentName
      *
      * @return self
      */
-    public function setParentName($parent_name)
+    public function setParentName($parentName)
     {
-        if (is_null($parent_name)) {
-            throw new \InvalidArgumentException('non-nullable parent_name cannot be null');
+        if (is_null($parentName)) {
+            throw new \InvalidArgumentException('non-nullable parentName cannot be null');
         }
-        $this->container['parent_name'] = $parent_name;
+        $this->container['parentName'] = $parentName;
 
         return $this;
     }
@@ -493,28 +527,28 @@ class CreateDatabaseBranch200ResponseData implements ModelInterface, ArrayAccess
     }
 
     /**
-     * Gets updated_at
+     * Gets updatedAt
      *
      * @return \DateTime|null
      */
     public function getUpdatedAt()
     {
-        return $this->container['updated_at'];
+        return $this->container['updatedAt'];
     }
 
     /**
-     * Sets updated_at
+     * Sets updatedAt
      *
-     * @param \DateTime|null $updated_at Last update timestamp
+     * @param \DateTime|null $updatedAt Last update timestamp
      *
      * @return self
      */
-    public function setUpdatedAt($updated_at)
+    public function setUpdatedAt($updatedAt)
     {
-        if (is_null($updated_at)) {
-            throw new \InvalidArgumentException('non-nullable updated_at cannot be null');
+        if (is_null($updatedAt)) {
+            throw new \InvalidArgumentException('non-nullable updatedAt cannot be null');
         }
-        $this->container['updated_at'] = $updated_at;
+        $this->container['updatedAt'] = $updatedAt;
 
         return $this;
     }

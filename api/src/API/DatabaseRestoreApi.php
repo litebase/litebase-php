@@ -4,7 +4,7 @@
  *
  * Litebase Server OpenAPI specification
  *
- * The version of the OpenAPI document: 1.0.0
+ * The version of the OpenAPI document: 0.5.0
  */
 
 
@@ -109,18 +109,18 @@ class DatabaseRestoreApi
      *
      * Create a new database restore
      *
-     * @param  string $database_name The databaseName parameter (required)
-     * @param  string $branch_name The branchName parameter (required)
-     * @param  \Litebase\OpenAPI\Model\CreateDatabaseRestoreRequest $create_database_restore_request Database restore creation data (required)
+     * @param  string $databaseName The databaseName parameter (required)
+     * @param  string $branchName The branchName parameter (required)
+     * @param  \Litebase\OpenAPI\Model\DatabaseRestoreRequest $databaseRestoreRequest Database restore creation data (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['createDatabaseRestore'] to see the possible values for this operation
      *
      * @throws \Litebase\OpenAPI\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
      * @return \Litebase\OpenAPI\Model\CreateDatabaseRestore200Response|\Litebase\OpenAPI\Model\ErrorResponse|\Litebase\OpenAPI\Model\ErrorResponse|\Litebase\OpenAPI\Model\ValidationErrorResponse|\Litebase\OpenAPI\Model\ErrorResponse
      */
-    public function createDatabaseRestore($database_name, $branch_name, $create_database_restore_request, string $contentType = self::contentTypes['createDatabaseRestore'][0])
+    public function createDatabaseRestore($databaseName, $branchName, $databaseRestoreRequest, string $contentType = self::contentTypes['createDatabaseRestore'][0])
     {
-        list($response) = $this->createDatabaseRestoreWithHttpInfo($database_name, $branch_name, $create_database_restore_request, $contentType);
+        list($response) = $this->createDatabaseRestoreWithHttpInfo($databaseName, $branchName, $databaseRestoreRequest, $contentType);
         return $response;
     }
 
@@ -129,18 +129,18 @@ class DatabaseRestoreApi
      *
      * Create a new database restore
      *
-     * @param  string $database_name The databaseName parameter (required)
-     * @param  string $branch_name The branchName parameter (required)
-     * @param  \Litebase\OpenAPI\Model\CreateDatabaseRestoreRequest $create_database_restore_request Database restore creation data (required)
+     * @param  string $databaseName The databaseName parameter (required)
+     * @param  string $branchName The branchName parameter (required)
+     * @param  \Litebase\OpenAPI\Model\DatabaseRestoreRequest $databaseRestoreRequest Database restore creation data (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['createDatabaseRestore'] to see the possible values for this operation
      *
      * @throws \Litebase\OpenAPI\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
      * @return array of \Litebase\OpenAPI\Model\CreateDatabaseRestore200Response|\Litebase\OpenAPI\Model\ErrorResponse|\Litebase\OpenAPI\Model\ErrorResponse|\Litebase\OpenAPI\Model\ValidationErrorResponse|\Litebase\OpenAPI\Model\ErrorResponse, HTTP status code, HTTP response headers (array of strings)
      */
-    public function createDatabaseRestoreWithHttpInfo($database_name, $branch_name, $create_database_restore_request, string $contentType = self::contentTypes['createDatabaseRestore'][0])
+    public function createDatabaseRestoreWithHttpInfo($databaseName, $branchName, $databaseRestoreRequest, string $contentType = self::contentTypes['createDatabaseRestore'][0])
     {
-        $request = $this->createDatabaseRestoreRequest($database_name, $branch_name, $create_database_restore_request, $contentType);
+        $request = $this->createDatabaseRestoreRequest($databaseName, $branchName, $databaseRestoreRequest, $contentType);
 
         try {
             $options = $this->createHttpClientOption();
@@ -272,17 +272,17 @@ class DatabaseRestoreApi
      *
      * Create a new database restore
      *
-     * @param  string $database_name The databaseName parameter (required)
-     * @param  string $branch_name The branchName parameter (required)
-     * @param  \Litebase\OpenAPI\Model\CreateDatabaseRestoreRequest $create_database_restore_request Database restore creation data (required)
+     * @param  string $databaseName The databaseName parameter (required)
+     * @param  string $branchName The branchName parameter (required)
+     * @param  \Litebase\OpenAPI\Model\DatabaseRestoreRequest $databaseRestoreRequest Database restore creation data (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['createDatabaseRestore'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function createDatabaseRestoreAsync($database_name, $branch_name, $create_database_restore_request, string $contentType = self::contentTypes['createDatabaseRestore'][0])
+    public function createDatabaseRestoreAsync($databaseName, $branchName, $databaseRestoreRequest, string $contentType = self::contentTypes['createDatabaseRestore'][0])
     {
-        return $this->createDatabaseRestoreAsyncWithHttpInfo($database_name, $branch_name, $create_database_restore_request, $contentType)
+        return $this->createDatabaseRestoreAsyncWithHttpInfo($databaseName, $branchName, $databaseRestoreRequest, $contentType)
             ->then(
                 function ($response) {
                     return $response[0];
@@ -295,18 +295,18 @@ class DatabaseRestoreApi
      *
      * Create a new database restore
      *
-     * @param  string $database_name The databaseName parameter (required)
-     * @param  string $branch_name The branchName parameter (required)
-     * @param  \Litebase\OpenAPI\Model\CreateDatabaseRestoreRequest $create_database_restore_request Database restore creation data (required)
+     * @param  string $databaseName The databaseName parameter (required)
+     * @param  string $branchName The branchName parameter (required)
+     * @param  \Litebase\OpenAPI\Model\DatabaseRestoreRequest $databaseRestoreRequest Database restore creation data (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['createDatabaseRestore'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function createDatabaseRestoreAsyncWithHttpInfo($database_name, $branch_name, $create_database_restore_request, string $contentType = self::contentTypes['createDatabaseRestore'][0])
+    public function createDatabaseRestoreAsyncWithHttpInfo($databaseName, $branchName, $databaseRestoreRequest, string $contentType = self::contentTypes['createDatabaseRestore'][0])
     {
         $returnType = '\Litebase\OpenAPI\Model\CreateDatabaseRestore200Response';
-        $request = $this->createDatabaseRestoreRequest($database_name, $branch_name, $create_database_restore_request, $contentType);
+        $request = $this->createDatabaseRestoreRequest($databaseName, $branchName, $databaseRestoreRequest, $contentType);
 
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
@@ -347,35 +347,35 @@ class DatabaseRestoreApi
     /**
      * Create request for operation 'createDatabaseRestore'
      *
-     * @param  string $database_name The databaseName parameter (required)
-     * @param  string $branch_name The branchName parameter (required)
-     * @param  \Litebase\OpenAPI\Model\CreateDatabaseRestoreRequest $create_database_restore_request Database restore creation data (required)
+     * @param  string $databaseName The databaseName parameter (required)
+     * @param  string $branchName The branchName parameter (required)
+     * @param  \Litebase\OpenAPI\Model\DatabaseRestoreRequest $databaseRestoreRequest Database restore creation data (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['createDatabaseRestore'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
      */
-    public function createDatabaseRestoreRequest($database_name, $branch_name, $create_database_restore_request, string $contentType = self::contentTypes['createDatabaseRestore'][0])
+    public function createDatabaseRestoreRequest($databaseName, $branchName, $databaseRestoreRequest, string $contentType = self::contentTypes['createDatabaseRestore'][0])
     {
 
-        // verify the required parameter 'database_name' is set
-        if ($database_name === null || (is_array($database_name) && count($database_name) === 0)) {
+        // verify the required parameter 'databaseName' is set
+        if ($databaseName === null || (is_array($databaseName) && count($databaseName) === 0)) {
             throw new \InvalidArgumentException(
-                'Missing the required parameter $database_name when calling createDatabaseRestore'
+                'Missing the required parameter $databaseName when calling createDatabaseRestore'
             );
         }
 
-        // verify the required parameter 'branch_name' is set
-        if ($branch_name === null || (is_array($branch_name) && count($branch_name) === 0)) {
+        // verify the required parameter 'branchName' is set
+        if ($branchName === null || (is_array($branchName) && count($branchName) === 0)) {
             throw new \InvalidArgumentException(
-                'Missing the required parameter $branch_name when calling createDatabaseRestore'
+                'Missing the required parameter $branchName when calling createDatabaseRestore'
             );
         }
 
-        // verify the required parameter 'create_database_restore_request' is set
-        if ($create_database_restore_request === null || (is_array($create_database_restore_request) && count($create_database_restore_request) === 0)) {
+        // verify the required parameter 'databaseRestoreRequest' is set
+        if ($databaseRestoreRequest === null || (is_array($databaseRestoreRequest) && count($databaseRestoreRequest) === 0)) {
             throw new \InvalidArgumentException(
-                'Missing the required parameter $create_database_restore_request when calling createDatabaseRestore'
+                'Missing the required parameter $databaseRestoreRequest when calling createDatabaseRestore'
             );
         }
 
@@ -390,18 +390,18 @@ class DatabaseRestoreApi
 
 
         // path params
-        if ($database_name !== null) {
+        if ($databaseName !== null) {
             $resourcePath = str_replace(
                 '{' . 'databaseName' . '}',
-                ObjectSerializer::toPathValue($database_name),
+                ObjectSerializer::toPathValue($databaseName),
                 $resourcePath
             );
         }
         // path params
-        if ($branch_name !== null) {
+        if ($branchName !== null) {
             $resourcePath = str_replace(
                 '{' . 'branchName' . '}',
-                ObjectSerializer::toPathValue($branch_name),
+                ObjectSerializer::toPathValue($branchName),
                 $resourcePath
             );
         }
@@ -414,12 +414,12 @@ class DatabaseRestoreApi
         );
 
         // for model (json/xml)
-        if (isset($create_database_restore_request)) {
+        if (isset($databaseRestoreRequest)) {
             if (stripos($headers['Content-Type'], 'application/json') !== false) {
                 # if Content-Type contains "application/json", json_encode the body
-                $httpBody = \GuzzleHttp\Utils::jsonEncode(ObjectSerializer::sanitizeForSerialization($create_database_restore_request));
+                $httpBody = \GuzzleHttp\Utils::jsonEncode(ObjectSerializer::sanitizeForSerialization($databaseRestoreRequest));
             } else {
-                $httpBody = $create_database_restore_request;
+                $httpBody = $databaseRestoreRequest;
             }
         } elseif (count($formParams) > 0) {
             if ($multipart) {

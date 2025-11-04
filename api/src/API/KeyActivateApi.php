@@ -4,7 +4,7 @@
  *
  * Litebase Server OpenAPI specification
  *
- * The version of the OpenAPI document: 1.0.0
+ * The version of the OpenAPI document: 0.5.0
  */
 
 
@@ -109,16 +109,16 @@ class KeyActivateApi
      *
      * Create a new key activate
      *
-     * @param  \Litebase\OpenAPI\Model\CreateKeyActivateRequest $create_key_activate_request Key activate creation data (required)
+     * @param  \Litebase\OpenAPI\Model\KeyActivateRequest $keyActivateRequest Key activate creation data (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['createKeyActivate'] to see the possible values for this operation
      *
      * @throws \Litebase\OpenAPI\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
      * @return \Litebase\OpenAPI\Model\CreateKeyActivate200Response|\Litebase\OpenAPI\Model\ErrorResponse|\Litebase\OpenAPI\Model\ErrorResponse|\Litebase\OpenAPI\Model\ValidationErrorResponse|\Litebase\OpenAPI\Model\ErrorResponse
      */
-    public function createKeyActivate($create_key_activate_request, string $contentType = self::contentTypes['createKeyActivate'][0])
+    public function createKeyActivate($keyActivateRequest, string $contentType = self::contentTypes['createKeyActivate'][0])
     {
-        list($response) = $this->createKeyActivateWithHttpInfo($create_key_activate_request, $contentType);
+        list($response) = $this->createKeyActivateWithHttpInfo($keyActivateRequest, $contentType);
         return $response;
     }
 
@@ -127,16 +127,16 @@ class KeyActivateApi
      *
      * Create a new key activate
      *
-     * @param  \Litebase\OpenAPI\Model\CreateKeyActivateRequest $create_key_activate_request Key activate creation data (required)
+     * @param  \Litebase\OpenAPI\Model\KeyActivateRequest $keyActivateRequest Key activate creation data (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['createKeyActivate'] to see the possible values for this operation
      *
      * @throws \Litebase\OpenAPI\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
      * @return array of \Litebase\OpenAPI\Model\CreateKeyActivate200Response|\Litebase\OpenAPI\Model\ErrorResponse|\Litebase\OpenAPI\Model\ErrorResponse|\Litebase\OpenAPI\Model\ValidationErrorResponse|\Litebase\OpenAPI\Model\ErrorResponse, HTTP status code, HTTP response headers (array of strings)
      */
-    public function createKeyActivateWithHttpInfo($create_key_activate_request, string $contentType = self::contentTypes['createKeyActivate'][0])
+    public function createKeyActivateWithHttpInfo($keyActivateRequest, string $contentType = self::contentTypes['createKeyActivate'][0])
     {
-        $request = $this->createKeyActivateRequest($create_key_activate_request, $contentType);
+        $request = $this->createKeyActivateRequest($keyActivateRequest, $contentType);
 
         try {
             $options = $this->createHttpClientOption();
@@ -268,15 +268,15 @@ class KeyActivateApi
      *
      * Create a new key activate
      *
-     * @param  \Litebase\OpenAPI\Model\CreateKeyActivateRequest $create_key_activate_request Key activate creation data (required)
+     * @param  \Litebase\OpenAPI\Model\KeyActivateRequest $keyActivateRequest Key activate creation data (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['createKeyActivate'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function createKeyActivateAsync($create_key_activate_request, string $contentType = self::contentTypes['createKeyActivate'][0])
+    public function createKeyActivateAsync($keyActivateRequest, string $contentType = self::contentTypes['createKeyActivate'][0])
     {
-        return $this->createKeyActivateAsyncWithHttpInfo($create_key_activate_request, $contentType)
+        return $this->createKeyActivateAsyncWithHttpInfo($keyActivateRequest, $contentType)
             ->then(
                 function ($response) {
                     return $response[0];
@@ -289,16 +289,16 @@ class KeyActivateApi
      *
      * Create a new key activate
      *
-     * @param  \Litebase\OpenAPI\Model\CreateKeyActivateRequest $create_key_activate_request Key activate creation data (required)
+     * @param  \Litebase\OpenAPI\Model\KeyActivateRequest $keyActivateRequest Key activate creation data (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['createKeyActivate'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function createKeyActivateAsyncWithHttpInfo($create_key_activate_request, string $contentType = self::contentTypes['createKeyActivate'][0])
+    public function createKeyActivateAsyncWithHttpInfo($keyActivateRequest, string $contentType = self::contentTypes['createKeyActivate'][0])
     {
         $returnType = '\Litebase\OpenAPI\Model\CreateKeyActivate200Response';
-        $request = $this->createKeyActivateRequest($create_key_activate_request, $contentType);
+        $request = $this->createKeyActivateRequest($keyActivateRequest, $contentType);
 
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
@@ -339,19 +339,19 @@ class KeyActivateApi
     /**
      * Create request for operation 'createKeyActivate'
      *
-     * @param  \Litebase\OpenAPI\Model\CreateKeyActivateRequest $create_key_activate_request Key activate creation data (required)
+     * @param  \Litebase\OpenAPI\Model\KeyActivateRequest $keyActivateRequest Key activate creation data (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['createKeyActivate'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
      */
-    public function createKeyActivateRequest($create_key_activate_request, string $contentType = self::contentTypes['createKeyActivate'][0])
+    public function createKeyActivateRequest($keyActivateRequest, string $contentType = self::contentTypes['createKeyActivate'][0])
     {
 
-        // verify the required parameter 'create_key_activate_request' is set
-        if ($create_key_activate_request === null || (is_array($create_key_activate_request) && count($create_key_activate_request) === 0)) {
+        // verify the required parameter 'keyActivateRequest' is set
+        if ($keyActivateRequest === null || (is_array($keyActivateRequest) && count($keyActivateRequest) === 0)) {
             throw new \InvalidArgumentException(
-                'Missing the required parameter $create_key_activate_request when calling createKeyActivate'
+                'Missing the required parameter $keyActivateRequest when calling createKeyActivate'
             );
         }
 
@@ -374,12 +374,12 @@ class KeyActivateApi
         );
 
         // for model (json/xml)
-        if (isset($create_key_activate_request)) {
+        if (isset($keyActivateRequest)) {
             if (stripos($headers['Content-Type'], 'application/json') !== false) {
                 # if Content-Type contains "application/json", json_encode the body
-                $httpBody = \GuzzleHttp\Utils::jsonEncode(ObjectSerializer::sanitizeForSerialization($create_key_activate_request));
+                $httpBody = \GuzzleHttp\Utils::jsonEncode(ObjectSerializer::sanitizeForSerialization($keyActivateRequest));
             } else {
-                $httpBody = $create_key_activate_request;
+                $httpBody = $keyActivateRequest;
             }
         } elseif (count($formParams) > 0) {
             if ($multipart) {

@@ -22,11 +22,11 @@ class GetToken200ResponseData implements ModelInterface, ArrayAccess, \JsonSeria
       * @var string[]
       */
     protected static $openAPITypes = [
-        'created_at' => 'string',
+        'createdAt' => 'string',
         'description' => 'string',
         'statements' => '\Litebase\OpenAPI\Model\Statement[]',
-        'token_id' => 'string',
-        'updated_at' => 'string'
+        'tokenId' => 'string',
+        'updatedAt' => 'string'
     ];
 
     /**
@@ -37,11 +37,11 @@ class GetToken200ResponseData implements ModelInterface, ArrayAccess, \JsonSeria
       * @psalm-var array<string, string|null>
       */
     protected static $openAPIFormats = [
-        'created_at' => null,
+        'createdAt' => null,
         'description' => null,
         'statements' => null,
-        'token_id' => null,
-        'updated_at' => null
+        'tokenId' => null,
+        'updatedAt' => null
     ];
 
     /**
@@ -50,11 +50,11 @@ class GetToken200ResponseData implements ModelInterface, ArrayAccess, \JsonSeria
       * @var boolean[]
       */
     protected static array $openAPINullables = [
-        'created_at' => false,
+        'createdAt' => false,
         'description' => false,
         'statements' => false,
-        'token_id' => false,
-        'updated_at' => false
+        'tokenId' => false,
+        'updatedAt' => false
     ];
 
     /**
@@ -143,11 +143,11 @@ class GetToken200ResponseData implements ModelInterface, ArrayAccess, \JsonSeria
      * @var string[]
      */
     protected static $attributeMap = [
-        'created_at' => 'created_at',
+        'createdAt' => 'createdAt',
         'description' => 'description',
         'statements' => 'statements',
-        'token_id' => 'token_id',
-        'updated_at' => 'updated_at'
+        'tokenId' => 'tokenId',
+        'updatedAt' => 'updatedAt'
     ];
 
     /**
@@ -156,11 +156,11 @@ class GetToken200ResponseData implements ModelInterface, ArrayAccess, \JsonSeria
      * @var string[]
      */
     protected static $setters = [
-        'created_at' => 'setCreatedAt',
+        'createdAt' => 'setCreatedAt',
         'description' => 'setDescription',
         'statements' => 'setStatements',
-        'token_id' => 'setTokenId',
-        'updated_at' => 'setUpdatedAt'
+        'tokenId' => 'setTokenId',
+        'updatedAt' => 'setUpdatedAt'
     ];
 
     /**
@@ -169,11 +169,11 @@ class GetToken200ResponseData implements ModelInterface, ArrayAccess, \JsonSeria
      * @var string[]
      */
     protected static $getters = [
-        'created_at' => 'getCreatedAt',
+        'createdAt' => 'getCreatedAt',
         'description' => 'getDescription',
         'statements' => 'getStatements',
-        'token_id' => 'getTokenId',
-        'updated_at' => 'getUpdatedAt'
+        'tokenId' => 'getTokenId',
+        'updatedAt' => 'getUpdatedAt'
     ];
 
     /**
@@ -233,11 +233,11 @@ class GetToken200ResponseData implements ModelInterface, ArrayAccess, \JsonSeria
      */
     public function __construct(?array $data = null)
     {
-        $this->setIfExists('created_at', $data ?? [], null);
+        $this->setIfExists('createdAt', $data ?? [], null);
         $this->setIfExists('description', $data ?? [], null);
         $this->setIfExists('statements', $data ?? [], null);
-        $this->setIfExists('token_id', $data ?? [], null);
-        $this->setIfExists('updated_at', $data ?? [], null);
+        $this->setIfExists('tokenId', $data ?? [], null);
+        $this->setIfExists('updatedAt', $data ?? [], null);
     }
 
     /**
@@ -283,28 +283,28 @@ class GetToken200ResponseData implements ModelInterface, ArrayAccess, \JsonSeria
 
 
     /**
-     * Gets created_at
+     * Gets createdAt
      *
      * @return string|null
      */
     public function getCreatedAt()
     {
-        return $this->container['created_at'];
+        return $this->container['createdAt'];
     }
 
     /**
-     * Sets created_at
+     * Sets createdAt
      *
-     * @param string|null $created_at created_at
+     * @param string|null $createdAt createdAt
      *
      * @return self
      */
-    public function setCreatedAt($created_at)
+    public function setCreatedAt($createdAt)
     {
-        if (is_null($created_at)) {
-            throw new \InvalidArgumentException('non-nullable created_at cannot be null');
+        if (is_null($createdAt)) {
+            throw new \InvalidArgumentException('non-nullable createdAt cannot be null');
         }
-        $this->container['created_at'] = $created_at;
+        $this->container['createdAt'] = $createdAt;
 
         return $this;
     }
@@ -364,55 +364,55 @@ class GetToken200ResponseData implements ModelInterface, ArrayAccess, \JsonSeria
     }
 
     /**
-     * Gets token_id
+     * Gets tokenId
      *
      * @return string|null
      */
     public function getTokenId()
     {
-        return $this->container['token_id'];
+        return $this->container['tokenId'];
     }
 
     /**
-     * Sets token_id
+     * Sets tokenId
      *
-     * @param string|null $token_id token_id
+     * @param string|null $tokenId tokenId
      *
      * @return self
      */
-    public function setTokenId($token_id)
+    public function setTokenId($tokenId)
     {
-        if (is_null($token_id)) {
-            throw new \InvalidArgumentException('non-nullable token_id cannot be null');
+        if (is_null($tokenId)) {
+            throw new \InvalidArgumentException('non-nullable tokenId cannot be null');
         }
-        $this->container['token_id'] = $token_id;
+        $this->container['tokenId'] = $tokenId;
 
         return $this;
     }
 
     /**
-     * Gets updated_at
+     * Gets updatedAt
      *
      * @return string|null
      */
     public function getUpdatedAt()
     {
-        return $this->container['updated_at'];
+        return $this->container['updatedAt'];
     }
 
     /**
-     * Sets updated_at
+     * Sets updatedAt
      *
-     * @param string|null $updated_at updated_at
+     * @param string|null $updatedAt updatedAt
      *
      * @return self
      */
-    public function setUpdatedAt($updated_at)
+    public function setUpdatedAt($updatedAt)
     {
-        if (is_null($updated_at)) {
-            throw new \InvalidArgumentException('non-nullable updated_at cannot be null');
+        if (is_null($updatedAt)) {
+            throw new \InvalidArgumentException('non-nullable updatedAt cannot be null');
         }
-        $this->container['updated_at'] = $updated_at;
+        $this->container['updatedAt'] = $updatedAt;
 
         return $this;
     }

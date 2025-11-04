@@ -22,9 +22,9 @@ class GetDatabaseBackup200ResponseData implements ModelInterface, ArrayAccess, \
       * @var string[]
       */
     protected static $openAPITypes = [
-        'database_branch_id' => 'string',
-        'database_id' => 'string',
-        'restore_point' => '\Litebase\OpenAPI\Model\DatabaseBackupRestorePoint',
+        'databaseBranchId' => 'string',
+        'databaseId' => 'string',
+        'restorePoint' => '\Litebase\OpenAPI\Model\DatabaseBackupRestorePoint',
         'size' => 'int'
     ];
 
@@ -36,9 +36,9 @@ class GetDatabaseBackup200ResponseData implements ModelInterface, ArrayAccess, \
       * @psalm-var array<string, string|null>
       */
     protected static $openAPIFormats = [
-        'database_branch_id' => null,
-        'database_id' => null,
-        'restore_point' => null,
+        'databaseBranchId' => null,
+        'databaseId' => null,
+        'restorePoint' => null,
         'size' => null
     ];
 
@@ -48,9 +48,9 @@ class GetDatabaseBackup200ResponseData implements ModelInterface, ArrayAccess, \
       * @var boolean[]
       */
     protected static array $openAPINullables = [
-        'database_branch_id' => false,
-        'database_id' => false,
-        'restore_point' => false,
+        'databaseBranchId' => false,
+        'databaseId' => false,
+        'restorePoint' => false,
         'size' => false
     ];
 
@@ -140,9 +140,9 @@ class GetDatabaseBackup200ResponseData implements ModelInterface, ArrayAccess, \
      * @var string[]
      */
     protected static $attributeMap = [
-        'database_branch_id' => 'database_branch_id',
-        'database_id' => 'database_id',
-        'restore_point' => 'restore_point',
+        'databaseBranchId' => 'databaseBranchId',
+        'databaseId' => 'databaseId',
+        'restorePoint' => 'restorePoint',
         'size' => 'size'
     ];
 
@@ -152,9 +152,9 @@ class GetDatabaseBackup200ResponseData implements ModelInterface, ArrayAccess, \
      * @var string[]
      */
     protected static $setters = [
-        'database_branch_id' => 'setDatabaseBranchId',
-        'database_id' => 'setDatabaseId',
-        'restore_point' => 'setRestorePoint',
+        'databaseBranchId' => 'setDatabaseBranchId',
+        'databaseId' => 'setDatabaseId',
+        'restorePoint' => 'setRestorePoint',
         'size' => 'setSize'
     ];
 
@@ -164,9 +164,9 @@ class GetDatabaseBackup200ResponseData implements ModelInterface, ArrayAccess, \
      * @var string[]
      */
     protected static $getters = [
-        'database_branch_id' => 'getDatabaseBranchId',
-        'database_id' => 'getDatabaseId',
-        'restore_point' => 'getRestorePoint',
+        'databaseBranchId' => 'getDatabaseBranchId',
+        'databaseId' => 'getDatabaseId',
+        'restorePoint' => 'getRestorePoint',
         'size' => 'getSize'
     ];
 
@@ -227,9 +227,9 @@ class GetDatabaseBackup200ResponseData implements ModelInterface, ArrayAccess, \
      */
     public function __construct(?array $data = null)
     {
-        $this->setIfExists('database_branch_id', $data ?? [], null);
-        $this->setIfExists('database_id', $data ?? [], null);
-        $this->setIfExists('restore_point', $data ?? [], null);
+        $this->setIfExists('databaseBranchId', $data ?? [], null);
+        $this->setIfExists('databaseId', $data ?? [], null);
+        $this->setIfExists('restorePoint', $data ?? [], null);
         $this->setIfExists('size', $data ?? [], null);
     }
 
@@ -276,82 +276,82 @@ class GetDatabaseBackup200ResponseData implements ModelInterface, ArrayAccess, \
 
 
     /**
-     * Gets database_branch_id
+     * Gets databaseBranchId
      *
      * @return string|null
      */
     public function getDatabaseBranchId()
     {
-        return $this->container['database_branch_id'];
+        return $this->container['databaseBranchId'];
     }
 
     /**
-     * Sets database_branch_id
+     * Sets databaseBranchId
      *
-     * @param string|null $database_branch_id database_branch_id
+     * @param string|null $databaseBranchId databaseBranchId
      *
      * @return self
      */
-    public function setDatabaseBranchId($database_branch_id)
+    public function setDatabaseBranchId($databaseBranchId)
     {
-        if (is_null($database_branch_id)) {
-            throw new \InvalidArgumentException('non-nullable database_branch_id cannot be null');
+        if (is_null($databaseBranchId)) {
+            throw new \InvalidArgumentException('non-nullable databaseBranchId cannot be null');
         }
-        $this->container['database_branch_id'] = $database_branch_id;
+        $this->container['databaseBranchId'] = $databaseBranchId;
 
         return $this;
     }
 
     /**
-     * Gets database_id
+     * Gets databaseId
      *
      * @return string|null
      */
     public function getDatabaseId()
     {
-        return $this->container['database_id'];
+        return $this->container['databaseId'];
     }
 
     /**
-     * Sets database_id
+     * Sets databaseId
      *
-     * @param string|null $database_id database_id
+     * @param string|null $databaseId databaseId
      *
      * @return self
      */
-    public function setDatabaseId($database_id)
+    public function setDatabaseId($databaseId)
     {
-        if (is_null($database_id)) {
-            throw new \InvalidArgumentException('non-nullable database_id cannot be null');
+        if (is_null($databaseId)) {
+            throw new \InvalidArgumentException('non-nullable databaseId cannot be null');
         }
-        $this->container['database_id'] = $database_id;
+        $this->container['databaseId'] = $databaseId;
 
         return $this;
     }
 
     /**
-     * Gets restore_point
+     * Gets restorePoint
      *
      * @return \Litebase\OpenAPI\Model\DatabaseBackupRestorePoint|null
      */
     public function getRestorePoint()
     {
-        return $this->container['restore_point'];
+        return $this->container['restorePoint'];
     }
 
     /**
-     * Sets restore_point
+     * Sets restorePoint
      *
-     * @param \Litebase\OpenAPI\Model\DatabaseBackupRestorePoint|null $restore_point restore_point
+     * @param \Litebase\OpenAPI\Model\DatabaseBackupRestorePoint|null $restorePoint restorePoint
      *
      * @return self
      */
-    public function setRestorePoint($restore_point)
+    public function setRestorePoint($restorePoint)
     {
-        if (is_null($restore_point)) {
-            throw new \InvalidArgumentException('non-nullable restore_point cannot be null');
+        if (is_null($restorePoint)) {
+            throw new \InvalidArgumentException('non-nullable restorePoint cannot be null');
         }
-        $this->container['restore_point'] = $restore_point;
+        $this->container['restorePoint'] = $restorePoint;
 
         return $this;
     }

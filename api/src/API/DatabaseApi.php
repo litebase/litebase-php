@@ -4,7 +4,7 @@
  *
  * Litebase Server OpenAPI specification
  *
- * The version of the OpenAPI document: 1.0.0
+ * The version of the OpenAPI document: 0.5.0
  */
 
 
@@ -118,16 +118,16 @@ class DatabaseApi
      *
      * Create a new database
      *
-     * @param  \Litebase\OpenAPI\Model\CreateDatabaseRequest $create_database_request Database creation data (required)
+     * @param  \Litebase\OpenAPI\Model\DatabaseStoreRequest $databaseStoreRequest Database creation data (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['createDatabase'] to see the possible values for this operation
      *
      * @throws \Litebase\OpenAPI\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
      * @return \Litebase\OpenAPI\Model\CreateDatabase200Response|\Litebase\OpenAPI\Model\ErrorResponse|\Litebase\OpenAPI\Model\ErrorResponse|\Litebase\OpenAPI\Model\ValidationErrorResponse|\Litebase\OpenAPI\Model\ErrorResponse
      */
-    public function createDatabase($create_database_request, string $contentType = self::contentTypes['createDatabase'][0])
+    public function createDatabase($databaseStoreRequest, string $contentType = self::contentTypes['createDatabase'][0])
     {
-        list($response) = $this->createDatabaseWithHttpInfo($create_database_request, $contentType);
+        list($response) = $this->createDatabaseWithHttpInfo($databaseStoreRequest, $contentType);
         return $response;
     }
 
@@ -136,16 +136,16 @@ class DatabaseApi
      *
      * Create a new database
      *
-     * @param  \Litebase\OpenAPI\Model\CreateDatabaseRequest $create_database_request Database creation data (required)
+     * @param  \Litebase\OpenAPI\Model\DatabaseStoreRequest $databaseStoreRequest Database creation data (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['createDatabase'] to see the possible values for this operation
      *
      * @throws \Litebase\OpenAPI\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
      * @return array of \Litebase\OpenAPI\Model\CreateDatabase200Response|\Litebase\OpenAPI\Model\ErrorResponse|\Litebase\OpenAPI\Model\ErrorResponse|\Litebase\OpenAPI\Model\ValidationErrorResponse|\Litebase\OpenAPI\Model\ErrorResponse, HTTP status code, HTTP response headers (array of strings)
      */
-    public function createDatabaseWithHttpInfo($create_database_request, string $contentType = self::contentTypes['createDatabase'][0])
+    public function createDatabaseWithHttpInfo($databaseStoreRequest, string $contentType = self::contentTypes['createDatabase'][0])
     {
-        $request = $this->createDatabaseRequest($create_database_request, $contentType);
+        $request = $this->createDatabaseRequest($databaseStoreRequest, $contentType);
 
         try {
             $options = $this->createHttpClientOption();
@@ -277,15 +277,15 @@ class DatabaseApi
      *
      * Create a new database
      *
-     * @param  \Litebase\OpenAPI\Model\CreateDatabaseRequest $create_database_request Database creation data (required)
+     * @param  \Litebase\OpenAPI\Model\DatabaseStoreRequest $databaseStoreRequest Database creation data (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['createDatabase'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function createDatabaseAsync($create_database_request, string $contentType = self::contentTypes['createDatabase'][0])
+    public function createDatabaseAsync($databaseStoreRequest, string $contentType = self::contentTypes['createDatabase'][0])
     {
-        return $this->createDatabaseAsyncWithHttpInfo($create_database_request, $contentType)
+        return $this->createDatabaseAsyncWithHttpInfo($databaseStoreRequest, $contentType)
             ->then(
                 function ($response) {
                     return $response[0];
@@ -298,16 +298,16 @@ class DatabaseApi
      *
      * Create a new database
      *
-     * @param  \Litebase\OpenAPI\Model\CreateDatabaseRequest $create_database_request Database creation data (required)
+     * @param  \Litebase\OpenAPI\Model\DatabaseStoreRequest $databaseStoreRequest Database creation data (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['createDatabase'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function createDatabaseAsyncWithHttpInfo($create_database_request, string $contentType = self::contentTypes['createDatabase'][0])
+    public function createDatabaseAsyncWithHttpInfo($databaseStoreRequest, string $contentType = self::contentTypes['createDatabase'][0])
     {
         $returnType = '\Litebase\OpenAPI\Model\CreateDatabase200Response';
-        $request = $this->createDatabaseRequest($create_database_request, $contentType);
+        $request = $this->createDatabaseRequest($databaseStoreRequest, $contentType);
 
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
@@ -348,19 +348,19 @@ class DatabaseApi
     /**
      * Create request for operation 'createDatabase'
      *
-     * @param  \Litebase\OpenAPI\Model\CreateDatabaseRequest $create_database_request Database creation data (required)
+     * @param  \Litebase\OpenAPI\Model\DatabaseStoreRequest $databaseStoreRequest Database creation data (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['createDatabase'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
      */
-    public function createDatabaseRequest($create_database_request, string $contentType = self::contentTypes['createDatabase'][0])
+    public function createDatabaseRequest($databaseStoreRequest, string $contentType = self::contentTypes['createDatabase'][0])
     {
 
-        // verify the required parameter 'create_database_request' is set
-        if ($create_database_request === null || (is_array($create_database_request) && count($create_database_request) === 0)) {
+        // verify the required parameter 'databaseStoreRequest' is set
+        if ($databaseStoreRequest === null || (is_array($databaseStoreRequest) && count($databaseStoreRequest) === 0)) {
             throw new \InvalidArgumentException(
-                'Missing the required parameter $create_database_request when calling createDatabase'
+                'Missing the required parameter $databaseStoreRequest when calling createDatabase'
             );
         }
 
@@ -383,12 +383,12 @@ class DatabaseApi
         );
 
         // for model (json/xml)
-        if (isset($create_database_request)) {
+        if (isset($databaseStoreRequest)) {
             if (stripos($headers['Content-Type'], 'application/json') !== false) {
                 # if Content-Type contains "application/json", json_encode the body
-                $httpBody = \GuzzleHttp\Utils::jsonEncode(ObjectSerializer::sanitizeForSerialization($create_database_request));
+                $httpBody = \GuzzleHttp\Utils::jsonEncode(ObjectSerializer::sanitizeForSerialization($databaseStoreRequest));
             } else {
-                $httpBody = $create_database_request;
+                $httpBody = $databaseStoreRequest;
             }
         } elseif (count($formParams) > 0) {
             if ($multipart) {
@@ -448,16 +448,16 @@ class DatabaseApi
      *
      * Delete a database
      *
-     * @param  string $database_name The databaseName parameter (required)
+     * @param  string $databaseName The databaseName parameter (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['deleteDatabase'] to see the possible values for this operation
      *
      * @throws \Litebase\OpenAPI\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
      * @return \Litebase\OpenAPI\Model\DeleteDatabase200Response|\Litebase\OpenAPI\Model\ErrorResponse|\Litebase\OpenAPI\Model\ErrorResponse|\Litebase\OpenAPI\Model\ErrorResponse|\Litebase\OpenAPI\Model\ErrorResponse
      */
-    public function deleteDatabase($database_name, string $contentType = self::contentTypes['deleteDatabase'][0])
+    public function deleteDatabase($databaseName, string $contentType = self::contentTypes['deleteDatabase'][0])
     {
-        list($response) = $this->deleteDatabaseWithHttpInfo($database_name, $contentType);
+        list($response) = $this->deleteDatabaseWithHttpInfo($databaseName, $contentType);
         return $response;
     }
 
@@ -466,16 +466,16 @@ class DatabaseApi
      *
      * Delete a database
      *
-     * @param  string $database_name The databaseName parameter (required)
+     * @param  string $databaseName The databaseName parameter (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['deleteDatabase'] to see the possible values for this operation
      *
      * @throws \Litebase\OpenAPI\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
      * @return array of \Litebase\OpenAPI\Model\DeleteDatabase200Response|\Litebase\OpenAPI\Model\ErrorResponse|\Litebase\OpenAPI\Model\ErrorResponse|\Litebase\OpenAPI\Model\ErrorResponse|\Litebase\OpenAPI\Model\ErrorResponse, HTTP status code, HTTP response headers (array of strings)
      */
-    public function deleteDatabaseWithHttpInfo($database_name, string $contentType = self::contentTypes['deleteDatabase'][0])
+    public function deleteDatabaseWithHttpInfo($databaseName, string $contentType = self::contentTypes['deleteDatabase'][0])
     {
-        $request = $this->deleteDatabaseRequest($database_name, $contentType);
+        $request = $this->deleteDatabaseRequest($databaseName, $contentType);
 
         try {
             $options = $this->createHttpClientOption();
@@ -607,15 +607,15 @@ class DatabaseApi
      *
      * Delete a database
      *
-     * @param  string $database_name The databaseName parameter (required)
+     * @param  string $databaseName The databaseName parameter (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['deleteDatabase'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function deleteDatabaseAsync($database_name, string $contentType = self::contentTypes['deleteDatabase'][0])
+    public function deleteDatabaseAsync($databaseName, string $contentType = self::contentTypes['deleteDatabase'][0])
     {
-        return $this->deleteDatabaseAsyncWithHttpInfo($database_name, $contentType)
+        return $this->deleteDatabaseAsyncWithHttpInfo($databaseName, $contentType)
             ->then(
                 function ($response) {
                     return $response[0];
@@ -628,16 +628,16 @@ class DatabaseApi
      *
      * Delete a database
      *
-     * @param  string $database_name The databaseName parameter (required)
+     * @param  string $databaseName The databaseName parameter (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['deleteDatabase'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function deleteDatabaseAsyncWithHttpInfo($database_name, string $contentType = self::contentTypes['deleteDatabase'][0])
+    public function deleteDatabaseAsyncWithHttpInfo($databaseName, string $contentType = self::contentTypes['deleteDatabase'][0])
     {
         $returnType = '\Litebase\OpenAPI\Model\DeleteDatabase200Response';
-        $request = $this->deleteDatabaseRequest($database_name, $contentType);
+        $request = $this->deleteDatabaseRequest($databaseName, $contentType);
 
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
@@ -678,19 +678,19 @@ class DatabaseApi
     /**
      * Create request for operation 'deleteDatabase'
      *
-     * @param  string $database_name The databaseName parameter (required)
+     * @param  string $databaseName The databaseName parameter (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['deleteDatabase'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
      */
-    public function deleteDatabaseRequest($database_name, string $contentType = self::contentTypes['deleteDatabase'][0])
+    public function deleteDatabaseRequest($databaseName, string $contentType = self::contentTypes['deleteDatabase'][0])
     {
 
-        // verify the required parameter 'database_name' is set
-        if ($database_name === null || (is_array($database_name) && count($database_name) === 0)) {
+        // verify the required parameter 'databaseName' is set
+        if ($databaseName === null || (is_array($databaseName) && count($databaseName) === 0)) {
             throw new \InvalidArgumentException(
-                'Missing the required parameter $database_name when calling deleteDatabase'
+                'Missing the required parameter $databaseName when calling deleteDatabase'
             );
         }
 
@@ -705,10 +705,10 @@ class DatabaseApi
 
 
         // path params
-        if ($database_name !== null) {
+        if ($databaseName !== null) {
             $resourcePath = str_replace(
                 '{' . 'databaseName' . '}',
-                ObjectSerializer::toPathValue($database_name),
+                ObjectSerializer::toPathValue($databaseName),
                 $resourcePath
             );
         }
@@ -779,16 +779,16 @@ class DatabaseApi
      *
      * Show details of a specific database
      *
-     * @param  string $database_name The databaseName parameter (required)
+     * @param  string $databaseName The databaseName parameter (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getDatabase'] to see the possible values for this operation
      *
      * @throws \Litebase\OpenAPI\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
      * @return \Litebase\OpenAPI\Model\GetDatabase200Response|\Litebase\OpenAPI\Model\ErrorResponse|\Litebase\OpenAPI\Model\ErrorResponse|\Litebase\OpenAPI\Model\ErrorResponse|\Litebase\OpenAPI\Model\ErrorResponse
      */
-    public function getDatabase($database_name, string $contentType = self::contentTypes['getDatabase'][0])
+    public function getDatabase($databaseName, string $contentType = self::contentTypes['getDatabase'][0])
     {
-        list($response) = $this->getDatabaseWithHttpInfo($database_name, $contentType);
+        list($response) = $this->getDatabaseWithHttpInfo($databaseName, $contentType);
         return $response;
     }
 
@@ -797,16 +797,16 @@ class DatabaseApi
      *
      * Show details of a specific database
      *
-     * @param  string $database_name The databaseName parameter (required)
+     * @param  string $databaseName The databaseName parameter (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getDatabase'] to see the possible values for this operation
      *
      * @throws \Litebase\OpenAPI\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
      * @return array of \Litebase\OpenAPI\Model\GetDatabase200Response|\Litebase\OpenAPI\Model\ErrorResponse|\Litebase\OpenAPI\Model\ErrorResponse|\Litebase\OpenAPI\Model\ErrorResponse|\Litebase\OpenAPI\Model\ErrorResponse, HTTP status code, HTTP response headers (array of strings)
      */
-    public function getDatabaseWithHttpInfo($database_name, string $contentType = self::contentTypes['getDatabase'][0])
+    public function getDatabaseWithHttpInfo($databaseName, string $contentType = self::contentTypes['getDatabase'][0])
     {
-        $request = $this->getDatabaseRequest($database_name, $contentType);
+        $request = $this->getDatabaseRequest($databaseName, $contentType);
 
         try {
             $options = $this->createHttpClientOption();
@@ -938,15 +938,15 @@ class DatabaseApi
      *
      * Show details of a specific database
      *
-     * @param  string $database_name The databaseName parameter (required)
+     * @param  string $databaseName The databaseName parameter (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getDatabase'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function getDatabaseAsync($database_name, string $contentType = self::contentTypes['getDatabase'][0])
+    public function getDatabaseAsync($databaseName, string $contentType = self::contentTypes['getDatabase'][0])
     {
-        return $this->getDatabaseAsyncWithHttpInfo($database_name, $contentType)
+        return $this->getDatabaseAsyncWithHttpInfo($databaseName, $contentType)
             ->then(
                 function ($response) {
                     return $response[0];
@@ -959,16 +959,16 @@ class DatabaseApi
      *
      * Show details of a specific database
      *
-     * @param  string $database_name The databaseName parameter (required)
+     * @param  string $databaseName The databaseName parameter (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getDatabase'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function getDatabaseAsyncWithHttpInfo($database_name, string $contentType = self::contentTypes['getDatabase'][0])
+    public function getDatabaseAsyncWithHttpInfo($databaseName, string $contentType = self::contentTypes['getDatabase'][0])
     {
         $returnType = '\Litebase\OpenAPI\Model\GetDatabase200Response';
-        $request = $this->getDatabaseRequest($database_name, $contentType);
+        $request = $this->getDatabaseRequest($databaseName, $contentType);
 
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
@@ -1009,19 +1009,19 @@ class DatabaseApi
     /**
      * Create request for operation 'getDatabase'
      *
-     * @param  string $database_name The databaseName parameter (required)
+     * @param  string $databaseName The databaseName parameter (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getDatabase'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
      */
-    public function getDatabaseRequest($database_name, string $contentType = self::contentTypes['getDatabase'][0])
+    public function getDatabaseRequest($databaseName, string $contentType = self::contentTypes['getDatabase'][0])
     {
 
-        // verify the required parameter 'database_name' is set
-        if ($database_name === null || (is_array($database_name) && count($database_name) === 0)) {
+        // verify the required parameter 'databaseName' is set
+        if ($databaseName === null || (is_array($databaseName) && count($databaseName) === 0)) {
             throw new \InvalidArgumentException(
-                'Missing the required parameter $database_name when calling getDatabase'
+                'Missing the required parameter $databaseName when calling getDatabase'
             );
         }
 
@@ -1036,10 +1036,10 @@ class DatabaseApi
 
 
         // path params
-        if ($database_name !== null) {
+        if ($databaseName !== null) {
             $resourcePath = str_replace(
                 '{' . 'databaseName' . '}',
-                ObjectSerializer::toPathValue($database_name),
+                ObjectSerializer::toPathValue($databaseName),
                 $resourcePath
             );
         }

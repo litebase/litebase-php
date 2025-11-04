@@ -22,12 +22,12 @@ class CreateAccessKey201ResponseData implements ModelInterface, ArrayAccess, \Js
       * @var string[]
       */
     protected static $openAPITypes = [
-        'access_key_id' => 'string',
-        'access_key_secret' => 'string',
-        'created_at' => 'string',
+        'accessKeyId' => 'string',
+        'accessKeySecret' => 'string',
+        'createdAt' => 'string',
         'description' => 'string',
         'statements' => '\Litebase\OpenAPI\Model\Statement[]',
-        'updated_at' => 'string'
+        'updatedAt' => 'string'
     ];
 
     /**
@@ -38,12 +38,12 @@ class CreateAccessKey201ResponseData implements ModelInterface, ArrayAccess, \Js
       * @psalm-var array<string, string|null>
       */
     protected static $openAPIFormats = [
-        'access_key_id' => null,
-        'access_key_secret' => null,
-        'created_at' => null,
+        'accessKeyId' => null,
+        'accessKeySecret' => null,
+        'createdAt' => null,
         'description' => null,
         'statements' => null,
-        'updated_at' => null
+        'updatedAt' => null
     ];
 
     /**
@@ -52,12 +52,12 @@ class CreateAccessKey201ResponseData implements ModelInterface, ArrayAccess, \Js
       * @var boolean[]
       */
     protected static array $openAPINullables = [
-        'access_key_id' => false,
-        'access_key_secret' => false,
-        'created_at' => false,
+        'accessKeyId' => false,
+        'accessKeySecret' => false,
+        'createdAt' => false,
         'description' => false,
         'statements' => false,
-        'updated_at' => false
+        'updatedAt' => false
     ];
 
     /**
@@ -146,12 +146,12 @@ class CreateAccessKey201ResponseData implements ModelInterface, ArrayAccess, \Js
      * @var string[]
      */
     protected static $attributeMap = [
-        'access_key_id' => 'access_key_id',
-        'access_key_secret' => 'access_key_secret',
-        'created_at' => 'created_at',
+        'accessKeyId' => 'accessKeyId',
+        'accessKeySecret' => 'accessKeySecret',
+        'createdAt' => 'createdAt',
         'description' => 'description',
         'statements' => 'statements',
-        'updated_at' => 'updated_at'
+        'updatedAt' => 'updatedAt'
     ];
 
     /**
@@ -160,12 +160,12 @@ class CreateAccessKey201ResponseData implements ModelInterface, ArrayAccess, \Js
      * @var string[]
      */
     protected static $setters = [
-        'access_key_id' => 'setAccessKeyId',
-        'access_key_secret' => 'setAccessKeySecret',
-        'created_at' => 'setCreatedAt',
+        'accessKeyId' => 'setAccessKeyId',
+        'accessKeySecret' => 'setAccessKeySecret',
+        'createdAt' => 'setCreatedAt',
         'description' => 'setDescription',
         'statements' => 'setStatements',
-        'updated_at' => 'setUpdatedAt'
+        'updatedAt' => 'setUpdatedAt'
     ];
 
     /**
@@ -174,12 +174,12 @@ class CreateAccessKey201ResponseData implements ModelInterface, ArrayAccess, \Js
      * @var string[]
      */
     protected static $getters = [
-        'access_key_id' => 'getAccessKeyId',
-        'access_key_secret' => 'getAccessKeySecret',
-        'created_at' => 'getCreatedAt',
+        'accessKeyId' => 'getAccessKeyId',
+        'accessKeySecret' => 'getAccessKeySecret',
+        'createdAt' => 'getCreatedAt',
         'description' => 'getDescription',
         'statements' => 'getStatements',
-        'updated_at' => 'getUpdatedAt'
+        'updatedAt' => 'getUpdatedAt'
     ];
 
     /**
@@ -239,12 +239,12 @@ class CreateAccessKey201ResponseData implements ModelInterface, ArrayAccess, \Js
      */
     public function __construct(?array $data = null)
     {
-        $this->setIfExists('access_key_id', $data ?? [], null);
-        $this->setIfExists('access_key_secret', $data ?? [], null);
-        $this->setIfExists('created_at', $data ?? [], null);
+        $this->setIfExists('accessKeyId', $data ?? [], null);
+        $this->setIfExists('accessKeySecret', $data ?? [], null);
+        $this->setIfExists('createdAt', $data ?? [], null);
         $this->setIfExists('description', $data ?? [], null);
         $this->setIfExists('statements', $data ?? [], null);
-        $this->setIfExists('updated_at', $data ?? [], null);
+        $this->setIfExists('updatedAt', $data ?? [], null);
     }
 
     /**
@@ -290,82 +290,82 @@ class CreateAccessKey201ResponseData implements ModelInterface, ArrayAccess, \Js
 
 
     /**
-     * Gets access_key_id
+     * Gets accessKeyId
      *
      * @return string|null
      */
     public function getAccessKeyId()
     {
-        return $this->container['access_key_id'];
+        return $this->container['accessKeyId'];
     }
 
     /**
-     * Sets access_key_id
+     * Sets accessKeyId
      *
-     * @param string|null $access_key_id access_key_id
+     * @param string|null $accessKeyId accessKeyId
      *
      * @return self
      */
-    public function setAccessKeyId($access_key_id)
+    public function setAccessKeyId($accessKeyId)
     {
-        if (is_null($access_key_id)) {
-            throw new \InvalidArgumentException('non-nullable access_key_id cannot be null');
+        if (is_null($accessKeyId)) {
+            throw new \InvalidArgumentException('non-nullable accessKeyId cannot be null');
         }
-        $this->container['access_key_id'] = $access_key_id;
+        $this->container['accessKeyId'] = $accessKeyId;
 
         return $this;
     }
 
     /**
-     * Gets access_key_secret
+     * Gets accessKeySecret
      *
      * @return string|null
      */
     public function getAccessKeySecret()
     {
-        return $this->container['access_key_secret'];
+        return $this->container['accessKeySecret'];
     }
 
     /**
-     * Sets access_key_secret
+     * Sets accessKeySecret
      *
-     * @param string|null $access_key_secret access_key_secret
+     * @param string|null $accessKeySecret accessKeySecret
      *
      * @return self
      */
-    public function setAccessKeySecret($access_key_secret)
+    public function setAccessKeySecret($accessKeySecret)
     {
-        if (is_null($access_key_secret)) {
-            throw new \InvalidArgumentException('non-nullable access_key_secret cannot be null');
+        if (is_null($accessKeySecret)) {
+            throw new \InvalidArgumentException('non-nullable accessKeySecret cannot be null');
         }
-        $this->container['access_key_secret'] = $access_key_secret;
+        $this->container['accessKeySecret'] = $accessKeySecret;
 
         return $this;
     }
 
     /**
-     * Gets created_at
+     * Gets createdAt
      *
      * @return string|null
      */
     public function getCreatedAt()
     {
-        return $this->container['created_at'];
+        return $this->container['createdAt'];
     }
 
     /**
-     * Sets created_at
+     * Sets createdAt
      *
-     * @param string|null $created_at created_at
+     * @param string|null $createdAt createdAt
      *
      * @return self
      */
-    public function setCreatedAt($created_at)
+    public function setCreatedAt($createdAt)
     {
-        if (is_null($created_at)) {
-            throw new \InvalidArgumentException('non-nullable created_at cannot be null');
+        if (is_null($createdAt)) {
+            throw new \InvalidArgumentException('non-nullable createdAt cannot be null');
         }
-        $this->container['created_at'] = $created_at;
+        $this->container['createdAt'] = $createdAt;
 
         return $this;
     }
@@ -425,28 +425,28 @@ class CreateAccessKey201ResponseData implements ModelInterface, ArrayAccess, \Js
     }
 
     /**
-     * Gets updated_at
+     * Gets updatedAt
      *
      * @return string|null
      */
     public function getUpdatedAt()
     {
-        return $this->container['updated_at'];
+        return $this->container['updatedAt'];
     }
 
     /**
-     * Sets updated_at
+     * Sets updatedAt
      *
-     * @param string|null $updated_at updated_at
+     * @param string|null $updatedAt updatedAt
      *
      * @return self
      */
-    public function setUpdatedAt($updated_at)
+    public function setUpdatedAt($updatedAt)
     {
-        if (is_null($updated_at)) {
-            throw new \InvalidArgumentException('non-nullable updated_at cannot be null');
+        if (is_null($updatedAt)) {
+            throw new \InvalidArgumentException('non-nullable updatedAt cannot be null');
         }
-        $this->container['updated_at'] = $updated_at;
+        $this->container['updatedAt'] = $updatedAt;
 
         return $this;
     }

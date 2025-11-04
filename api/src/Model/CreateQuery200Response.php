@@ -22,7 +22,7 @@ class CreateQuery200Response implements ModelInterface, ArrayAccess, \JsonSerial
       * @var string[]
       */
     protected static $openAPITypes = [
-        'data' => '\Litebase\OpenAPI\Model\CreateQuery200ResponseDataInner[]',
+        'data' => '\Litebase\OpenAPI\Model\QueryResponse[]',
         'message' => 'string',
         'status' => 'string'
     ];
@@ -280,7 +280,7 @@ class CreateQuery200Response implements ModelInterface, ArrayAccess, \JsonSerial
     /**
      * Gets data
      *
-     * @return \Litebase\OpenAPI\Model\CreateQuery200ResponseDataInner[]
+     * @return \Litebase\OpenAPI\Model\QueryResponse[]
      */
     public function getData()
     {
@@ -290,7 +290,7 @@ class CreateQuery200Response implements ModelInterface, ArrayAccess, \JsonSerial
     /**
      * Sets data
      *
-     * @param \Litebase\OpenAPI\Model\CreateQuery200ResponseDataInner[] $data Array of query responses for one or more queries
+     * @param \Litebase\OpenAPI\Model\QueryResponse[] $data Array of query responses for one or more queries
      *
      * @return self
      */

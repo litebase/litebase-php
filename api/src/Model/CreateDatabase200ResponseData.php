@@ -22,13 +22,13 @@ class CreateDatabase200ResponseData implements ModelInterface, ArrayAccess, \Jso
       * @var string[]
       */
     protected static $openAPITypes = [
-        'created_at' => '\DateTime',
-        'database_id' => 'string',
+        'branchName' => 'string',
+        'createdAt' => '\DateTime',
+        'databaseId' => 'string',
+        'databaseName' => 'string',
         'id' => 'int',
-        'name' => 'string',
-        'primary_branch' => 'string',
         'settings' => '\Litebase\OpenAPI\Model\DatabaseSettings',
-        'updated_at' => '\DateTime',
+        'updatedAt' => '\DateTime',
         'url' => 'string'
     ];
 
@@ -40,13 +40,13 @@ class CreateDatabase200ResponseData implements ModelInterface, ArrayAccess, \Jso
       * @psalm-var array<string, string|null>
       */
     protected static $openAPIFormats = [
-        'created_at' => 'date-time',
-        'database_id' => null,
+        'branchName' => null,
+        'createdAt' => 'date-time',
+        'databaseId' => null,
+        'databaseName' => null,
         'id' => null,
-        'name' => null,
-        'primary_branch' => null,
         'settings' => null,
-        'updated_at' => 'date-time',
+        'updatedAt' => 'date-time',
         'url' => null
     ];
 
@@ -56,13 +56,13 @@ class CreateDatabase200ResponseData implements ModelInterface, ArrayAccess, \Jso
       * @var boolean[]
       */
     protected static array $openAPINullables = [
-        'created_at' => false,
-        'database_id' => false,
+        'branchName' => false,
+        'createdAt' => false,
+        'databaseId' => false,
+        'databaseName' => false,
         'id' => false,
-        'name' => false,
-        'primary_branch' => false,
         'settings' => false,
-        'updated_at' => false,
+        'updatedAt' => false,
         'url' => false
     ];
 
@@ -152,13 +152,13 @@ class CreateDatabase200ResponseData implements ModelInterface, ArrayAccess, \Jso
      * @var string[]
      */
     protected static $attributeMap = [
-        'created_at' => 'created_at',
-        'database_id' => 'database_id',
+        'branchName' => 'branchName',
+        'createdAt' => 'createdAt',
+        'databaseId' => 'databaseId',
+        'databaseName' => 'databaseName',
         'id' => 'id',
-        'name' => 'name',
-        'primary_branch' => 'primary_branch',
         'settings' => 'settings',
-        'updated_at' => 'updated_at',
+        'updatedAt' => 'updatedAt',
         'url' => 'url'
     ];
 
@@ -168,13 +168,13 @@ class CreateDatabase200ResponseData implements ModelInterface, ArrayAccess, \Jso
      * @var string[]
      */
     protected static $setters = [
-        'created_at' => 'setCreatedAt',
-        'database_id' => 'setDatabaseId',
+        'branchName' => 'setBranchName',
+        'createdAt' => 'setCreatedAt',
+        'databaseId' => 'setDatabaseId',
+        'databaseName' => 'setDatabaseName',
         'id' => 'setId',
-        'name' => 'setName',
-        'primary_branch' => 'setPrimaryBranch',
         'settings' => 'setSettings',
-        'updated_at' => 'setUpdatedAt',
+        'updatedAt' => 'setUpdatedAt',
         'url' => 'setUrl'
     ];
 
@@ -184,13 +184,13 @@ class CreateDatabase200ResponseData implements ModelInterface, ArrayAccess, \Jso
      * @var string[]
      */
     protected static $getters = [
-        'created_at' => 'getCreatedAt',
-        'database_id' => 'getDatabaseId',
+        'branchName' => 'getBranchName',
+        'createdAt' => 'getCreatedAt',
+        'databaseId' => 'getDatabaseId',
+        'databaseName' => 'getDatabaseName',
         'id' => 'getId',
-        'name' => 'getName',
-        'primary_branch' => 'getPrimaryBranch',
         'settings' => 'getSettings',
-        'updated_at' => 'getUpdatedAt',
+        'updatedAt' => 'getUpdatedAt',
         'url' => 'getUrl'
     ];
 
@@ -251,13 +251,13 @@ class CreateDatabase200ResponseData implements ModelInterface, ArrayAccess, \Jso
      */
     public function __construct(?array $data = null)
     {
-        $this->setIfExists('created_at', $data ?? [], null);
-        $this->setIfExists('database_id', $data ?? [], null);
+        $this->setIfExists('branchName', $data ?? [], null);
+        $this->setIfExists('createdAt', $data ?? [], null);
+        $this->setIfExists('databaseId', $data ?? [], null);
+        $this->setIfExists('databaseName', $data ?? [], null);
         $this->setIfExists('id', $data ?? [], null);
-        $this->setIfExists('name', $data ?? [], null);
-        $this->setIfExists('primary_branch', $data ?? [], null);
         $this->setIfExists('settings', $data ?? [], null);
-        $this->setIfExists('updated_at', $data ?? [], null);
+        $this->setIfExists('updatedAt', $data ?? [], null);
         $this->setIfExists('url', $data ?? [], null);
     }
 
@@ -304,55 +304,109 @@ class CreateDatabase200ResponseData implements ModelInterface, ArrayAccess, \Jso
 
 
     /**
-     * Gets created_at
+     * Gets branchName
      *
-     * @return \DateTime|null
+     * @return string|null
      */
-    public function getCreatedAt()
+    public function getBranchName()
     {
-        return $this->container['created_at'];
+        return $this->container['branchName'];
     }
 
     /**
-     * Sets created_at
+     * Sets branchName
      *
-     * @param \DateTime|null $created_at Creation timestamp
+     * @param string|null $branchName branchName
      *
      * @return self
      */
-    public function setCreatedAt($created_at)
+    public function setBranchName($branchName)
     {
-        if (is_null($created_at)) {
-            throw new \InvalidArgumentException('non-nullable created_at cannot be null');
+        if (is_null($branchName)) {
+            throw new \InvalidArgumentException('non-nullable branchName cannot be null');
         }
-        $this->container['created_at'] = $created_at;
+        $this->container['branchName'] = $branchName;
 
         return $this;
     }
 
     /**
-     * Gets database_id
+     * Gets createdAt
+     *
+     * @return \DateTime|null
+     */
+    public function getCreatedAt()
+    {
+        return $this->container['createdAt'];
+    }
+
+    /**
+     * Sets createdAt
+     *
+     * @param \DateTime|null $createdAt Creation timestamp
+     *
+     * @return self
+     */
+    public function setCreatedAt($createdAt)
+    {
+        if (is_null($createdAt)) {
+            throw new \InvalidArgumentException('non-nullable createdAt cannot be null');
+        }
+        $this->container['createdAt'] = $createdAt;
+
+        return $this;
+    }
+
+    /**
+     * Gets databaseId
      *
      * @return string|null
      */
     public function getDatabaseId()
     {
-        return $this->container['database_id'];
+        return $this->container['databaseId'];
     }
 
     /**
-     * Sets database_id
+     * Sets databaseId
      *
-     * @param string|null $database_id database_id
+     * @param string|null $databaseId databaseId
      *
      * @return self
      */
-    public function setDatabaseId($database_id)
+    public function setDatabaseId($databaseId)
     {
-        if (is_null($database_id)) {
-            throw new \InvalidArgumentException('non-nullable database_id cannot be null');
+        if (is_null($databaseId)) {
+            throw new \InvalidArgumentException('non-nullable databaseId cannot be null');
         }
-        $this->container['database_id'] = $database_id;
+        $this->container['databaseId'] = $databaseId;
+
+        return $this;
+    }
+
+    /**
+     * Gets databaseName
+     *
+     * @return string|null
+     */
+    public function getDatabaseName()
+    {
+        return $this->container['databaseName'];
+    }
+
+    /**
+     * Sets databaseName
+     *
+     * @param string|null $databaseName databaseName
+     *
+     * @return self
+     */
+    public function setDatabaseName($databaseName)
+    {
+        if (is_null($databaseName)) {
+            throw new \InvalidArgumentException('non-nullable databaseName cannot be null');
+        }
+        $this->container['databaseName'] = $databaseName;
 
         return $this;
     }
@@ -385,60 +439,6 @@ class CreateDatabase200ResponseData implements ModelInterface, ArrayAccess, \Jso
     }
 
     /**
-     * Gets name
-     *
-     * @return string|null
-     */
-    public function getName()
-    {
-        return $this->container['name'];
-    }
-
-    /**
-     * Sets name
-     *
-     * @param string|null $name name
-     *
-     * @return self
-     */
-    public function setName($name)
-    {
-        if (is_null($name)) {
-            throw new \InvalidArgumentException('non-nullable name cannot be null');
-        }
-        $this->container['name'] = $name;
-
-        return $this;
-    }
-
-    /**
-     * Gets primary_branch
-     *
-     * @return string|null
-     */
-    public function getPrimaryBranch()
-    {
-        return $this->container['primary_branch'];
-    }
-
-    /**
-     * Sets primary_branch
-     *
-     * @param string|null $primary_branch primary_branch
-     *
-     * @return self
-     */
-    public function setPrimaryBranch($primary_branch)
-    {
-        if (is_null($primary_branch)) {
-            throw new \InvalidArgumentException('non-nullable primary_branch cannot be null');
-        }
-        $this->container['primary_branch'] = $primary_branch;
-
-        return $this;
-    }
-
-    /**
      * Gets settings
      *
      * @return \Litebase\OpenAPI\Model\DatabaseSettings|null
@@ -466,28 +466,28 @@ class CreateDatabase200ResponseData implements ModelInterface, ArrayAccess, \Jso
     }
 
     /**
-     * Gets updated_at
+     * Gets updatedAt
      *
      * @return \DateTime|null
      */
     public function getUpdatedAt()
     {
-        return $this->container['updated_at'];
+        return $this->container['updatedAt'];
     }
 
     /**
-     * Sets updated_at
+     * Sets updatedAt
      *
-     * @param \DateTime|null $updated_at Last update timestamp
+     * @param \DateTime|null $updatedAt Last update timestamp
      *
      * @return self
      */
-    public function setUpdatedAt($updated_at)
+    public function setUpdatedAt($updatedAt)
     {
-        if (is_null($updated_at)) {
-            throw new \InvalidArgumentException('non-nullable updated_at cannot be null');
+        if (is_null($updatedAt)) {
+            throw new \InvalidArgumentException('non-nullable updatedAt cannot be null');
         }
-        $this->container['updated_at'] = $updated_at;
+        $this->container['updatedAt'] = $updatedAt;
 
         return $this;
     }

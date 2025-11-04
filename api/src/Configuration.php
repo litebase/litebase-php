@@ -4,7 +4,7 @@
  *
  * Litebase Server OpenAPI specification
  *
- * The version of the OpenAPI document: 1.0.0
+ * The version of the OpenAPI document: 0.5.0
  */
 
 
@@ -410,7 +410,7 @@ class Configuration
         $report  = 'PHP SDK (Litebase\OpenAPI) Debug Report:' . PHP_EOL;
         $report .= '    OS: ' . php_uname() . PHP_EOL;
         $report .= '    PHP Version: ' . PHP_VERSION . PHP_EOL;
-        $report .= '    The version of the OpenAPI document: 1.0.0' . PHP_EOL;
+        $report .= '    The version of the OpenAPI document: 0.5.0' . PHP_EOL;
         $report .= '    SDK Package Version: 1.0.0' . PHP_EOL;
         $report .= '    Temp Folder Path: ' . self::getDefaultConfiguration()->getTempFolderPath() . PHP_EOL;
 

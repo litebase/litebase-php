@@ -27,7 +27,9 @@ use Litebase\OpenAPI\API\UserApi;
  */
 class ApiClient
 {
-    // Create a new instance of the API client.
+    /**
+     * Create a new instance of the API client.
+     */
     public function __construct(
         protected Configuration $config,
         protected ?Client $httpClient = null,

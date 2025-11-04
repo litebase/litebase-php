@@ -25,11 +25,11 @@ class CreateQuery200ResponseDataInner implements ModelInterface, ArrayAccess, \J
         'changes' => 'int',
         'columns' => '\Litebase\OpenAPI\Model\ColumnDefinition[]',
         'id' => 'string',
-        'last_insert_row_id' => 'int',
+        'lastInsertRowId' => 'int',
         'latency' => 'float',
-        'row_count' => 'int',
+        'rowCount' => 'int',
         'rows' => 'mixed[]',
-        'transaction_id' => 'string'
+        'transactionId' => 'string'
     ];
 
     /**
@@ -43,11 +43,11 @@ class CreateQuery200ResponseDataInner implements ModelInterface, ArrayAccess, \J
         'changes' => null,
         'columns' => null,
         'id' => null,
-        'last_insert_row_id' => null,
+        'lastInsertRowId' => null,
         'latency' => null,
-        'row_count' => null,
+        'rowCount' => null,
         'rows' => null,
-        'transaction_id' => null
+        'transactionId' => null
     ];
 
     /**
@@ -59,11 +59,11 @@ class CreateQuery200ResponseDataInner implements ModelInterface, ArrayAccess, \J
         'changes' => false,
         'columns' => false,
         'id' => false,
-        'last_insert_row_id' => false,
+        'lastInsertRowId' => false,
         'latency' => false,
-        'row_count' => false,
+        'rowCount' => false,
         'rows' => false,
-        'transaction_id' => false
+        'transactionId' => false
     ];
 
     /**
@@ -155,11 +155,11 @@ class CreateQuery200ResponseDataInner implements ModelInterface, ArrayAccess, \J
         'changes' => 'changes',
         'columns' => 'columns',
         'id' => 'id',
-        'last_insert_row_id' => 'last_insert_row_id',
+        'lastInsertRowId' => 'lastInsertRowId',
         'latency' => 'latency',
-        'row_count' => 'row_count',
+        'rowCount' => 'rowCount',
         'rows' => 'rows',
-        'transaction_id' => 'transaction_id'
+        'transactionId' => 'transactionId'
     ];
 
     /**
@@ -171,11 +171,11 @@ class CreateQuery200ResponseDataInner implements ModelInterface, ArrayAccess, \J
         'changes' => 'setChanges',
         'columns' => 'setColumns',
         'id' => 'setId',
-        'last_insert_row_id' => 'setLastInsertRowId',
+        'lastInsertRowId' => 'setLastInsertRowId',
         'latency' => 'setLatency',
-        'row_count' => 'setRowCount',
+        'rowCount' => 'setRowCount',
         'rows' => 'setRows',
-        'transaction_id' => 'setTransactionId'
+        'transactionId' => 'setTransactionId'
     ];
 
     /**
@@ -187,11 +187,11 @@ class CreateQuery200ResponseDataInner implements ModelInterface, ArrayAccess, \J
         'changes' => 'getChanges',
         'columns' => 'getColumns',
         'id' => 'getId',
-        'last_insert_row_id' => 'getLastInsertRowId',
+        'lastInsertRowId' => 'getLastInsertRowId',
         'latency' => 'getLatency',
-        'row_count' => 'getRowCount',
+        'rowCount' => 'getRowCount',
         'rows' => 'getRows',
-        'transaction_id' => 'getTransactionId'
+        'transactionId' => 'getTransactionId'
     ];
 
     /**
@@ -254,11 +254,11 @@ class CreateQuery200ResponseDataInner implements ModelInterface, ArrayAccess, \J
         $this->setIfExists('changes', $data ?? [], null);
         $this->setIfExists('columns', $data ?? [], null);
         $this->setIfExists('id', $data ?? [], null);
-        $this->setIfExists('last_insert_row_id', $data ?? [], null);
+        $this->setIfExists('lastInsertRowId', $data ?? [], null);
         $this->setIfExists('latency', $data ?? [], null);
-        $this->setIfExists('row_count', $data ?? [], null);
+        $this->setIfExists('rowCount', $data ?? [], null);
         $this->setIfExists('rows', $data ?? [], null);
-        $this->setIfExists('transaction_id', $data ?? [], null);
+        $this->setIfExists('transactionId', $data ?? [], null);
     }
 
     /**
@@ -385,28 +385,28 @@ class CreateQuery200ResponseDataInner implements ModelInterface, ArrayAccess, \J
     }
 
     /**
-     * Gets last_insert_row_id
+     * Gets lastInsertRowId
      *
      * @return int|null
      */
     public function getLastInsertRowId()
     {
-        return $this->container['last_insert_row_id'];
+        return $this->container['lastInsertRowId'];
     }
 
     /**
-     * Sets last_insert_row_id
+     * Sets lastInsertRowId
      *
-     * @param int|null $last_insert_row_id last_insert_row_id
+     * @param int|null $lastInsertRowId lastInsertRowId
      *
      * @return self
      */
-    public function setLastInsertRowId($last_insert_row_id)
+    public function setLastInsertRowId($lastInsertRowId)
     {
-        if (is_null($last_insert_row_id)) {
-            throw new \InvalidArgumentException('non-nullable last_insert_row_id cannot be null');
+        if (is_null($lastInsertRowId)) {
+            throw new \InvalidArgumentException('non-nullable lastInsertRowId cannot be null');
         }
-        $this->container['last_insert_row_id'] = $last_insert_row_id;
+        $this->container['lastInsertRowId'] = $lastInsertRowId;
 
         return $this;
     }
@@ -439,28 +439,28 @@ class CreateQuery200ResponseDataInner implements ModelInterface, ArrayAccess, \J
     }
 
     /**
-     * Gets row_count
+     * Gets rowCount
      *
      * @return int|null
      */
     public function getRowCount()
     {
-        return $this->container['row_count'];
+        return $this->container['rowCount'];
     }
 
     /**
-     * Sets row_count
+     * Sets rowCount
      *
-     * @param int|null $row_count row_count
+     * @param int|null $rowCount rowCount
      *
      * @return self
      */
-    public function setRowCount($row_count)
+    public function setRowCount($rowCount)
     {
-        if (is_null($row_count)) {
-            throw new \InvalidArgumentException('non-nullable row_count cannot be null');
+        if (is_null($rowCount)) {
+            throw new \InvalidArgumentException('non-nullable rowCount cannot be null');
         }
-        $this->container['row_count'] = $row_count;
+        $this->container['rowCount'] = $rowCount;
 
         return $this;
     }
@@ -493,28 +493,28 @@ class CreateQuery200ResponseDataInner implements ModelInterface, ArrayAccess, \J
     }
 
     /**
-     * Gets transaction_id
+     * Gets transactionId
      *
      * @return string|null
      */
     public function getTransactionId()
     {
-        return $this->container['transaction_id'];
+        return $this->container['transactionId'];
     }
 
     /**
-     * Sets transaction_id
+     * Sets transactionId
      *
-     * @param string|null $transaction_id transaction_id
+     * @param string|null $transactionId transactionId
      *
      * @return self
      */
-    public function setTransactionId($transaction_id)
+    public function setTransactionId($transactionId)
     {
-        if (is_null($transaction_id)) {
-            throw new \InvalidArgumentException('non-nullable transaction_id cannot be null');
+        if (is_null($transactionId)) {
+            throw new \InvalidArgumentException('non-nullable transactionId cannot be null');
         }
-        $this->container['transaction_id'] = $transaction_id;
+        $this->container['transactionId'] = $transactionId;
 
         return $this;
     }

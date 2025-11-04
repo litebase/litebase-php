@@ -22,7 +22,7 @@ class ValidationErrorResponse implements ModelInterface, ArrayAccess, \JsonSeria
       * @var string[]
       */
     protected static $openAPITypes = [
-        'errors' => '\Litebase\OpenAPI\Model\ValidationErrorResponseErrorsInner[]',
+        'errors' => 'array<string,string[]>',
         'message' => 'string',
         'status' => 'string'
     ];
@@ -271,7 +271,7 @@ class ValidationErrorResponse implements ModelInterface, ArrayAccess, \JsonSeria
     /**
      * Gets errors
      *
-     * @return \Litebase\OpenAPI\Model\ValidationErrorResponseErrorsInner[]|null
+     * @return array<string,string[]>|null
      */
     public function getErrors()
     {
@@ -281,7 +281,7 @@ class ValidationErrorResponse implements ModelInterface, ArrayAccess, \JsonSeria
     /**
      * Sets errors
      *
-     * @param \Litebase\OpenAPI\Model\ValidationErrorResponseErrorsInner[]|null $errors errors
+     * @param array<string,string[]>|null $errors errors
      *
      * @return self
      */

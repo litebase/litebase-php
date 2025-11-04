@@ -22,7 +22,7 @@ class ListUsers200Response implements ModelInterface, ArrayAccess, \JsonSerializ
       * @var string[]
       */
     protected static $openAPITypes = [
-        'data' => '\Litebase\OpenAPI\Model\ListUsers200ResponseDataInner[]',
+        'data' => '\Litebase\OpenAPI\Model\UserResponse[]',
         'message' => 'string',
         'status' => 'string'
     ];
@@ -280,7 +280,7 @@ class ListUsers200Response implements ModelInterface, ArrayAccess, \JsonSerializ
     /**
      * Gets data
      *
-     * @return \Litebase\OpenAPI\Model\ListUsers200ResponseDataInner[]
+     * @return \Litebase\OpenAPI\Model\UserResponse[]
      */
     public function getData()
     {
@@ -290,7 +290,7 @@ class ListUsers200Response implements ModelInterface, ArrayAccess, \JsonSerializ
     /**
      * Sets data
      *
-     * @param \Litebase\OpenAPI\Model\ListUsers200ResponseDataInner[] $data Array of users for list operations
+     * @param \Litebase\OpenAPI\Model\UserResponse[] $data Array of users for list operations
      *
      * @return self
      */

@@ -22,7 +22,7 @@ class CreateDatabaseBranch200Response implements ModelInterface, ArrayAccess, \J
       * @var string[]
       */
     protected static $openAPITypes = [
-        'data' => '\Litebase\OpenAPI\Model\CreateDatabaseBranch200ResponseData',
+        'data' => '\Litebase\OpenAPI\Model\DatabaseBranchStoreResponse',
         'message' => 'string',
         'status' => 'string'
     ];
@@ -280,7 +280,7 @@ class CreateDatabaseBranch200Response implements ModelInterface, ArrayAccess, \J
     /**
      * Gets data
      *
-     * @return \Litebase\OpenAPI\Model\CreateDatabaseBranch200ResponseData
+     * @return \Litebase\OpenAPI\Model\DatabaseBranchStoreResponse
      */
     public function getData()
     {
@@ -290,7 +290,7 @@ class CreateDatabaseBranch200Response implements ModelInterface, ArrayAccess, \J
     /**
      * Sets data
      *
-     * @param \Litebase\OpenAPI\Model\CreateDatabaseBranch200ResponseData $data data
+     * @param \Litebase\OpenAPI\Model\DatabaseBranchStoreResponse $data data
      *
      * @return self
      */

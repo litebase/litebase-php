@@ -4,7 +4,7 @@
  *
  * Litebase Server OpenAPI specification
  *
- * The version of the OpenAPI document: 1.0.0
+ * The version of the OpenAPI document: 0.5.0
  */
 
 
@@ -109,18 +109,18 @@ class QueryApi
      *
      * Create a new query
      *
-     * @param  string $database_name The databaseName parameter (required)
-     * @param  string $branch_name The branchName parameter (required)
-     * @param  \Litebase\OpenAPI\Model\CreateQueryRequest $create_query_request Query creation data (required)
+     * @param  string $databaseName The databaseName parameter (required)
+     * @param  string $branchName The branchName parameter (required)
+     * @param  \Litebase\OpenAPI\Model\QueryRequest $queryRequest Query creation data (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['createQuery'] to see the possible values for this operation
      *
      * @throws \Litebase\OpenAPI\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
      * @return \Litebase\OpenAPI\Model\CreateQuery200Response|\Litebase\OpenAPI\Model\ErrorResponse|\Litebase\OpenAPI\Model\ErrorResponse|\Litebase\OpenAPI\Model\ValidationErrorResponse|\Litebase\OpenAPI\Model\ErrorResponse
      */
-    public function createQuery($database_name, $branch_name, $create_query_request, string $contentType = self::contentTypes['createQuery'][0])
+    public function createQuery($databaseName, $branchName, $queryRequest, string $contentType = self::contentTypes['createQuery'][0])
     {
-        list($response) = $this->createQueryWithHttpInfo($database_name, $branch_name, $create_query_request, $contentType);
+        list($response) = $this->createQueryWithHttpInfo($databaseName, $branchName, $queryRequest, $contentType);
         return $response;
     }
 
@@ -129,18 +129,18 @@ class QueryApi
      *
      * Create a new query
      *
-     * @param  string $database_name The databaseName parameter (required)
-     * @param  string $branch_name The branchName parameter (required)
-     * @param  \Litebase\OpenAPI\Model\CreateQueryRequest $create_query_request Query creation data (required)
+     * @param  string $databaseName The databaseName parameter (required)
+     * @param  string $branchName The branchName parameter (required)
+     * @param  \Litebase\OpenAPI\Model\QueryRequest $queryRequest Query creation data (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['createQuery'] to see the possible values for this operation
      *
      * @throws \Litebase\OpenAPI\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
      * @return array of \Litebase\OpenAPI\Model\CreateQuery200Response|\Litebase\OpenAPI\Model\ErrorResponse|\Litebase\OpenAPI\Model\ErrorResponse|\Litebase\OpenAPI\Model\ValidationErrorResponse|\Litebase\OpenAPI\Model\ErrorResponse, HTTP status code, HTTP response headers (array of strings)
      */
-    public function createQueryWithHttpInfo($database_name, $branch_name, $create_query_request, string $contentType = self::contentTypes['createQuery'][0])
+    public function createQueryWithHttpInfo($databaseName, $branchName, $queryRequest, string $contentType = self::contentTypes['createQuery'][0])
     {
-        $request = $this->createQueryRequest($database_name, $branch_name, $create_query_request, $contentType);
+        $request = $this->createQueryRequest($databaseName, $branchName, $queryRequest, $contentType);
 
         try {
             $options = $this->createHttpClientOption();
@@ -272,17 +272,17 @@ class QueryApi
      *
      * Create a new query
      *
-     * @param  string $database_name The databaseName parameter (required)
-     * @param  string $branch_name The branchName parameter (required)
-     * @param  \Litebase\OpenAPI\Model\CreateQueryRequest $create_query_request Query creation data (required)
+     * @param  string $databaseName The databaseName parameter (required)
+     * @param  string $branchName The branchName parameter (required)
+     * @param  \Litebase\OpenAPI\Model\QueryRequest $queryRequest Query creation data (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['createQuery'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function createQueryAsync($database_name, $branch_name, $create_query_request, string $contentType = self::contentTypes['createQuery'][0])
+    public function createQueryAsync($databaseName, $branchName, $queryRequest, string $contentType = self::contentTypes['createQuery'][0])
     {
-        return $this->createQueryAsyncWithHttpInfo($database_name, $branch_name, $create_query_request, $contentType)
+        return $this->createQueryAsyncWithHttpInfo($databaseName, $branchName, $queryRequest, $contentType)
             ->then(
                 function ($response) {
                     return $response[0];
@@ -295,18 +295,18 @@ class QueryApi
      *
      * Create a new query
      *
-     * @param  string $database_name The databaseName parameter (required)
-     * @param  string $branch_name The branchName parameter (required)
-     * @param  \Litebase\OpenAPI\Model\CreateQueryRequest $create_query_request Query creation data (required)
+     * @param  string $databaseName The databaseName parameter (required)
+     * @param  string $branchName The branchName parameter (required)
+     * @param  \Litebase\OpenAPI\Model\QueryRequest $queryRequest Query creation data (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['createQuery'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function createQueryAsyncWithHttpInfo($database_name, $branch_name, $create_query_request, string $contentType = self::contentTypes['createQuery'][0])
+    public function createQueryAsyncWithHttpInfo($databaseName, $branchName, $queryRequest, string $contentType = self::contentTypes['createQuery'][0])
     {
         $returnType = '\Litebase\OpenAPI\Model\CreateQuery200Response';
-        $request = $this->createQueryRequest($database_name, $branch_name, $create_query_request, $contentType);
+        $request = $this->createQueryRequest($databaseName, $branchName, $queryRequest, $contentType);
 
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
@@ -347,35 +347,35 @@ class QueryApi
     /**
      * Create request for operation 'createQuery'
      *
-     * @param  string $database_name The databaseName parameter (required)
-     * @param  string $branch_name The branchName parameter (required)
-     * @param  \Litebase\OpenAPI\Model\CreateQueryRequest $create_query_request Query creation data (required)
+     * @param  string $databaseName The databaseName parameter (required)
+     * @param  string $branchName The branchName parameter (required)
+     * @param  \Litebase\OpenAPI\Model\QueryRequest $queryRequest Query creation data (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['createQuery'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
      */
-    public function createQueryRequest($database_name, $branch_name, $create_query_request, string $contentType = self::contentTypes['createQuery'][0])
+    public function createQueryRequest($databaseName, $branchName, $queryRequest, string $contentType = self::contentTypes['createQuery'][0])
     {
 
-        // verify the required parameter 'database_name' is set
-        if ($database_name === null || (is_array($database_name) && count($database_name) === 0)) {
+        // verify the required parameter 'databaseName' is set
+        if ($databaseName === null || (is_array($databaseName) && count($databaseName) === 0)) {
             throw new \InvalidArgumentException(
-                'Missing the required parameter $database_name when calling createQuery'
+                'Missing the required parameter $databaseName when calling createQuery'
             );
         }
 
-        // verify the required parameter 'branch_name' is set
-        if ($branch_name === null || (is_array($branch_name) && count($branch_name) === 0)) {
+        // verify the required parameter 'branchName' is set
+        if ($branchName === null || (is_array($branchName) && count($branchName) === 0)) {
             throw new \InvalidArgumentException(
-                'Missing the required parameter $branch_name when calling createQuery'
+                'Missing the required parameter $branchName when calling createQuery'
             );
         }
 
-        // verify the required parameter 'create_query_request' is set
-        if ($create_query_request === null || (is_array($create_query_request) && count($create_query_request) === 0)) {
+        // verify the required parameter 'queryRequest' is set
+        if ($queryRequest === null || (is_array($queryRequest) && count($queryRequest) === 0)) {
             throw new \InvalidArgumentException(
-                'Missing the required parameter $create_query_request when calling createQuery'
+                'Missing the required parameter $queryRequest when calling createQuery'
             );
         }
 
@@ -390,18 +390,18 @@ class QueryApi
 
 
         // path params
-        if ($database_name !== null) {
+        if ($databaseName !== null) {
             $resourcePath = str_replace(
                 '{' . 'databaseName' . '}',
-                ObjectSerializer::toPathValue($database_name),
+                ObjectSerializer::toPathValue($databaseName),
                 $resourcePath
             );
         }
         // path params
-        if ($branch_name !== null) {
+        if ($branchName !== null) {
             $resourcePath = str_replace(
                 '{' . 'branchName' . '}',
-                ObjectSerializer::toPathValue($branch_name),
+                ObjectSerializer::toPathValue($branchName),
                 $resourcePath
             );
         }
@@ -414,12 +414,12 @@ class QueryApi
         );
 
         // for model (json/xml)
-        if (isset($create_query_request)) {
+        if (isset($queryRequest)) {
             if (stripos($headers['Content-Type'], 'application/json') !== false) {
                 # if Content-Type contains "application/json", json_encode the body
-                $httpBody = \GuzzleHttp\Utils::jsonEncode(ObjectSerializer::sanitizeForSerialization($create_query_request));
+                $httpBody = \GuzzleHttp\Utils::jsonEncode(ObjectSerializer::sanitizeForSerialization($queryRequest));
             } else {
-                $httpBody = $create_query_request;
+                $httpBody = $queryRequest;
             }
         } elseif (count($formParams) > 0) {
             if ($multipart) {

@@ -22,8 +22,8 @@ class DatabaseBackupRestorePoint implements ModelInterface, ArrayAccess, \JsonSe
       * @var string[]
       */
     protected static $openAPITypes = [
-        'page_count' => 'int',
-        'timestamp' => 'int'
+        'pageCount' => 'int',
+        'timestamp' => 'string'
     ];
 
     /**
@@ -34,7 +34,7 @@ class DatabaseBackupRestorePoint implements ModelInterface, ArrayAccess, \JsonSe
       * @psalm-var array<string, string|null>
       */
     protected static $openAPIFormats = [
-        'page_count' => null,
+        'pageCount' => null,
         'timestamp' => null
     ];
 
@@ -44,7 +44,7 @@ class DatabaseBackupRestorePoint implements ModelInterface, ArrayAccess, \JsonSe
       * @var boolean[]
       */
     protected static array $openAPINullables = [
-        'page_count' => false,
+        'pageCount' => false,
         'timestamp' => false
     ];
 
@@ -134,7 +134,7 @@ class DatabaseBackupRestorePoint implements ModelInterface, ArrayAccess, \JsonSe
      * @var string[]
      */
     protected static $attributeMap = [
-        'page_count' => 'page_count',
+        'pageCount' => 'pageCount',
         'timestamp' => 'timestamp'
     ];
 
@@ -144,7 +144,7 @@ class DatabaseBackupRestorePoint implements ModelInterface, ArrayAccess, \JsonSe
      * @var string[]
      */
     protected static $setters = [
-        'page_count' => 'setPageCount',
+        'pageCount' => 'setPageCount',
         'timestamp' => 'setTimestamp'
     ];
 
@@ -154,7 +154,7 @@ class DatabaseBackupRestorePoint implements ModelInterface, ArrayAccess, \JsonSe
      * @var string[]
      */
     protected static $getters = [
-        'page_count' => 'getPageCount',
+        'pageCount' => 'getPageCount',
         'timestamp' => 'getTimestamp'
     ];
 
@@ -215,7 +215,7 @@ class DatabaseBackupRestorePoint implements ModelInterface, ArrayAccess, \JsonSe
      */
     public function __construct(?array $data = null)
     {
-        $this->setIfExists('page_count', $data ?? [], null);
+        $this->setIfExists('pageCount', $data ?? [], null);
         $this->setIfExists('timestamp', $data ?? [], null);
     }
 
@@ -262,28 +262,28 @@ class DatabaseBackupRestorePoint implements ModelInterface, ArrayAccess, \JsonSe
 
 
     /**
-     * Gets page_count
+     * Gets pageCount
      *
      * @return int|null
      */
     public function getPageCount()
     {
-        return $this->container['page_count'];
+        return $this->container['pageCount'];
     }
 
     /**
-     * Sets page_count
+     * Sets pageCount
      *
-     * @param int|null $page_count page_count
+     * @param int|null $pageCount pageCount
      *
      * @return self
      */
-    public function setPageCount($page_count)
+    public function setPageCount($pageCount)
     {
-        if (is_null($page_count)) {
-            throw new \InvalidArgumentException('non-nullable page_count cannot be null');
+        if (is_null($pageCount)) {
+            throw new \InvalidArgumentException('non-nullable pageCount cannot be null');
         }
-        $this->container['page_count'] = $page_count;
+        $this->container['pageCount'] = $pageCount;
 
         return $this;
     }
@@ -291,7 +291,7 @@ class DatabaseBackupRestorePoint implements ModelInterface, ArrayAccess, \JsonSe
     /**
      * Gets timestamp
      *
-     * @return int|null
+     * @return string|null
      */
     public function getTimestamp()
     {
@@ -301,7 +301,7 @@ class DatabaseBackupRestorePoint implements ModelInterface, ArrayAccess, \JsonSe
     /**
      * Sets timestamp
      *
-     * @param int|null $timestamp timestamp
+     * @param string|null $timestamp timestamp
      *
      * @return self
      */

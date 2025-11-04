@@ -22,7 +22,7 @@ class ListClusterStatuses200ResponseData implements ModelInterface, ArrayAccess,
       * @var string[]
       */
     protected static $openAPITypes = [
-        'node_count' => 'int'
+        'nodeCount' => 'int'
     ];
 
     /**
@@ -33,7 +33,7 @@ class ListClusterStatuses200ResponseData implements ModelInterface, ArrayAccess,
       * @psalm-var array<string, string|null>
       */
     protected static $openAPIFormats = [
-        'node_count' => null
+        'nodeCount' => null
     ];
 
     /**
@@ -42,7 +42,7 @@ class ListClusterStatuses200ResponseData implements ModelInterface, ArrayAccess,
       * @var boolean[]
       */
     protected static array $openAPINullables = [
-        'node_count' => false
+        'nodeCount' => false
     ];
 
     /**
@@ -131,7 +131,7 @@ class ListClusterStatuses200ResponseData implements ModelInterface, ArrayAccess,
      * @var string[]
      */
     protected static $attributeMap = [
-        'node_count' => 'node_count'
+        'nodeCount' => 'nodeCount'
     ];
 
     /**
@@ -140,7 +140,7 @@ class ListClusterStatuses200ResponseData implements ModelInterface, ArrayAccess,
      * @var string[]
      */
     protected static $setters = [
-        'node_count' => 'setNodeCount'
+        'nodeCount' => 'setNodeCount'
     ];
 
     /**
@@ -149,7 +149,7 @@ class ListClusterStatuses200ResponseData implements ModelInterface, ArrayAccess,
      * @var string[]
      */
     protected static $getters = [
-        'node_count' => 'getNodeCount'
+        'nodeCount' => 'getNodeCount'
     ];
 
     /**
@@ -209,7 +209,7 @@ class ListClusterStatuses200ResponseData implements ModelInterface, ArrayAccess,
      */
     public function __construct(?array $data = null)
     {
-        $this->setIfExists('node_count', $data ?? [], null);
+        $this->setIfExists('nodeCount', $data ?? [], null);
     }
 
     /**
@@ -255,28 +255,28 @@ class ListClusterStatuses200ResponseData implements ModelInterface, ArrayAccess,
 
 
     /**
-     * Gets node_count
+     * Gets nodeCount
      *
      * @return int|null
      */
     public function getNodeCount()
     {
-        return $this->container['node_count'];
+        return $this->container['nodeCount'];
     }
 
     /**
-     * Sets node_count
+     * Sets nodeCount
      *
-     * @param int|null $node_count node_count
+     * @param int|null $nodeCount nodeCount
      *
      * @return self
      */
-    public function setNodeCount($node_count)
+    public function setNodeCount($nodeCount)
     {
-        if (is_null($node_count)) {
-            throw new \InvalidArgumentException('non-nullable node_count cannot be null');
+        if (is_null($nodeCount)) {
+            throw new \InvalidArgumentException('non-nullable nodeCount cannot be null');
         }
-        $this->container['node_count'] = $node_count;
+        $this->container['nodeCount'] = $nodeCount;
 
         return $this;
     }

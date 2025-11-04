@@ -22,7 +22,7 @@ class ListAccessKeys200ResponseDataInner implements ModelInterface, ArrayAccess,
       * @var string[]
       */
     protected static $openAPITypes = [
-        'access_key_id' => 'string'
+        'accessKeyId' => 'string'
     ];
 
     /**
@@ -33,7 +33,7 @@ class ListAccessKeys200ResponseDataInner implements ModelInterface, ArrayAccess,
       * @psalm-var array<string, string|null>
       */
     protected static $openAPIFormats = [
-        'access_key_id' => null
+        'accessKeyId' => null
     ];
 
     /**
@@ -42,7 +42,7 @@ class ListAccessKeys200ResponseDataInner implements ModelInterface, ArrayAccess,
       * @var boolean[]
       */
     protected static array $openAPINullables = [
-        'access_key_id' => false
+        'accessKeyId' => false
     ];
 
     /**
@@ -131,7 +131,7 @@ class ListAccessKeys200ResponseDataInner implements ModelInterface, ArrayAccess,
      * @var string[]
      */
     protected static $attributeMap = [
-        'access_key_id' => 'access_key_id'
+        'accessKeyId' => 'accessKeyId'
     ];
 
     /**
@@ -140,7 +140,7 @@ class ListAccessKeys200ResponseDataInner implements ModelInterface, ArrayAccess,
      * @var string[]
      */
     protected static $setters = [
-        'access_key_id' => 'setAccessKeyId'
+        'accessKeyId' => 'setAccessKeyId'
     ];
 
     /**
@@ -149,7 +149,7 @@ class ListAccessKeys200ResponseDataInner implements ModelInterface, ArrayAccess,
      * @var string[]
      */
     protected static $getters = [
-        'access_key_id' => 'getAccessKeyId'
+        'accessKeyId' => 'getAccessKeyId'
     ];
 
     /**
@@ -209,7 +209,7 @@ class ListAccessKeys200ResponseDataInner implements ModelInterface, ArrayAccess,
      */
     public function __construct(?array $data = null)
     {
-        $this->setIfExists('access_key_id', $data ?? [], null);
+        $this->setIfExists('accessKeyId', $data ?? [], null);
     }
 
     /**
@@ -255,28 +255,28 @@ class ListAccessKeys200ResponseDataInner implements ModelInterface, ArrayAccess,
 
 
     /**
-     * Gets access_key_id
+     * Gets accessKeyId
      *
      * @return string|null
      */
     public function getAccessKeyId()
     {
-        return $this->container['access_key_id'];
+        return $this->container['accessKeyId'];
     }
 
     /**
-     * Sets access_key_id
+     * Sets accessKeyId
      *
-     * @param string|null $access_key_id access_key_id
+     * @param string|null $accessKeyId accessKeyId
      *
      * @return self
      */
-    public function setAccessKeyId($access_key_id)
+    public function setAccessKeyId($accessKeyId)
     {
-        if (is_null($access_key_id)) {
-            throw new \InvalidArgumentException('non-nullable access_key_id cannot be null');
+        if (is_null($accessKeyId)) {
+            throw new \InvalidArgumentException('non-nullable accessKeyId cannot be null');
         }
-        $this->container['access_key_id'] = $access_key_id;
+        $this->container['accessKeyId'] = $accessKeyId;
 
         return $this;
     }

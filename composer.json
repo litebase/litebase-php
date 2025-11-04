@@ -12,7 +12,7 @@
     "autoload": {
         "psr-4": {
             "Litebase\\": "src/",
-            "Litebase\\OpenAPI\\": "openapi/src/"
+            "Litebase\\OpenAPI\\": "api/src/"
         }
     },
     "autoload-dev": {
@@ -47,7 +47,7 @@
         "phpstan/phpstan": "^2.1"
     },
     "scripts": {
-        "generate_openapi": "openapi-generator-cli generate -c openapi_config.yaml",
+        "generate_open_api": "openapi-generator-cli generate -c openapi_config.yaml",
         "pint": "vendor/bin/pint --no-interaction",
         "test": "vendor/bin/pest",
         "test-coverage": "vendor/bin/pest --coverage-html coverage"

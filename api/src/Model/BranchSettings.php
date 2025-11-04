@@ -22,7 +22,7 @@ class BranchSettings implements ModelInterface, ArrayAccess, \JsonSerializable
       * @var string[]
       */
     protected static $openAPITypes = [
-        'incrementable_backups' => 'bool'
+        'incrementableBackups' => 'bool'
     ];
 
     /**
@@ -33,7 +33,7 @@ class BranchSettings implements ModelInterface, ArrayAccess, \JsonSerializable
       * @psalm-var array<string, string|null>
       */
     protected static $openAPIFormats = [
-        'incrementable_backups' => null
+        'incrementableBackups' => null
     ];
 
     /**
@@ -42,7 +42,7 @@ class BranchSettings implements ModelInterface, ArrayAccess, \JsonSerializable
       * @var boolean[]
       */
     protected static array $openAPINullables = [
-        'incrementable_backups' => false
+        'incrementableBackups' => false
     ];
 
     /**
@@ -131,7 +131,7 @@ class BranchSettings implements ModelInterface, ArrayAccess, \JsonSerializable
      * @var string[]
      */
     protected static $attributeMap = [
-        'incrementable_backups' => 'incrementable_backups'
+        'incrementableBackups' => 'incrementableBackups'
     ];
 
     /**
@@ -140,7 +140,7 @@ class BranchSettings implements ModelInterface, ArrayAccess, \JsonSerializable
      * @var string[]
      */
     protected static $setters = [
-        'incrementable_backups' => 'setIncrementableBackups'
+        'incrementableBackups' => 'setIncrementableBackups'
     ];
 
     /**
@@ -149,7 +149,7 @@ class BranchSettings implements ModelInterface, ArrayAccess, \JsonSerializable
      * @var string[]
      */
     protected static $getters = [
-        'incrementable_backups' => 'getIncrementableBackups'
+        'incrementableBackups' => 'getIncrementableBackups'
     ];
 
     /**
@@ -209,7 +209,7 @@ class BranchSettings implements ModelInterface, ArrayAccess, \JsonSerializable
      */
     public function __construct(?array $data = null)
     {
-        $this->setIfExists('incrementable_backups', $data ?? [], null);
+        $this->setIfExists('incrementableBackups', $data ?? [], null);
     }
 
     /**
@@ -255,28 +255,28 @@ class BranchSettings implements ModelInterface, ArrayAccess, \JsonSerializable
 
 
     /**
-     * Gets incrementable_backups
+     * Gets incrementableBackups
      *
      * @return bool|null
      */
     public function getIncrementableBackups()
     {
-        return $this->container['incrementable_backups'];
+        return $this->container['incrementableBackups'];
     }
 
     /**
-     * Sets incrementable_backups
+     * Sets incrementableBackups
      *
-     * @param bool|null $incrementable_backups incrementable_backups
+     * @param bool|null $incrementableBackups incrementableBackups
      *
      * @return self
      */
-    public function setIncrementableBackups($incrementable_backups)
+    public function setIncrementableBackups($incrementableBackups)
     {
-        if (is_null($incrementable_backups)) {
-            throw new \InvalidArgumentException('non-nullable incrementable_backups cannot be null');
+        if (is_null($incrementableBackups)) {
+            throw new \InvalidArgumentException('non-nullable incrementableBackups cannot be null');
         }
-        $this->container['incrementable_backups'] = $incrementable_backups;
+        $this->container['incrementableBackups'] = $incrementableBackups;
 
         return $this;
     }

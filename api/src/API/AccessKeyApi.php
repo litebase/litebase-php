@@ -4,7 +4,7 @@
  *
  * Litebase Server OpenAPI specification
  *
- * The version of the OpenAPI document: 1.0.0
+ * The version of the OpenAPI document: 0.5.0
  */
 
 
@@ -121,16 +121,16 @@ class AccessKeyApi
      *
      * Create a new access key
      *
-     * @param  \Litebase\OpenAPI\Model\CreateAccessKeyRequest $create_access_key_request Access key creation data (required)
+     * @param  \Litebase\OpenAPI\Model\AccessKeyStoreRequest $accessKeyStoreRequest Access key creation data (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['createAccessKey'] to see the possible values for this operation
      *
      * @throws \Litebase\OpenAPI\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
      * @return \Litebase\OpenAPI\Model\CreateAccessKey201Response|\Litebase\OpenAPI\Model\ErrorResponse|\Litebase\OpenAPI\Model\ErrorResponse|\Litebase\OpenAPI\Model\ValidationErrorResponse|\Litebase\OpenAPI\Model\ErrorResponse
      */
-    public function createAccessKey($create_access_key_request, string $contentType = self::contentTypes['createAccessKey'][0])
+    public function createAccessKey($accessKeyStoreRequest, string $contentType = self::contentTypes['createAccessKey'][0])
     {
-        list($response) = $this->createAccessKeyWithHttpInfo($create_access_key_request, $contentType);
+        list($response) = $this->createAccessKeyWithHttpInfo($accessKeyStoreRequest, $contentType);
         return $response;
     }
 
@@ -139,16 +139,16 @@ class AccessKeyApi
      *
      * Create a new access key
      *
-     * @param  \Litebase\OpenAPI\Model\CreateAccessKeyRequest $create_access_key_request Access key creation data (required)
+     * @param  \Litebase\OpenAPI\Model\AccessKeyStoreRequest $accessKeyStoreRequest Access key creation data (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['createAccessKey'] to see the possible values for this operation
      *
      * @throws \Litebase\OpenAPI\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
      * @return array of \Litebase\OpenAPI\Model\CreateAccessKey201Response|\Litebase\OpenAPI\Model\ErrorResponse|\Litebase\OpenAPI\Model\ErrorResponse|\Litebase\OpenAPI\Model\ValidationErrorResponse|\Litebase\OpenAPI\Model\ErrorResponse, HTTP status code, HTTP response headers (array of strings)
      */
-    public function createAccessKeyWithHttpInfo($create_access_key_request, string $contentType = self::contentTypes['createAccessKey'][0])
+    public function createAccessKeyWithHttpInfo($accessKeyStoreRequest, string $contentType = self::contentTypes['createAccessKey'][0])
     {
-        $request = $this->createAccessKeyRequest($create_access_key_request, $contentType);
+        $request = $this->createAccessKeyRequest($accessKeyStoreRequest, $contentType);
 
         try {
             $options = $this->createHttpClientOption();
@@ -280,15 +280,15 @@ class AccessKeyApi
      *
      * Create a new access key
      *
-     * @param  \Litebase\OpenAPI\Model\CreateAccessKeyRequest $create_access_key_request Access key creation data (required)
+     * @param  \Litebase\OpenAPI\Model\AccessKeyStoreRequest $accessKeyStoreRequest Access key creation data (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['createAccessKey'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function createAccessKeyAsync($create_access_key_request, string $contentType = self::contentTypes['createAccessKey'][0])
+    public function createAccessKeyAsync($accessKeyStoreRequest, string $contentType = self::contentTypes['createAccessKey'][0])
     {
-        return $this->createAccessKeyAsyncWithHttpInfo($create_access_key_request, $contentType)
+        return $this->createAccessKeyAsyncWithHttpInfo($accessKeyStoreRequest, $contentType)
             ->then(
                 function ($response) {
                     return $response[0];
@@ -301,16 +301,16 @@ class AccessKeyApi
      *
      * Create a new access key
      *
-     * @param  \Litebase\OpenAPI\Model\CreateAccessKeyRequest $create_access_key_request Access key creation data (required)
+     * @param  \Litebase\OpenAPI\Model\AccessKeyStoreRequest $accessKeyStoreRequest Access key creation data (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['createAccessKey'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function createAccessKeyAsyncWithHttpInfo($create_access_key_request, string $contentType = self::contentTypes['createAccessKey'][0])
+    public function createAccessKeyAsyncWithHttpInfo($accessKeyStoreRequest, string $contentType = self::contentTypes['createAccessKey'][0])
     {
         $returnType = '\Litebase\OpenAPI\Model\CreateAccessKey201Response';
-        $request = $this->createAccessKeyRequest($create_access_key_request, $contentType);
+        $request = $this->createAccessKeyRequest($accessKeyStoreRequest, $contentType);
 
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
@@ -351,19 +351,19 @@ class AccessKeyApi
     /**
      * Create request for operation 'createAccessKey'
      *
-     * @param  \Litebase\OpenAPI\Model\CreateAccessKeyRequest $create_access_key_request Access key creation data (required)
+     * @param  \Litebase\OpenAPI\Model\AccessKeyStoreRequest $accessKeyStoreRequest Access key creation data (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['createAccessKey'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
      */
-    public function createAccessKeyRequest($create_access_key_request, string $contentType = self::contentTypes['createAccessKey'][0])
+    public function createAccessKeyRequest($accessKeyStoreRequest, string $contentType = self::contentTypes['createAccessKey'][0])
     {
 
-        // verify the required parameter 'create_access_key_request' is set
-        if ($create_access_key_request === null || (is_array($create_access_key_request) && count($create_access_key_request) === 0)) {
+        // verify the required parameter 'accessKeyStoreRequest' is set
+        if ($accessKeyStoreRequest === null || (is_array($accessKeyStoreRequest) && count($accessKeyStoreRequest) === 0)) {
             throw new \InvalidArgumentException(
-                'Missing the required parameter $create_access_key_request when calling createAccessKey'
+                'Missing the required parameter $accessKeyStoreRequest when calling createAccessKey'
             );
         }
 
@@ -386,12 +386,12 @@ class AccessKeyApi
         );
 
         // for model (json/xml)
-        if (isset($create_access_key_request)) {
+        if (isset($accessKeyStoreRequest)) {
             if (stripos($headers['Content-Type'], 'application/json') !== false) {
                 # if Content-Type contains "application/json", json_encode the body
-                $httpBody = \GuzzleHttp\Utils::jsonEncode(ObjectSerializer::sanitizeForSerialization($create_access_key_request));
+                $httpBody = \GuzzleHttp\Utils::jsonEncode(ObjectSerializer::sanitizeForSerialization($accessKeyStoreRequest));
             } else {
-                $httpBody = $create_access_key_request;
+                $httpBody = $accessKeyStoreRequest;
             }
         } elseif (count($formParams) > 0) {
             if ($multipart) {
@@ -451,16 +451,16 @@ class AccessKeyApi
      *
      * Delete an access key
      *
-     * @param  string $access_key_id The accessKeyId parameter (required)
+     * @param  string $accessKeyId The accessKeyId parameter (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['deleteAccessKey'] to see the possible values for this operation
      *
      * @throws \Litebase\OpenAPI\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
      * @return \Litebase\OpenAPI\Model\DeleteAccessKey200Response|\Litebase\OpenAPI\Model\ErrorResponse|\Litebase\OpenAPI\Model\ErrorResponse|\Litebase\OpenAPI\Model\ErrorResponse
      */
-    public function deleteAccessKey($access_key_id, string $contentType = self::contentTypes['deleteAccessKey'][0])
+    public function deleteAccessKey($accessKeyId, string $contentType = self::contentTypes['deleteAccessKey'][0])
     {
-        list($response) = $this->deleteAccessKeyWithHttpInfo($access_key_id, $contentType);
+        list($response) = $this->deleteAccessKeyWithHttpInfo($accessKeyId, $contentType);
         return $response;
     }
 
@@ -469,16 +469,16 @@ class AccessKeyApi
      *
      * Delete an access key
      *
-     * @param  string $access_key_id The accessKeyId parameter (required)
+     * @param  string $accessKeyId The accessKeyId parameter (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['deleteAccessKey'] to see the possible values for this operation
      *
      * @throws \Litebase\OpenAPI\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
      * @return array of \Litebase\OpenAPI\Model\DeleteAccessKey200Response|\Litebase\OpenAPI\Model\ErrorResponse|\Litebase\OpenAPI\Model\ErrorResponse|\Litebase\OpenAPI\Model\ErrorResponse, HTTP status code, HTTP response headers (array of strings)
      */
-    public function deleteAccessKeyWithHttpInfo($access_key_id, string $contentType = self::contentTypes['deleteAccessKey'][0])
+    public function deleteAccessKeyWithHttpInfo($accessKeyId, string $contentType = self::contentTypes['deleteAccessKey'][0])
     {
-        $request = $this->deleteAccessKeyRequest($access_key_id, $contentType);
+        $request = $this->deleteAccessKeyRequest($accessKeyId, $contentType);
 
         try {
             $options = $this->createHttpClientOption();
@@ -596,15 +596,15 @@ class AccessKeyApi
      *
      * Delete an access key
      *
-     * @param  string $access_key_id The accessKeyId parameter (required)
+     * @param  string $accessKeyId The accessKeyId parameter (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['deleteAccessKey'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function deleteAccessKeyAsync($access_key_id, string $contentType = self::contentTypes['deleteAccessKey'][0])
+    public function deleteAccessKeyAsync($accessKeyId, string $contentType = self::contentTypes['deleteAccessKey'][0])
     {
-        return $this->deleteAccessKeyAsyncWithHttpInfo($access_key_id, $contentType)
+        return $this->deleteAccessKeyAsyncWithHttpInfo($accessKeyId, $contentType)
             ->then(
                 function ($response) {
                     return $response[0];
@@ -617,16 +617,16 @@ class AccessKeyApi
      *
      * Delete an access key
      *
-     * @param  string $access_key_id The accessKeyId parameter (required)
+     * @param  string $accessKeyId The accessKeyId parameter (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['deleteAccessKey'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function deleteAccessKeyAsyncWithHttpInfo($access_key_id, string $contentType = self::contentTypes['deleteAccessKey'][0])
+    public function deleteAccessKeyAsyncWithHttpInfo($accessKeyId, string $contentType = self::contentTypes['deleteAccessKey'][0])
     {
         $returnType = '\Litebase\OpenAPI\Model\DeleteAccessKey200Response';
-        $request = $this->deleteAccessKeyRequest($access_key_id, $contentType);
+        $request = $this->deleteAccessKeyRequest($accessKeyId, $contentType);
 
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
@@ -667,19 +667,19 @@ class AccessKeyApi
     /**
      * Create request for operation 'deleteAccessKey'
      *
-     * @param  string $access_key_id The accessKeyId parameter (required)
+     * @param  string $accessKeyId The accessKeyId parameter (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['deleteAccessKey'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
      */
-    public function deleteAccessKeyRequest($access_key_id, string $contentType = self::contentTypes['deleteAccessKey'][0])
+    public function deleteAccessKeyRequest($accessKeyId, string $contentType = self::contentTypes['deleteAccessKey'][0])
     {
 
-        // verify the required parameter 'access_key_id' is set
-        if ($access_key_id === null || (is_array($access_key_id) && count($access_key_id) === 0)) {
+        // verify the required parameter 'accessKeyId' is set
+        if ($accessKeyId === null || (is_array($accessKeyId) && count($accessKeyId) === 0)) {
             throw new \InvalidArgumentException(
-                'Missing the required parameter $access_key_id when calling deleteAccessKey'
+                'Missing the required parameter $accessKeyId when calling deleteAccessKey'
             );
         }
 
@@ -694,10 +694,10 @@ class AccessKeyApi
 
 
         // path params
-        if ($access_key_id !== null) {
+        if ($accessKeyId !== null) {
             $resourcePath = str_replace(
                 '{' . 'accessKeyId' . '}',
-                ObjectSerializer::toPathValue($access_key_id),
+                ObjectSerializer::toPathValue($accessKeyId),
                 $resourcePath
             );
         }
@@ -768,16 +768,16 @@ class AccessKeyApi
      *
      * Show details of an specific access key
      *
-     * @param  string $access_key_id The accessKeyId parameter (required)
+     * @param  string $accessKeyId The accessKeyId parameter (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getAccessKey'] to see the possible values for this operation
      *
      * @throws \Litebase\OpenAPI\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
      * @return \Litebase\OpenAPI\Model\GetAccessKey200Response|\Litebase\OpenAPI\Model\ErrorResponse|\Litebase\OpenAPI\Model\ErrorResponse|\Litebase\OpenAPI\Model\ErrorResponse
      */
-    public function getAccessKey($access_key_id, string $contentType = self::contentTypes['getAccessKey'][0])
+    public function getAccessKey($accessKeyId, string $contentType = self::contentTypes['getAccessKey'][0])
     {
-        list($response) = $this->getAccessKeyWithHttpInfo($access_key_id, $contentType);
+        list($response) = $this->getAccessKeyWithHttpInfo($accessKeyId, $contentType);
         return $response;
     }
 
@@ -786,16 +786,16 @@ class AccessKeyApi
      *
      * Show details of an specific access key
      *
-     * @param  string $access_key_id The accessKeyId parameter (required)
+     * @param  string $accessKeyId The accessKeyId parameter (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getAccessKey'] to see the possible values for this operation
      *
      * @throws \Litebase\OpenAPI\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
      * @return array of \Litebase\OpenAPI\Model\GetAccessKey200Response|\Litebase\OpenAPI\Model\ErrorResponse|\Litebase\OpenAPI\Model\ErrorResponse|\Litebase\OpenAPI\Model\ErrorResponse, HTTP status code, HTTP response headers (array of strings)
      */
-    public function getAccessKeyWithHttpInfo($access_key_id, string $contentType = self::contentTypes['getAccessKey'][0])
+    public function getAccessKeyWithHttpInfo($accessKeyId, string $contentType = self::contentTypes['getAccessKey'][0])
     {
-        $request = $this->getAccessKeyRequest($access_key_id, $contentType);
+        $request = $this->getAccessKeyRequest($accessKeyId, $contentType);
 
         try {
             $options = $this->createHttpClientOption();
@@ -913,15 +913,15 @@ class AccessKeyApi
      *
      * Show details of an specific access key
      *
-     * @param  string $access_key_id The accessKeyId parameter (required)
+     * @param  string $accessKeyId The accessKeyId parameter (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getAccessKey'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function getAccessKeyAsync($access_key_id, string $contentType = self::contentTypes['getAccessKey'][0])
+    public function getAccessKeyAsync($accessKeyId, string $contentType = self::contentTypes['getAccessKey'][0])
     {
-        return $this->getAccessKeyAsyncWithHttpInfo($access_key_id, $contentType)
+        return $this->getAccessKeyAsyncWithHttpInfo($accessKeyId, $contentType)
             ->then(
                 function ($response) {
                     return $response[0];
@@ -934,16 +934,16 @@ class AccessKeyApi
      *
      * Show details of an specific access key
      *
-     * @param  string $access_key_id The accessKeyId parameter (required)
+     * @param  string $accessKeyId The accessKeyId parameter (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getAccessKey'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function getAccessKeyAsyncWithHttpInfo($access_key_id, string $contentType = self::contentTypes['getAccessKey'][0])
+    public function getAccessKeyAsyncWithHttpInfo($accessKeyId, string $contentType = self::contentTypes['getAccessKey'][0])
     {
         $returnType = '\Litebase\OpenAPI\Model\GetAccessKey200Response';
-        $request = $this->getAccessKeyRequest($access_key_id, $contentType);
+        $request = $this->getAccessKeyRequest($accessKeyId, $contentType);
 
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
@@ -984,19 +984,19 @@ class AccessKeyApi
     /**
      * Create request for operation 'getAccessKey'
      *
-     * @param  string $access_key_id The accessKeyId parameter (required)
+     * @param  string $accessKeyId The accessKeyId parameter (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getAccessKey'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
      */
-    public function getAccessKeyRequest($access_key_id, string $contentType = self::contentTypes['getAccessKey'][0])
+    public function getAccessKeyRequest($accessKeyId, string $contentType = self::contentTypes['getAccessKey'][0])
     {
 
-        // verify the required parameter 'access_key_id' is set
-        if ($access_key_id === null || (is_array($access_key_id) && count($access_key_id) === 0)) {
+        // verify the required parameter 'accessKeyId' is set
+        if ($accessKeyId === null || (is_array($accessKeyId) && count($accessKeyId) === 0)) {
             throw new \InvalidArgumentException(
-                'Missing the required parameter $access_key_id when calling getAccessKey'
+                'Missing the required parameter $accessKeyId when calling getAccessKey'
             );
         }
 
@@ -1011,10 +1011,10 @@ class AccessKeyApi
 
 
         // path params
-        if ($access_key_id !== null) {
+        if ($accessKeyId !== null) {
             $resourcePath = str_replace(
                 '{' . 'accessKeyId' . '}',
-                ObjectSerializer::toPathValue($access_key_id),
+                ObjectSerializer::toPathValue($accessKeyId),
                 $resourcePath
             );
         }
@@ -1368,17 +1368,17 @@ class AccessKeyApi
      *
      * Update an existing access key
      *
-     * @param  string $access_key_id The accessKeyId parameter (required)
-     * @param  \Litebase\OpenAPI\Model\CreateAccessKeyRequest $create_access_key_request Access key update data (required)
+     * @param  string $accessKeyId The accessKeyId parameter (required)
+     * @param  \Litebase\OpenAPI\Model\AccessKeyUpdateRequest $accessKeyUpdateRequest Access key update data (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['updateAccessKey'] to see the possible values for this operation
      *
      * @throws \Litebase\OpenAPI\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
      * @return \Litebase\OpenAPI\Model\UpdateAccessKey200Response|\Litebase\OpenAPI\Model\ErrorResponse|\Litebase\OpenAPI\Model\ErrorResponse|\Litebase\OpenAPI\Model\ErrorResponse|\Litebase\OpenAPI\Model\ValidationErrorResponse|\Litebase\OpenAPI\Model\ErrorResponse
      */
-    public function updateAccessKey($access_key_id, $create_access_key_request, string $contentType = self::contentTypes['updateAccessKey'][0])
+    public function updateAccessKey($accessKeyId, $accessKeyUpdateRequest, string $contentType = self::contentTypes['updateAccessKey'][0])
     {
-        list($response) = $this->updateAccessKeyWithHttpInfo($access_key_id, $create_access_key_request, $contentType);
+        list($response) = $this->updateAccessKeyWithHttpInfo($accessKeyId, $accessKeyUpdateRequest, $contentType);
         return $response;
     }
 
@@ -1387,17 +1387,17 @@ class AccessKeyApi
      *
      * Update an existing access key
      *
-     * @param  string $access_key_id The accessKeyId parameter (required)
-     * @param  \Litebase\OpenAPI\Model\CreateAccessKeyRequest $create_access_key_request Access key update data (required)
+     * @param  string $accessKeyId The accessKeyId parameter (required)
+     * @param  \Litebase\OpenAPI\Model\AccessKeyUpdateRequest $accessKeyUpdateRequest Access key update data (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['updateAccessKey'] to see the possible values for this operation
      *
      * @throws \Litebase\OpenAPI\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
      * @return array of \Litebase\OpenAPI\Model\UpdateAccessKey200Response|\Litebase\OpenAPI\Model\ErrorResponse|\Litebase\OpenAPI\Model\ErrorResponse|\Litebase\OpenAPI\Model\ErrorResponse|\Litebase\OpenAPI\Model\ValidationErrorResponse|\Litebase\OpenAPI\Model\ErrorResponse, HTTP status code, HTTP response headers (array of strings)
      */
-    public function updateAccessKeyWithHttpInfo($access_key_id, $create_access_key_request, string $contentType = self::contentTypes['updateAccessKey'][0])
+    public function updateAccessKeyWithHttpInfo($accessKeyId, $accessKeyUpdateRequest, string $contentType = self::contentTypes['updateAccessKey'][0])
     {
-        $request = $this->updateAccessKeyRequest($access_key_id, $create_access_key_request, $contentType);
+        $request = $this->updateAccessKeyRequest($accessKeyId, $accessKeyUpdateRequest, $contentType);
 
         try {
             $options = $this->createHttpClientOption();
@@ -1543,16 +1543,16 @@ class AccessKeyApi
      *
      * Update an existing access key
      *
-     * @param  string $access_key_id The accessKeyId parameter (required)
-     * @param  \Litebase\OpenAPI\Model\CreateAccessKeyRequest $create_access_key_request Access key update data (required)
+     * @param  string $accessKeyId The accessKeyId parameter (required)
+     * @param  \Litebase\OpenAPI\Model\AccessKeyUpdateRequest $accessKeyUpdateRequest Access key update data (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['updateAccessKey'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function updateAccessKeyAsync($access_key_id, $create_access_key_request, string $contentType = self::contentTypes['updateAccessKey'][0])
+    public function updateAccessKeyAsync($accessKeyId, $accessKeyUpdateRequest, string $contentType = self::contentTypes['updateAccessKey'][0])
     {
-        return $this->updateAccessKeyAsyncWithHttpInfo($access_key_id, $create_access_key_request, $contentType)
+        return $this->updateAccessKeyAsyncWithHttpInfo($accessKeyId, $accessKeyUpdateRequest, $contentType)
             ->then(
                 function ($response) {
                     return $response[0];
@@ -1565,17 +1565,17 @@ class AccessKeyApi
      *
      * Update an existing access key
      *
-     * @param  string $access_key_id The accessKeyId parameter (required)
-     * @param  \Litebase\OpenAPI\Model\CreateAccessKeyRequest $create_access_key_request Access key update data (required)
+     * @param  string $accessKeyId The accessKeyId parameter (required)
+     * @param  \Litebase\OpenAPI\Model\AccessKeyUpdateRequest $accessKeyUpdateRequest Access key update data (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['updateAccessKey'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function updateAccessKeyAsyncWithHttpInfo($access_key_id, $create_access_key_request, string $contentType = self::contentTypes['updateAccessKey'][0])
+    public function updateAccessKeyAsyncWithHttpInfo($accessKeyId, $accessKeyUpdateRequest, string $contentType = self::contentTypes['updateAccessKey'][0])
     {
         $returnType = '\Litebase\OpenAPI\Model\UpdateAccessKey200Response';
-        $request = $this->updateAccessKeyRequest($access_key_id, $create_access_key_request, $contentType);
+        $request = $this->updateAccessKeyRequest($accessKeyId, $accessKeyUpdateRequest, $contentType);
 
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
@@ -1616,27 +1616,27 @@ class AccessKeyApi
     /**
      * Create request for operation 'updateAccessKey'
      *
-     * @param  string $access_key_id The accessKeyId parameter (required)
-     * @param  \Litebase\OpenAPI\Model\CreateAccessKeyRequest $create_access_key_request Access key update data (required)
+     * @param  string $accessKeyId The accessKeyId parameter (required)
+     * @param  \Litebase\OpenAPI\Model\AccessKeyUpdateRequest $accessKeyUpdateRequest Access key update data (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['updateAccessKey'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
      */
-    public function updateAccessKeyRequest($access_key_id, $create_access_key_request, string $contentType = self::contentTypes['updateAccessKey'][0])
+    public function updateAccessKeyRequest($accessKeyId, $accessKeyUpdateRequest, string $contentType = self::contentTypes['updateAccessKey'][0])
     {
 
-        // verify the required parameter 'access_key_id' is set
-        if ($access_key_id === null || (is_array($access_key_id) && count($access_key_id) === 0)) {
+        // verify the required parameter 'accessKeyId' is set
+        if ($accessKeyId === null || (is_array($accessKeyId) && count($accessKeyId) === 0)) {
             throw new \InvalidArgumentException(
-                'Missing the required parameter $access_key_id when calling updateAccessKey'
+                'Missing the required parameter $accessKeyId when calling updateAccessKey'
             );
         }
 
-        // verify the required parameter 'create_access_key_request' is set
-        if ($create_access_key_request === null || (is_array($create_access_key_request) && count($create_access_key_request) === 0)) {
+        // verify the required parameter 'accessKeyUpdateRequest' is set
+        if ($accessKeyUpdateRequest === null || (is_array($accessKeyUpdateRequest) && count($accessKeyUpdateRequest) === 0)) {
             throw new \InvalidArgumentException(
-                'Missing the required parameter $create_access_key_request when calling updateAccessKey'
+                'Missing the required parameter $accessKeyUpdateRequest when calling updateAccessKey'
             );
         }
 
@@ -1651,10 +1651,10 @@ class AccessKeyApi
 
 
         // path params
-        if ($access_key_id !== null) {
+        if ($accessKeyId !== null) {
             $resourcePath = str_replace(
                 '{' . 'accessKeyId' . '}',
-                ObjectSerializer::toPathValue($access_key_id),
+                ObjectSerializer::toPathValue($accessKeyId),
                 $resourcePath
             );
         }
@@ -1667,12 +1667,12 @@ class AccessKeyApi
         );
 
         // for model (json/xml)
-        if (isset($create_access_key_request)) {
+        if (isset($accessKeyUpdateRequest)) {
             if (stripos($headers['Content-Type'], 'application/json') !== false) {
                 # if Content-Type contains "application/json", json_encode the body
-                $httpBody = \GuzzleHttp\Utils::jsonEncode(ObjectSerializer::sanitizeForSerialization($create_access_key_request));
+                $httpBody = \GuzzleHttp\Utils::jsonEncode(ObjectSerializer::sanitizeForSerialization($accessKeyUpdateRequest));
             } else {
-                $httpBody = $create_access_key_request;
+                $httpBody = $accessKeyUpdateRequest;
             }
         } elseif (count($formParams) > 0) {
             if ($multipart) {
@@ -1720,7 +1720,7 @@ class AccessKeyApi
 
         $query = ObjectSerializer::buildQuery($queryParams);
         return new Request(
-            'PUT',
+            'PATCH',
             $resourcePath . ($query ? "?{$query}" : ''),
             $headers,
             $httpBody

@@ -22,7 +22,7 @@ class ListTokens200Response implements ModelInterface, ArrayAccess, \JsonSeriali
       * @var string[]
       */
     protected static $openAPITypes = [
-        'data' => '\Litebase\OpenAPI\Model\ListTokens200ResponseDataInner[]',
+        'data' => '\Litebase\OpenAPI\Model\TokenResponse[]',
         'message' => 'string',
         'status' => 'string'
     ];
@@ -280,7 +280,7 @@ class ListTokens200Response implements ModelInterface, ArrayAccess, \JsonSeriali
     /**
      * Gets data
      *
-     * @return \Litebase\OpenAPI\Model\ListTokens200ResponseDataInner[]
+     * @return \Litebase\OpenAPI\Model\TokenResponse[]
      */
     public function getData()
     {
@@ -290,7 +290,7 @@ class ListTokens200Response implements ModelInterface, ArrayAccess, \JsonSeriali
     /**
      * Sets data
      *
-     * @param \Litebase\OpenAPI\Model\ListTokens200ResponseDataInner[] $data Array of auth.TokenResponse objects
+     * @param \Litebase\OpenAPI\Model\TokenResponse[] $data Array of auth.TokenResponse objects
      *
      * @return self
      */

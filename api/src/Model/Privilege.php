@@ -94,6 +94,8 @@ class Privilege
 
     public const DATABASE_UPDATE = 'database:update';
 
+    public const STAR = '*';
+
     public const TOKEN_CREATE = 'token:create';
 
     public const TOKEN_DELETE = 'token:delete';
@@ -154,6 +156,7 @@ class Privilege
             self::DATABASE_SELECT,
             self::DATABASE_TRANSACTION,
             self::DATABASE_UPDATE,
+            self::STAR,
             self::TOKEN_CREATE,
             self::TOKEN_DELETE,
             self::TOKEN_LIST,

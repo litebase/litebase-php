@@ -22,12 +22,11 @@ class ListTokens200ResponseDataInner implements ModelInterface, ArrayAccess, \Js
       * @var string[]
       */
     protected static $openAPITypes = [
-        'created_at' => '\DateTime',
+        'createdAt' => '\DateTime',
         'description' => 'string',
         'statements' => '\Litebase\OpenAPI\Model\Statement[]',
-        'token' => 'string',
-        'token_id' => 'string',
-        'updated_at' => '\DateTime'
+        'tokenId' => 'string',
+        'updatedAt' => '\DateTime'
     ];
 
     /**
@@ -38,12 +37,11 @@ class ListTokens200ResponseDataInner implements ModelInterface, ArrayAccess, \Js
       * @psalm-var array<string, string|null>
       */
     protected static $openAPIFormats = [
-        'created_at' => 'date-time',
+        'createdAt' => 'date-time',
         'description' => null,
         'statements' => null,
-        'token' => null,
-        'token_id' => null,
-        'updated_at' => 'date-time'
+        'tokenId' => null,
+        'updatedAt' => 'date-time'
     ];
 
     /**
@@ -52,12 +50,11 @@ class ListTokens200ResponseDataInner implements ModelInterface, ArrayAccess, \Js
       * @var boolean[]
       */
     protected static array $openAPINullables = [
-        'created_at' => false,
+        'createdAt' => false,
         'description' => false,
         'statements' => false,
-        'token' => false,
-        'token_id' => false,
-        'updated_at' => false
+        'tokenId' => false,
+        'updatedAt' => false
     ];
 
     /**
@@ -146,12 +143,11 @@ class ListTokens200ResponseDataInner implements ModelInterface, ArrayAccess, \Js
      * @var string[]
      */
     protected static $attributeMap = [
-        'created_at' => 'created_at',
+        'createdAt' => 'createdAt',
         'description' => 'description',
         'statements' => 'statements',
-        'token' => 'token',
-        'token_id' => 'token_id',
-        'updated_at' => 'updated_at'
+        'tokenId' => 'tokenId',
+        'updatedAt' => 'updatedAt'
     ];
 
     /**
@@ -160,12 +156,11 @@ class ListTokens200ResponseDataInner implements ModelInterface, ArrayAccess, \Js
      * @var string[]
      */
     protected static $setters = [
-        'created_at' => 'setCreatedAt',
+        'createdAt' => 'setCreatedAt',
         'description' => 'setDescription',
         'statements' => 'setStatements',
-        'token' => 'setToken',
-        'token_id' => 'setTokenId',
-        'updated_at' => 'setUpdatedAt'
+        'tokenId' => 'setTokenId',
+        'updatedAt' => 'setUpdatedAt'
     ];
 
     /**
@@ -174,12 +169,11 @@ class ListTokens200ResponseDataInner implements ModelInterface, ArrayAccess, \Js
      * @var string[]
      */
     protected static $getters = [
-        'created_at' => 'getCreatedAt',
+        'createdAt' => 'getCreatedAt',
         'description' => 'getDescription',
         'statements' => 'getStatements',
-        'token' => 'getToken',
-        'token_id' => 'getTokenId',
-        'updated_at' => 'getUpdatedAt'
+        'tokenId' => 'getTokenId',
+        'updatedAt' => 'getUpdatedAt'
     ];
 
     /**
@@ -239,12 +233,11 @@ class ListTokens200ResponseDataInner implements ModelInterface, ArrayAccess, \Js
      */
     public function __construct(?array $data = null)
     {
-        $this->setIfExists('created_at', $data ?? [], null);
+        $this->setIfExists('createdAt', $data ?? [], null);
         $this->setIfExists('description', $data ?? [], null);
         $this->setIfExists('statements', $data ?? [], null);
-        $this->setIfExists('token', $data ?? [], null);
-        $this->setIfExists('token_id', $data ?? [], null);
-        $this->setIfExists('updated_at', $data ?? [], null);
+        $this->setIfExists('tokenId', $data ?? [], null);
+        $this->setIfExists('updatedAt', $data ?? [], null);
     }
 
     /**
@@ -290,28 +283,28 @@ class ListTokens200ResponseDataInner implements ModelInterface, ArrayAccess, \Js
 
 
     /**
-     * Gets created_at
+     * Gets createdAt
      *
      * @return \DateTime|null
      */
     public function getCreatedAt()
     {
-        return $this->container['created_at'];
+        return $this->container['createdAt'];
     }
 
     /**
-     * Sets created_at
+     * Sets createdAt
      *
-     * @param \DateTime|null $created_at Creation timestamp
+     * @param \DateTime|null $createdAt Creation timestamp
      *
      * @return self
      */
-    public function setCreatedAt($created_at)
+    public function setCreatedAt($createdAt)
     {
-        if (is_null($created_at)) {
-            throw new \InvalidArgumentException('non-nullable created_at cannot be null');
+        if (is_null($createdAt)) {
+            throw new \InvalidArgumentException('non-nullable createdAt cannot be null');
         }
-        $this->container['created_at'] = $created_at;
+        $this->container['createdAt'] = $createdAt;
 
         return $this;
     }
@@ -371,82 +364,55 @@ class ListTokens200ResponseDataInner implements ModelInterface, ArrayAccess, \Js
     }
 
     /**
-     * Gets token
-     *
-     * @return string|null
-     */
-    public function getToken()
-    {
-        return $this->container['token'];
-    }
-
-    /**
-     * Sets token
-     *
-     * @param string|null $token token
-     *
-     * @return self
-     */
-    public function setToken($token)
-    {
-        if (is_null($token)) {
-            throw new \InvalidArgumentException('non-nullable token cannot be null');
-        }
-        $this->container['token'] = $token;
-
-        return $this;
-    }
-
-    /**
-     * Gets token_id
+     * Gets tokenId
      *
      * @return string|null
      */
     public function getTokenId()
     {
-        return $this->container['token_id'];
+        return $this->container['tokenId'];
     }
 
     /**
-     * Sets token_id
+     * Sets tokenId
      *
-     * @param string|null $token_id token_id
+     * @param string|null $tokenId tokenId
      *
      * @return self
      */
-    public function setTokenId($token_id)
+    public function setTokenId($tokenId)
     {
-        if (is_null($token_id)) {
-            throw new \InvalidArgumentException('non-nullable token_id cannot be null');
+        if (is_null($tokenId)) {
+            throw new \InvalidArgumentException('non-nullable tokenId cannot be null');
         }
-        $this->container['token_id'] = $token_id;
+        $this->container['tokenId'] = $tokenId;
 
         return $this;
     }
 
     /**
-     * Gets updated_at
+     * Gets updatedAt
      *
      * @return \DateTime|null
      */
     public function getUpdatedAt()
     {
-        return $this->container['updated_at'];
+        return $this->container['updatedAt'];
     }
 
     /**
-     * Sets updated_at
+     * Sets updatedAt
      *
-     * @param \DateTime|null $updated_at Last update timestamp
+     * @param \DateTime|null $updatedAt Last update timestamp
      *
      * @return self
      */
-    public function setUpdatedAt($updated_at)
+    public function setUpdatedAt($updatedAt)
     {
-        if (is_null($updated_at)) {
-            throw new \InvalidArgumentException('non-nullable updated_at cannot be null');
+        if (is_null($updatedAt)) {
+            throw new \InvalidArgumentException('non-nullable updatedAt cannot be null');
         }
-        $this->container['updated_at'] = $updated_at;
+        $this->container['updatedAt'] = $updatedAt;
 
         return $this;
     }

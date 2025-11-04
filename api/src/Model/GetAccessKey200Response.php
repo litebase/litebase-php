@@ -22,7 +22,7 @@ class GetAccessKey200Response implements ModelInterface, ArrayAccess, \JsonSeria
       * @var string[]
       */
     protected static $openAPITypes = [
-        'data' => '\Litebase\OpenAPI\Model\GetAccessKey200ResponseData',
+        'data' => '\Litebase\OpenAPI\Model\AccessKeyShowResponse',
         'message' => 'string',
         'status' => 'string'
     ];
@@ -280,7 +280,7 @@ class GetAccessKey200Response implements ModelInterface, ArrayAccess, \JsonSeria
     /**
      * Gets data
      *
-     * @return \Litebase\OpenAPI\Model\GetAccessKey200ResponseData
+     * @return \Litebase\OpenAPI\Model\AccessKeyShowResponse
      */
     public function getData()
     {
@@ -290,7 +290,7 @@ class GetAccessKey200Response implements ModelInterface, ArrayAccess, \JsonSeria
     /**
      * Sets data
      *
-     * @param \Litebase\OpenAPI\Model\GetAccessKey200ResponseData $data data
+     * @param \Litebase\OpenAPI\Model\AccessKeyShowResponse $data data
      *
      * @return self
      */

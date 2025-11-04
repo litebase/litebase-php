@@ -4,7 +4,7 @@
  *
  * Litebase Server OpenAPI specification
  *
- * The version of the OpenAPI document: 1.0.0
+ * The version of the OpenAPI document: 0.5.0
  */
 
 
@@ -121,15 +121,16 @@ class TokenApi
      *
      * Create a new token
      *
+     * @param  \Litebase\OpenAPI\Model\TokenStoreRequest $tokenStoreRequest Token creation data (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['createToken'] to see the possible values for this operation
      *
      * @throws \Litebase\OpenAPI\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
      * @return \Litebase\OpenAPI\Model\CreateToken201Response|\Litebase\OpenAPI\Model\ErrorResponse|\Litebase\OpenAPI\Model\ErrorResponse|\Litebase\OpenAPI\Model\ValidationErrorResponse|\Litebase\OpenAPI\Model\ErrorResponse
      */
-    public function createToken(string $contentType = self::contentTypes['createToken'][0])
+    public function createToken($tokenStoreRequest, string $contentType = self::contentTypes['createToken'][0])
     {
-        list($response) = $this->createTokenWithHttpInfo($contentType);
+        list($response) = $this->createTokenWithHttpInfo($tokenStoreRequest, $contentType);
         return $response;
     }
 
@@ -138,15 +139,16 @@ class TokenApi
      *
      * Create a new token
      *
+     * @param  \Litebase\OpenAPI\Model\TokenStoreRequest $tokenStoreRequest Token creation data (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['createToken'] to see the possible values for this operation
      *
      * @throws \Litebase\OpenAPI\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
      * @return array of \Litebase\OpenAPI\Model\CreateToken201Response|\Litebase\OpenAPI\Model\ErrorResponse|\Litebase\OpenAPI\Model\ErrorResponse|\Litebase\OpenAPI\Model\ValidationErrorResponse|\Litebase\OpenAPI\Model\ErrorResponse, HTTP status code, HTTP response headers (array of strings)
      */
-    public function createTokenWithHttpInfo(string $contentType = self::contentTypes['createToken'][0])
+    public function createTokenWithHttpInfo($tokenStoreRequest, string $contentType = self::contentTypes['createToken'][0])
     {
-        $request = $this->createTokenRequest($contentType);
+        $request = $this->createTokenRequest($tokenStoreRequest, $contentType);
 
         try {
             $options = $this->createHttpClientOption();
@@ -278,14 +280,15 @@ class TokenApi
      *
      * Create a new token
      *
+     * @param  \Litebase\OpenAPI\Model\TokenStoreRequest $tokenStoreRequest Token creation data (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['createToken'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function createTokenAsync(string $contentType = self::contentTypes['createToken'][0])
+    public function createTokenAsync($tokenStoreRequest, string $contentType = self::contentTypes['createToken'][0])
     {
-        return $this->createTokenAsyncWithHttpInfo($contentType)
+        return $this->createTokenAsyncWithHttpInfo($tokenStoreRequest, $contentType)
             ->then(
                 function ($response) {
                     return $response[0];
@@ -298,15 +301,16 @@ class TokenApi
      *
      * Create a new token
      *
+     * @param  \Litebase\OpenAPI\Model\TokenStoreRequest $tokenStoreRequest Token creation data (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['createToken'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function createTokenAsyncWithHttpInfo(string $contentType = self::contentTypes['createToken'][0])
+    public function createTokenAsyncWithHttpInfo($tokenStoreRequest, string $contentType = self::contentTypes['createToken'][0])
     {
         $returnType = '\Litebase\OpenAPI\Model\CreateToken201Response';
-        $request = $this->createTokenRequest($contentType);
+        $request = $this->createTokenRequest($tokenStoreRequest, $contentType);
 
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
@@ -347,13 +351,21 @@ class TokenApi
     /**
      * Create request for operation 'createToken'
      *
+     * @param  \Litebase\OpenAPI\Model\TokenStoreRequest $tokenStoreRequest Token creation data (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['createToken'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
      */
-    public function createTokenRequest(string $contentType = self::contentTypes['createToken'][0])
+    public function createTokenRequest($tokenStoreRequest, string $contentType = self::contentTypes['createToken'][0])
     {
+
+        // verify the required parameter 'tokenStoreRequest' is set
+        if ($tokenStoreRequest === null || (is_array($tokenStoreRequest) && count($tokenStoreRequest) === 0)) {
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $tokenStoreRequest when calling createToken'
+            );
+        }
 
 
         $resourcePath = '/v1/tokens';
@@ -374,7 +386,14 @@ class TokenApi
         );
 
         // for model (json/xml)
-        if (count($formParams) > 0) {
+        if (isset($tokenStoreRequest)) {
+            if (stripos($headers['Content-Type'], 'application/json') !== false) {
+                # if Content-Type contains "application/json", json_encode the body
+                $httpBody = \GuzzleHttp\Utils::jsonEncode(ObjectSerializer::sanitizeForSerialization($tokenStoreRequest));
+            } else {
+                $httpBody = $tokenStoreRequest;
+            }
+        } elseif (count($formParams) > 0) {
             if ($multipart) {
                 $multipartContents = [];
                 foreach ($formParams as $formParamName => $formParamValue) {
@@ -432,16 +451,16 @@ class TokenApi
      *
      * Delete a token
      *
-     * @param  string $token_id The tokenId parameter (required)
+     * @param  string $tokenId The tokenId parameter (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['deleteToken'] to see the possible values for this operation
      *
      * @throws \Litebase\OpenAPI\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
      * @return \Litebase\OpenAPI\Model\DeleteToken200Response|\Litebase\OpenAPI\Model\ErrorResponse|\Litebase\OpenAPI\Model\ErrorResponse|\Litebase\OpenAPI\Model\ErrorResponse
      */
-    public function deleteToken($token_id, string $contentType = self::contentTypes['deleteToken'][0])
+    public function deleteToken($tokenId, string $contentType = self::contentTypes['deleteToken'][0])
     {
-        list($response) = $this->deleteTokenWithHttpInfo($token_id, $contentType);
+        list($response) = $this->deleteTokenWithHttpInfo($tokenId, $contentType);
         return $response;
     }
 
@@ -450,16 +469,16 @@ class TokenApi
      *
      * Delete a token
      *
-     * @param  string $token_id The tokenId parameter (required)
+     * @param  string $tokenId The tokenId parameter (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['deleteToken'] to see the possible values for this operation
      *
      * @throws \Litebase\OpenAPI\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
      * @return array of \Litebase\OpenAPI\Model\DeleteToken200Response|\Litebase\OpenAPI\Model\ErrorResponse|\Litebase\OpenAPI\Model\ErrorResponse|\Litebase\OpenAPI\Model\ErrorResponse, HTTP status code, HTTP response headers (array of strings)
      */
-    public function deleteTokenWithHttpInfo($token_id, string $contentType = self::contentTypes['deleteToken'][0])
+    public function deleteTokenWithHttpInfo($tokenId, string $contentType = self::contentTypes['deleteToken'][0])
     {
-        $request = $this->deleteTokenRequest($token_id, $contentType);
+        $request = $this->deleteTokenRequest($tokenId, $contentType);
 
         try {
             $options = $this->createHttpClientOption();
@@ -577,15 +596,15 @@ class TokenApi
      *
      * Delete a token
      *
-     * @param  string $token_id The tokenId parameter (required)
+     * @param  string $tokenId The tokenId parameter (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['deleteToken'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function deleteTokenAsync($token_id, string $contentType = self::contentTypes['deleteToken'][0])
+    public function deleteTokenAsync($tokenId, string $contentType = self::contentTypes['deleteToken'][0])
     {
-        return $this->deleteTokenAsyncWithHttpInfo($token_id, $contentType)
+        return $this->deleteTokenAsyncWithHttpInfo($tokenId, $contentType)
             ->then(
                 function ($response) {
                     return $response[0];
@@ -598,16 +617,16 @@ class TokenApi
      *
      * Delete a token
      *
-     * @param  string $token_id The tokenId parameter (required)
+     * @param  string $tokenId The tokenId parameter (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['deleteToken'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function deleteTokenAsyncWithHttpInfo($token_id, string $contentType = self::contentTypes['deleteToken'][0])
+    public function deleteTokenAsyncWithHttpInfo($tokenId, string $contentType = self::contentTypes['deleteToken'][0])
     {
         $returnType = '\Litebase\OpenAPI\Model\DeleteToken200Response';
-        $request = $this->deleteTokenRequest($token_id, $contentType);
+        $request = $this->deleteTokenRequest($tokenId, $contentType);
 
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
@@ -648,19 +667,19 @@ class TokenApi
     /**
      * Create request for operation 'deleteToken'
      *
-     * @param  string $token_id The tokenId parameter (required)
+     * @param  string $tokenId The tokenId parameter (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['deleteToken'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
      */
-    public function deleteTokenRequest($token_id, string $contentType = self::contentTypes['deleteToken'][0])
+    public function deleteTokenRequest($tokenId, string $contentType = self::contentTypes['deleteToken'][0])
     {
 
-        // verify the required parameter 'token_id' is set
-        if ($token_id === null || (is_array($token_id) && count($token_id) === 0)) {
+        // verify the required parameter 'tokenId' is set
+        if ($tokenId === null || (is_array($tokenId) && count($tokenId) === 0)) {
             throw new \InvalidArgumentException(
-                'Missing the required parameter $token_id when calling deleteToken'
+                'Missing the required parameter $tokenId when calling deleteToken'
             );
         }
 
@@ -675,10 +694,10 @@ class TokenApi
 
 
         // path params
-        if ($token_id !== null) {
+        if ($tokenId !== null) {
             $resourcePath = str_replace(
                 '{' . 'tokenId' . '}',
-                ObjectSerializer::toPathValue($token_id),
+                ObjectSerializer::toPathValue($tokenId),
                 $resourcePath
             );
         }
@@ -749,16 +768,16 @@ class TokenApi
      *
      * Show details of a specific token
      *
-     * @param  string $token_id The tokenId parameter (required)
+     * @param  string $tokenId The tokenId parameter (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getToken'] to see the possible values for this operation
      *
      * @throws \Litebase\OpenAPI\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
      * @return \Litebase\OpenAPI\Model\GetToken200Response|\Litebase\OpenAPI\Model\ErrorResponse|\Litebase\OpenAPI\Model\ErrorResponse|\Litebase\OpenAPI\Model\ErrorResponse
      */
-    public function getToken($token_id, string $contentType = self::contentTypes['getToken'][0])
+    public function getToken($tokenId, string $contentType = self::contentTypes['getToken'][0])
     {
-        list($response) = $this->getTokenWithHttpInfo($token_id, $contentType);
+        list($response) = $this->getTokenWithHttpInfo($tokenId, $contentType);
         return $response;
     }
 
@@ -767,16 +786,16 @@ class TokenApi
      *
      * Show details of a specific token
      *
-     * @param  string $token_id The tokenId parameter (required)
+     * @param  string $tokenId The tokenId parameter (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getToken'] to see the possible values for this operation
      *
      * @throws \Litebase\OpenAPI\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
      * @return array of \Litebase\OpenAPI\Model\GetToken200Response|\Litebase\OpenAPI\Model\ErrorResponse|\Litebase\OpenAPI\Model\ErrorResponse|\Litebase\OpenAPI\Model\ErrorResponse, HTTP status code, HTTP response headers (array of strings)
      */
-    public function getTokenWithHttpInfo($token_id, string $contentType = self::contentTypes['getToken'][0])
+    public function getTokenWithHttpInfo($tokenId, string $contentType = self::contentTypes['getToken'][0])
     {
-        $request = $this->getTokenRequest($token_id, $contentType);
+        $request = $this->getTokenRequest($tokenId, $contentType);
 
         try {
             $options = $this->createHttpClientOption();
@@ -894,15 +913,15 @@ class TokenApi
      *
      * Show details of a specific token
      *
-     * @param  string $token_id The tokenId parameter (required)
+     * @param  string $tokenId The tokenId parameter (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getToken'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function getTokenAsync($token_id, string $contentType = self::contentTypes['getToken'][0])
+    public function getTokenAsync($tokenId, string $contentType = self::contentTypes['getToken'][0])
     {
-        return $this->getTokenAsyncWithHttpInfo($token_id, $contentType)
+        return $this->getTokenAsyncWithHttpInfo($tokenId, $contentType)
             ->then(
                 function ($response) {
                     return $response[0];
@@ -915,16 +934,16 @@ class TokenApi
      *
      * Show details of a specific token
      *
-     * @param  string $token_id The tokenId parameter (required)
+     * @param  string $tokenId The tokenId parameter (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getToken'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function getTokenAsyncWithHttpInfo($token_id, string $contentType = self::contentTypes['getToken'][0])
+    public function getTokenAsyncWithHttpInfo($tokenId, string $contentType = self::contentTypes['getToken'][0])
     {
         $returnType = '\Litebase\OpenAPI\Model\GetToken200Response';
-        $request = $this->getTokenRequest($token_id, $contentType);
+        $request = $this->getTokenRequest($tokenId, $contentType);
 
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
@@ -965,19 +984,19 @@ class TokenApi
     /**
      * Create request for operation 'getToken'
      *
-     * @param  string $token_id The tokenId parameter (required)
+     * @param  string $tokenId The tokenId parameter (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getToken'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
      */
-    public function getTokenRequest($token_id, string $contentType = self::contentTypes['getToken'][0])
+    public function getTokenRequest($tokenId, string $contentType = self::contentTypes['getToken'][0])
     {
 
-        // verify the required parameter 'token_id' is set
-        if ($token_id === null || (is_array($token_id) && count($token_id) === 0)) {
+        // verify the required parameter 'tokenId' is set
+        if ($tokenId === null || (is_array($tokenId) && count($tokenId) === 0)) {
             throw new \InvalidArgumentException(
-                'Missing the required parameter $token_id when calling getToken'
+                'Missing the required parameter $tokenId when calling getToken'
             );
         }
 
@@ -992,10 +1011,10 @@ class TokenApi
 
 
         // path params
-        if ($token_id !== null) {
+        if ($tokenId !== null) {
             $resourcePath = str_replace(
                 '{' . 'tokenId' . '}',
-                ObjectSerializer::toPathValue($token_id),
+                ObjectSerializer::toPathValue($tokenId),
                 $resourcePath
             );
         }
@@ -1349,16 +1368,17 @@ class TokenApi
      *
      * Update an existing token
      *
-     * @param  string $token_id The tokenId parameter (required)
+     * @param  string $tokenId The tokenId parameter (required)
+     * @param  \Litebase\OpenAPI\Model\TokenUpdateRequest $tokenUpdateRequest Token update data (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['updateToken'] to see the possible values for this operation
      *
      * @throws \Litebase\OpenAPI\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
      * @return \Litebase\OpenAPI\Model\UpdateToken200Response|\Litebase\OpenAPI\Model\ErrorResponse|\Litebase\OpenAPI\Model\ErrorResponse|\Litebase\OpenAPI\Model\ErrorResponse|\Litebase\OpenAPI\Model\ValidationErrorResponse|\Litebase\OpenAPI\Model\ErrorResponse
      */
-    public function updateToken($token_id, string $contentType = self::contentTypes['updateToken'][0])
+    public function updateToken($tokenId, $tokenUpdateRequest, string $contentType = self::contentTypes['updateToken'][0])
     {
-        list($response) = $this->updateTokenWithHttpInfo($token_id, $contentType);
+        list($response) = $this->updateTokenWithHttpInfo($tokenId, $tokenUpdateRequest, $contentType);
         return $response;
     }
 
@@ -1367,16 +1387,17 @@ class TokenApi
      *
      * Update an existing token
      *
-     * @param  string $token_id The tokenId parameter (required)
+     * @param  string $tokenId The tokenId parameter (required)
+     * @param  \Litebase\OpenAPI\Model\TokenUpdateRequest $tokenUpdateRequest Token update data (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['updateToken'] to see the possible values for this operation
      *
      * @throws \Litebase\OpenAPI\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
      * @return array of \Litebase\OpenAPI\Model\UpdateToken200Response|\Litebase\OpenAPI\Model\ErrorResponse|\Litebase\OpenAPI\Model\ErrorResponse|\Litebase\OpenAPI\Model\ErrorResponse|\Litebase\OpenAPI\Model\ValidationErrorResponse|\Litebase\OpenAPI\Model\ErrorResponse, HTTP status code, HTTP response headers (array of strings)
      */
-    public function updateTokenWithHttpInfo($token_id, string $contentType = self::contentTypes['updateToken'][0])
+    public function updateTokenWithHttpInfo($tokenId, $tokenUpdateRequest, string $contentType = self::contentTypes['updateToken'][0])
     {
-        $request = $this->updateTokenRequest($token_id, $contentType);
+        $request = $this->updateTokenRequest($tokenId, $tokenUpdateRequest, $contentType);
 
         try {
             $options = $this->createHttpClientOption();
@@ -1522,15 +1543,16 @@ class TokenApi
      *
      * Update an existing token
      *
-     * @param  string $token_id The tokenId parameter (required)
+     * @param  string $tokenId The tokenId parameter (required)
+     * @param  \Litebase\OpenAPI\Model\TokenUpdateRequest $tokenUpdateRequest Token update data (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['updateToken'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function updateTokenAsync($token_id, string $contentType = self::contentTypes['updateToken'][0])
+    public function updateTokenAsync($tokenId, $tokenUpdateRequest, string $contentType = self::contentTypes['updateToken'][0])
     {
-        return $this->updateTokenAsyncWithHttpInfo($token_id, $contentType)
+        return $this->updateTokenAsyncWithHttpInfo($tokenId, $tokenUpdateRequest, $contentType)
             ->then(
                 function ($response) {
                     return $response[0];
@@ -1543,16 +1565,17 @@ class TokenApi
      *
      * Update an existing token
      *
-     * @param  string $token_id The tokenId parameter (required)
+     * @param  string $tokenId The tokenId parameter (required)
+     * @param  \Litebase\OpenAPI\Model\TokenUpdateRequest $tokenUpdateRequest Token update data (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['updateToken'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function updateTokenAsyncWithHttpInfo($token_id, string $contentType = self::contentTypes['updateToken'][0])
+    public function updateTokenAsyncWithHttpInfo($tokenId, $tokenUpdateRequest, string $contentType = self::contentTypes['updateToken'][0])
     {
         $returnType = '\Litebase\OpenAPI\Model\UpdateToken200Response';
-        $request = $this->updateTokenRequest($token_id, $contentType);
+        $request = $this->updateTokenRequest($tokenId, $tokenUpdateRequest, $contentType);
 
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
@@ -1593,19 +1616,27 @@ class TokenApi
     /**
      * Create request for operation 'updateToken'
      *
-     * @param  string $token_id The tokenId parameter (required)
+     * @param  string $tokenId The tokenId parameter (required)
+     * @param  \Litebase\OpenAPI\Model\TokenUpdateRequest $tokenUpdateRequest Token update data (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['updateToken'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
      */
-    public function updateTokenRequest($token_id, string $contentType = self::contentTypes['updateToken'][0])
+    public function updateTokenRequest($tokenId, $tokenUpdateRequest, string $contentType = self::contentTypes['updateToken'][0])
     {
 
-        // verify the required parameter 'token_id' is set
-        if ($token_id === null || (is_array($token_id) && count($token_id) === 0)) {
+        // verify the required parameter 'tokenId' is set
+        if ($tokenId === null || (is_array($tokenId) && count($tokenId) === 0)) {
             throw new \InvalidArgumentException(
-                'Missing the required parameter $token_id when calling updateToken'
+                'Missing the required parameter $tokenId when calling updateToken'
+            );
+        }
+
+        // verify the required parameter 'tokenUpdateRequest' is set
+        if ($tokenUpdateRequest === null || (is_array($tokenUpdateRequest) && count($tokenUpdateRequest) === 0)) {
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $tokenUpdateRequest when calling updateToken'
             );
         }
 
@@ -1620,10 +1651,10 @@ class TokenApi
 
 
         // path params
-        if ($token_id !== null) {
+        if ($tokenId !== null) {
             $resourcePath = str_replace(
                 '{' . 'tokenId' . '}',
-                ObjectSerializer::toPathValue($token_id),
+                ObjectSerializer::toPathValue($tokenId),
                 $resourcePath
             );
         }
@@ -1636,7 +1667,14 @@ class TokenApi
         );
 
         // for model (json/xml)
-        if (count($formParams) > 0) {
+        if (isset($tokenUpdateRequest)) {
+            if (stripos($headers['Content-Type'], 'application/json') !== false) {
+                # if Content-Type contains "application/json", json_encode the body
+                $httpBody = \GuzzleHttp\Utils::jsonEncode(ObjectSerializer::sanitizeForSerialization($tokenUpdateRequest));
+            } else {
+                $httpBody = $tokenUpdateRequest;
+            }
+        } elseif (count($formParams) > 0) {
             if ($multipart) {
                 $multipartContents = [];
                 foreach ($formParams as $formParamName => $formParamValue) {
@@ -1682,7 +1720,7 @@ class TokenApi
 
         $query = ObjectSerializer::buildQuery($queryParams);
         return new Request(
-            'PUT',
+            'PATCH',
             $resourcePath . ($query ? "?{$query}" : ''),
             $headers,
             $httpBody

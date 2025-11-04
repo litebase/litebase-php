@@ -4,7 +4,7 @@
  *
  * Litebase Server OpenAPI specification
  *
- * The version of the OpenAPI document: 1.0.0
+ * The version of the OpenAPI document: 0.5.0
  */
 
 
@@ -109,16 +109,16 @@ class KeyApi
      *
      * Create a new key
      *
-     * @param  \Litebase\OpenAPI\Model\CreateKeyRequest $create_key_request Key creation data (required)
+     * @param  \Litebase\OpenAPI\Model\KeyStoreRequest $keyStoreRequest Key creation data (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['createKey'] to see the possible values for this operation
      *
      * @throws \Litebase\OpenAPI\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
      * @return \Litebase\OpenAPI\Model\CreateKey200Response|\Litebase\OpenAPI\Model\ErrorResponse|\Litebase\OpenAPI\Model\ErrorResponse|\Litebase\OpenAPI\Model\ValidationErrorResponse|\Litebase\OpenAPI\Model\ErrorResponse
      */
-    public function createKey($create_key_request, string $contentType = self::contentTypes['createKey'][0])
+    public function createKey($keyStoreRequest, string $contentType = self::contentTypes['createKey'][0])
     {
-        list($response) = $this->createKeyWithHttpInfo($create_key_request, $contentType);
+        list($response) = $this->createKeyWithHttpInfo($keyStoreRequest, $contentType);
         return $response;
     }
 
@@ -127,16 +127,16 @@ class KeyApi
      *
      * Create a new key
      *
-     * @param  \Litebase\OpenAPI\Model\CreateKeyRequest $create_key_request Key creation data (required)
+     * @param  \Litebase\OpenAPI\Model\KeyStoreRequest $keyStoreRequest Key creation data (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['createKey'] to see the possible values for this operation
      *
      * @throws \Litebase\OpenAPI\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
      * @return array of \Litebase\OpenAPI\Model\CreateKey200Response|\Litebase\OpenAPI\Model\ErrorResponse|\Litebase\OpenAPI\Model\ErrorResponse|\Litebase\OpenAPI\Model\ValidationErrorResponse|\Litebase\OpenAPI\Model\ErrorResponse, HTTP status code, HTTP response headers (array of strings)
      */
-    public function createKeyWithHttpInfo($create_key_request, string $contentType = self::contentTypes['createKey'][0])
+    public function createKeyWithHttpInfo($keyStoreRequest, string $contentType = self::contentTypes['createKey'][0])
     {
-        $request = $this->createKeyRequest($create_key_request, $contentType);
+        $request = $this->createKeyRequest($keyStoreRequest, $contentType);
 
         try {
             $options = $this->createHttpClientOption();
@@ -268,15 +268,15 @@ class KeyApi
      *
      * Create a new key
      *
-     * @param  \Litebase\OpenAPI\Model\CreateKeyRequest $create_key_request Key creation data (required)
+     * @param  \Litebase\OpenAPI\Model\KeyStoreRequest $keyStoreRequest Key creation data (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['createKey'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function createKeyAsync($create_key_request, string $contentType = self::contentTypes['createKey'][0])
+    public function createKeyAsync($keyStoreRequest, string $contentType = self::contentTypes['createKey'][0])
     {
-        return $this->createKeyAsyncWithHttpInfo($create_key_request, $contentType)
+        return $this->createKeyAsyncWithHttpInfo($keyStoreRequest, $contentType)
             ->then(
                 function ($response) {
                     return $response[0];
@@ -289,16 +289,16 @@ class KeyApi
      *
      * Create a new key
      *
-     * @param  \Litebase\OpenAPI\Model\CreateKeyRequest $create_key_request Key creation data (required)
+     * @param  \Litebase\OpenAPI\Model\KeyStoreRequest $keyStoreRequest Key creation data (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['createKey'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function createKeyAsyncWithHttpInfo($create_key_request, string $contentType = self::contentTypes['createKey'][0])
+    public function createKeyAsyncWithHttpInfo($keyStoreRequest, string $contentType = self::contentTypes['createKey'][0])
     {
         $returnType = '\Litebase\OpenAPI\Model\CreateKey200Response';
-        $request = $this->createKeyRequest($create_key_request, $contentType);
+        $request = $this->createKeyRequest($keyStoreRequest, $contentType);
 
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
@@ -339,19 +339,19 @@ class KeyApi
     /**
      * Create request for operation 'createKey'
      *
-     * @param  \Litebase\OpenAPI\Model\CreateKeyRequest $create_key_request Key creation data (required)
+     * @param  \Litebase\OpenAPI\Model\KeyStoreRequest $keyStoreRequest Key creation data (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['createKey'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
      */
-    public function createKeyRequest($create_key_request, string $contentType = self::contentTypes['createKey'][0])
+    public function createKeyRequest($keyStoreRequest, string $contentType = self::contentTypes['createKey'][0])
     {
 
-        // verify the required parameter 'create_key_request' is set
-        if ($create_key_request === null || (is_array($create_key_request) && count($create_key_request) === 0)) {
+        // verify the required parameter 'keyStoreRequest' is set
+        if ($keyStoreRequest === null || (is_array($keyStoreRequest) && count($keyStoreRequest) === 0)) {
             throw new \InvalidArgumentException(
-                'Missing the required parameter $create_key_request when calling createKey'
+                'Missing the required parameter $keyStoreRequest when calling createKey'
             );
         }
 
@@ -374,12 +374,12 @@ class KeyApi
         );
 
         // for model (json/xml)
-        if (isset($create_key_request)) {
+        if (isset($keyStoreRequest)) {
             if (stripos($headers['Content-Type'], 'application/json') !== false) {
                 # if Content-Type contains "application/json", json_encode the body
-                $httpBody = \GuzzleHttp\Utils::jsonEncode(ObjectSerializer::sanitizeForSerialization($create_key_request));
+                $httpBody = \GuzzleHttp\Utils::jsonEncode(ObjectSerializer::sanitizeForSerialization($keyStoreRequest));
             } else {
-                $httpBody = $create_key_request;
+                $httpBody = $keyStoreRequest;
             }
         } elseif (count($formParams) > 0) {
             if ($multipart) {

@@ -25,7 +25,7 @@ class QueryInput implements ModelInterface, ArrayAccess, \JsonSerializable
         'id' => 'string',
         'parameters' => '\Litebase\OpenAPI\Model\StatementParameter[]',
         'statement' => 'string',
-        'transaction_id' => 'string'
+        'transactionId' => 'string'
     ];
 
     /**
@@ -39,7 +39,7 @@ class QueryInput implements ModelInterface, ArrayAccess, \JsonSerializable
         'id' => null,
         'parameters' => null,
         'statement' => null,
-        'transaction_id' => null
+        'transactionId' => null
     ];
 
     /**
@@ -51,7 +51,7 @@ class QueryInput implements ModelInterface, ArrayAccess, \JsonSerializable
         'id' => false,
         'parameters' => false,
         'statement' => false,
-        'transaction_id' => false
+        'transactionId' => false
     ];
 
     /**
@@ -143,7 +143,7 @@ class QueryInput implements ModelInterface, ArrayAccess, \JsonSerializable
         'id' => 'id',
         'parameters' => 'parameters',
         'statement' => 'statement',
-        'transaction_id' => 'transaction_id'
+        'transactionId' => 'transactionId'
     ];
 
     /**
@@ -155,7 +155,7 @@ class QueryInput implements ModelInterface, ArrayAccess, \JsonSerializable
         'id' => 'setId',
         'parameters' => 'setParameters',
         'statement' => 'setStatement',
-        'transaction_id' => 'setTransactionId'
+        'transactionId' => 'setTransactionId'
     ];
 
     /**
@@ -167,7 +167,7 @@ class QueryInput implements ModelInterface, ArrayAccess, \JsonSerializable
         'id' => 'getId',
         'parameters' => 'getParameters',
         'statement' => 'getStatement',
-        'transaction_id' => 'getTransactionId'
+        'transactionId' => 'getTransactionId'
     ];
 
     /**
@@ -230,7 +230,7 @@ class QueryInput implements ModelInterface, ArrayAccess, \JsonSerializable
         $this->setIfExists('id', $data ?? [], null);
         $this->setIfExists('parameters', $data ?? [], null);
         $this->setIfExists('statement', $data ?? [], null);
-        $this->setIfExists('transaction_id', $data ?? [], null);
+        $this->setIfExists('transactionId', $data ?? [], null);
     }
 
     /**
@@ -269,8 +269,8 @@ class QueryInput implements ModelInterface, ArrayAccess, \JsonSerializable
         if ($this->container['statement'] === null) {
             $invalidProperties[] = "'statement' can't be null";
         }
-        if ($this->container['transaction_id'] === null) {
-            $invalidProperties[] = "'transaction_id' can't be null";
+        if ($this->container['transactionId'] === null) {
+            $invalidProperties[] = "'transactionId' can't be null";
         }
         return $invalidProperties;
     }
@@ -369,28 +369,28 @@ class QueryInput implements ModelInterface, ArrayAccess, \JsonSerializable
     }
 
     /**
-     * Gets transaction_id
+     * Gets transactionId
      *
      * @return string
      */
     public function getTransactionId()
     {
-        return $this->container['transaction_id'];
+        return $this->container['transactionId'];
     }
 
     /**
-     * Sets transaction_id
+     * Sets transactionId
      *
-     * @param string $transaction_id transaction_id
+     * @param string $transactionId transactionId
      *
      * @return self
      */
-    public function setTransactionId($transaction_id)
+    public function setTransactionId($transactionId)
     {
-        if (is_null($transaction_id)) {
-            throw new \InvalidArgumentException('non-nullable transaction_id cannot be null');
+        if (is_null($transactionId)) {
+            throw new \InvalidArgumentException('non-nullable transactionId cannot be null');
         }
-        $this->container['transaction_id'] = $transaction_id;
+        $this->container['transactionId'] = $transactionId;
 
         return $this;
     }

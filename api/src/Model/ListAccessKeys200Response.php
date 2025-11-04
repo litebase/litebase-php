@@ -22,7 +22,7 @@ class ListAccessKeys200Response implements ModelInterface, ArrayAccess, \JsonSer
       * @var string[]
       */
     protected static $openAPITypes = [
-        'data' => '\Litebase\OpenAPI\Model\ListAccessKeys200ResponseDataInner[]',
+        'data' => '\Litebase\OpenAPI\Model\AccessKeyIndexResponse[]',
         'message' => 'string',
         'status' => 'string'
     ];
@@ -280,7 +280,7 @@ class ListAccessKeys200Response implements ModelInterface, ArrayAccess, \JsonSer
     /**
      * Gets data
      *
-     * @return \Litebase\OpenAPI\Model\ListAccessKeys200ResponseDataInner[]
+     * @return \Litebase\OpenAPI\Model\AccessKeyIndexResponse[]
      */
     public function getData()
     {
@@ -290,7 +290,7 @@ class ListAccessKeys200Response implements ModelInterface, ArrayAccess, \JsonSer
     /**
      * Sets data
      *
-     * @param \Litebase\OpenAPI\Model\ListAccessKeys200ResponseDataInner[] $data Array of access keys for list operations
+     * @param \Litebase\OpenAPI\Model\AccessKeyIndexResponse[] $data Array of access keys for list operations
      *
      * @return self
      */

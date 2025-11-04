@@ -4,7 +4,7 @@
  *
  * Litebase Server OpenAPI specification
  *
- * The version of the OpenAPI document: 1.0.0
+ * The version of the OpenAPI document: 0.5.0
  */
 
 
@@ -112,8 +112,8 @@ class DatabaseSnapshotApi
      *
      * Show details of a specific database snapshot
      *
-     * @param  string $database_name The databaseName parameter (required)
-     * @param  string $branch_name The branchName parameter (required)
+     * @param  string $databaseName The databaseName parameter (required)
+     * @param  string $branchName The branchName parameter (required)
      * @param  string $timestamp The timestamp parameter (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getDatabaseSnapshot'] to see the possible values for this operation
      *
@@ -121,9 +121,9 @@ class DatabaseSnapshotApi
      * @throws \InvalidArgumentException
      * @return \Litebase\OpenAPI\Model\GetDatabaseSnapshot200Response|\Litebase\OpenAPI\Model\ErrorResponse|\Litebase\OpenAPI\Model\ErrorResponse
      */
-    public function getDatabaseSnapshot($database_name, $branch_name, $timestamp, string $contentType = self::contentTypes['getDatabaseSnapshot'][0])
+    public function getDatabaseSnapshot($databaseName, $branchName, $timestamp, string $contentType = self::contentTypes['getDatabaseSnapshot'][0])
     {
-        list($response) = $this->getDatabaseSnapshotWithHttpInfo($database_name, $branch_name, $timestamp, $contentType);
+        list($response) = $this->getDatabaseSnapshotWithHttpInfo($databaseName, $branchName, $timestamp, $contentType);
         return $response;
     }
 
@@ -132,8 +132,8 @@ class DatabaseSnapshotApi
      *
      * Show details of a specific database snapshot
      *
-     * @param  string $database_name The databaseName parameter (required)
-     * @param  string $branch_name The branchName parameter (required)
+     * @param  string $databaseName The databaseName parameter (required)
+     * @param  string $branchName The branchName parameter (required)
      * @param  string $timestamp The timestamp parameter (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getDatabaseSnapshot'] to see the possible values for this operation
      *
@@ -141,9 +141,9 @@ class DatabaseSnapshotApi
      * @throws \InvalidArgumentException
      * @return array of \Litebase\OpenAPI\Model\GetDatabaseSnapshot200Response|\Litebase\OpenAPI\Model\ErrorResponse|\Litebase\OpenAPI\Model\ErrorResponse, HTTP status code, HTTP response headers (array of strings)
      */
-    public function getDatabaseSnapshotWithHttpInfo($database_name, $branch_name, $timestamp, string $contentType = self::contentTypes['getDatabaseSnapshot'][0])
+    public function getDatabaseSnapshotWithHttpInfo($databaseName, $branchName, $timestamp, string $contentType = self::contentTypes['getDatabaseSnapshot'][0])
     {
-        $request = $this->getDatabaseSnapshotRequest($database_name, $branch_name, $timestamp, $contentType);
+        $request = $this->getDatabaseSnapshotRequest($databaseName, $branchName, $timestamp, $contentType);
 
         try {
             $options = $this->createHttpClientOption();
@@ -247,17 +247,17 @@ class DatabaseSnapshotApi
      *
      * Show details of a specific database snapshot
      *
-     * @param  string $database_name The databaseName parameter (required)
-     * @param  string $branch_name The branchName parameter (required)
+     * @param  string $databaseName The databaseName parameter (required)
+     * @param  string $branchName The branchName parameter (required)
      * @param  string $timestamp The timestamp parameter (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getDatabaseSnapshot'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function getDatabaseSnapshotAsync($database_name, $branch_name, $timestamp, string $contentType = self::contentTypes['getDatabaseSnapshot'][0])
+    public function getDatabaseSnapshotAsync($databaseName, $branchName, $timestamp, string $contentType = self::contentTypes['getDatabaseSnapshot'][0])
     {
-        return $this->getDatabaseSnapshotAsyncWithHttpInfo($database_name, $branch_name, $timestamp, $contentType)
+        return $this->getDatabaseSnapshotAsyncWithHttpInfo($databaseName, $branchName, $timestamp, $contentType)
             ->then(
                 function ($response) {
                     return $response[0];
@@ -270,18 +270,18 @@ class DatabaseSnapshotApi
      *
      * Show details of a specific database snapshot
      *
-     * @param  string $database_name The databaseName parameter (required)
-     * @param  string $branch_name The branchName parameter (required)
+     * @param  string $databaseName The databaseName parameter (required)
+     * @param  string $branchName The branchName parameter (required)
      * @param  string $timestamp The timestamp parameter (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getDatabaseSnapshot'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function getDatabaseSnapshotAsyncWithHttpInfo($database_name, $branch_name, $timestamp, string $contentType = self::contentTypes['getDatabaseSnapshot'][0])
+    public function getDatabaseSnapshotAsyncWithHttpInfo($databaseName, $branchName, $timestamp, string $contentType = self::contentTypes['getDatabaseSnapshot'][0])
     {
         $returnType = '\Litebase\OpenAPI\Model\GetDatabaseSnapshot200Response';
-        $request = $this->getDatabaseSnapshotRequest($database_name, $branch_name, $timestamp, $contentType);
+        $request = $this->getDatabaseSnapshotRequest($databaseName, $branchName, $timestamp, $contentType);
 
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
@@ -322,28 +322,28 @@ class DatabaseSnapshotApi
     /**
      * Create request for operation 'getDatabaseSnapshot'
      *
-     * @param  string $database_name The databaseName parameter (required)
-     * @param  string $branch_name The branchName parameter (required)
+     * @param  string $databaseName The databaseName parameter (required)
+     * @param  string $branchName The branchName parameter (required)
      * @param  string $timestamp The timestamp parameter (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getDatabaseSnapshot'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
      */
-    public function getDatabaseSnapshotRequest($database_name, $branch_name, $timestamp, string $contentType = self::contentTypes['getDatabaseSnapshot'][0])
+    public function getDatabaseSnapshotRequest($databaseName, $branchName, $timestamp, string $contentType = self::contentTypes['getDatabaseSnapshot'][0])
     {
 
-        // verify the required parameter 'database_name' is set
-        if ($database_name === null || (is_array($database_name) && count($database_name) === 0)) {
+        // verify the required parameter 'databaseName' is set
+        if ($databaseName === null || (is_array($databaseName) && count($databaseName) === 0)) {
             throw new \InvalidArgumentException(
-                'Missing the required parameter $database_name when calling getDatabaseSnapshot'
+                'Missing the required parameter $databaseName when calling getDatabaseSnapshot'
             );
         }
 
-        // verify the required parameter 'branch_name' is set
-        if ($branch_name === null || (is_array($branch_name) && count($branch_name) === 0)) {
+        // verify the required parameter 'branchName' is set
+        if ($branchName === null || (is_array($branchName) && count($branchName) === 0)) {
             throw new \InvalidArgumentException(
-                'Missing the required parameter $branch_name when calling getDatabaseSnapshot'
+                'Missing the required parameter $branchName when calling getDatabaseSnapshot'
             );
         }
 
@@ -365,18 +365,18 @@ class DatabaseSnapshotApi
 
 
         // path params
-        if ($database_name !== null) {
+        if ($databaseName !== null) {
             $resourcePath = str_replace(
                 '{' . 'databaseName' . '}',
-                ObjectSerializer::toPathValue($database_name),
+                ObjectSerializer::toPathValue($databaseName),
                 $resourcePath
             );
         }
         // path params
-        if ($branch_name !== null) {
+        if ($branchName !== null) {
             $resourcePath = str_replace(
                 '{' . 'branchName' . '}',
-                ObjectSerializer::toPathValue($branch_name),
+                ObjectSerializer::toPathValue($branchName),
                 $resourcePath
             );
         }
@@ -455,17 +455,17 @@ class DatabaseSnapshotApi
      *
      * List all database snapshots
      *
-     * @param  string $database_name The databaseName parameter (required)
-     * @param  string $branch_name The branchName parameter (required)
+     * @param  string $databaseName The databaseName parameter (required)
+     * @param  string $branchName The branchName parameter (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['listDatabaseSnapshots'] to see the possible values for this operation
      *
      * @throws \Litebase\OpenAPI\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
      * @return \Litebase\OpenAPI\Model\ListDatabaseSnapshots200Response|\Litebase\OpenAPI\Model\ErrorResponse|\Litebase\OpenAPI\Model\ErrorResponse|\Litebase\OpenAPI\Model\ErrorResponse|\Litebase\OpenAPI\Model\ErrorResponse
      */
-    public function listDatabaseSnapshots($database_name, $branch_name, string $contentType = self::contentTypes['listDatabaseSnapshots'][0])
+    public function listDatabaseSnapshots($databaseName, $branchName, string $contentType = self::contentTypes['listDatabaseSnapshots'][0])
     {
-        list($response) = $this->listDatabaseSnapshotsWithHttpInfo($database_name, $branch_name, $contentType);
+        list($response) = $this->listDatabaseSnapshotsWithHttpInfo($databaseName, $branchName, $contentType);
         return $response;
     }
 
@@ -474,17 +474,17 @@ class DatabaseSnapshotApi
      *
      * List all database snapshots
      *
-     * @param  string $database_name The databaseName parameter (required)
-     * @param  string $branch_name The branchName parameter (required)
+     * @param  string $databaseName The databaseName parameter (required)
+     * @param  string $branchName The branchName parameter (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['listDatabaseSnapshots'] to see the possible values for this operation
      *
      * @throws \Litebase\OpenAPI\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
      * @return array of \Litebase\OpenAPI\Model\ListDatabaseSnapshots200Response|\Litebase\OpenAPI\Model\ErrorResponse|\Litebase\OpenAPI\Model\ErrorResponse|\Litebase\OpenAPI\Model\ErrorResponse|\Litebase\OpenAPI\Model\ErrorResponse, HTTP status code, HTTP response headers (array of strings)
      */
-    public function listDatabaseSnapshotsWithHttpInfo($database_name, $branch_name, string $contentType = self::contentTypes['listDatabaseSnapshots'][0])
+    public function listDatabaseSnapshotsWithHttpInfo($databaseName, $branchName, string $contentType = self::contentTypes['listDatabaseSnapshots'][0])
     {
-        $request = $this->listDatabaseSnapshotsRequest($database_name, $branch_name, $contentType);
+        $request = $this->listDatabaseSnapshotsRequest($databaseName, $branchName, $contentType);
 
         try {
             $options = $this->createHttpClientOption();
@@ -616,16 +616,16 @@ class DatabaseSnapshotApi
      *
      * List all database snapshots
      *
-     * @param  string $database_name The databaseName parameter (required)
-     * @param  string $branch_name The branchName parameter (required)
+     * @param  string $databaseName The databaseName parameter (required)
+     * @param  string $branchName The branchName parameter (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['listDatabaseSnapshots'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function listDatabaseSnapshotsAsync($database_name, $branch_name, string $contentType = self::contentTypes['listDatabaseSnapshots'][0])
+    public function listDatabaseSnapshotsAsync($databaseName, $branchName, string $contentType = self::contentTypes['listDatabaseSnapshots'][0])
     {
-        return $this->listDatabaseSnapshotsAsyncWithHttpInfo($database_name, $branch_name, $contentType)
+        return $this->listDatabaseSnapshotsAsyncWithHttpInfo($databaseName, $branchName, $contentType)
             ->then(
                 function ($response) {
                     return $response[0];
@@ -638,17 +638,17 @@ class DatabaseSnapshotApi
      *
      * List all database snapshots
      *
-     * @param  string $database_name The databaseName parameter (required)
-     * @param  string $branch_name The branchName parameter (required)
+     * @param  string $databaseName The databaseName parameter (required)
+     * @param  string $branchName The branchName parameter (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['listDatabaseSnapshots'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function listDatabaseSnapshotsAsyncWithHttpInfo($database_name, $branch_name, string $contentType = self::contentTypes['listDatabaseSnapshots'][0])
+    public function listDatabaseSnapshotsAsyncWithHttpInfo($databaseName, $branchName, string $contentType = self::contentTypes['listDatabaseSnapshots'][0])
     {
         $returnType = '\Litebase\OpenAPI\Model\ListDatabaseSnapshots200Response';
-        $request = $this->listDatabaseSnapshotsRequest($database_name, $branch_name, $contentType);
+        $request = $this->listDatabaseSnapshotsRequest($databaseName, $branchName, $contentType);
 
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
@@ -689,27 +689,27 @@ class DatabaseSnapshotApi
     /**
      * Create request for operation 'listDatabaseSnapshots'
      *
-     * @param  string $database_name The databaseName parameter (required)
-     * @param  string $branch_name The branchName parameter (required)
+     * @param  string $databaseName The databaseName parameter (required)
+     * @param  string $branchName The branchName parameter (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['listDatabaseSnapshots'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
      */
-    public function listDatabaseSnapshotsRequest($database_name, $branch_name, string $contentType = self::contentTypes['listDatabaseSnapshots'][0])
+    public function listDatabaseSnapshotsRequest($databaseName, $branchName, string $contentType = self::contentTypes['listDatabaseSnapshots'][0])
     {
 
-        // verify the required parameter 'database_name' is set
-        if ($database_name === null || (is_array($database_name) && count($database_name) === 0)) {
+        // verify the required parameter 'databaseName' is set
+        if ($databaseName === null || (is_array($databaseName) && count($databaseName) === 0)) {
             throw new \InvalidArgumentException(
-                'Missing the required parameter $database_name when calling listDatabaseSnapshots'
+                'Missing the required parameter $databaseName when calling listDatabaseSnapshots'
             );
         }
 
-        // verify the required parameter 'branch_name' is set
-        if ($branch_name === null || (is_array($branch_name) && count($branch_name) === 0)) {
+        // verify the required parameter 'branchName' is set
+        if ($branchName === null || (is_array($branchName) && count($branchName) === 0)) {
             throw new \InvalidArgumentException(
-                'Missing the required parameter $branch_name when calling listDatabaseSnapshots'
+                'Missing the required parameter $branchName when calling listDatabaseSnapshots'
             );
         }
 
@@ -724,18 +724,18 @@ class DatabaseSnapshotApi
 
 
         // path params
-        if ($database_name !== null) {
+        if ($databaseName !== null) {
             $resourcePath = str_replace(
                 '{' . 'databaseName' . '}',
-                ObjectSerializer::toPathValue($database_name),
+                ObjectSerializer::toPathValue($databaseName),
                 $resourcePath
             );
         }
         // path params
-        if ($branch_name !== null) {
+        if ($branchName !== null) {
             $resourcePath = str_replace(
                 '{' . 'branchName' . '}',
-                ObjectSerializer::toPathValue($branch_name),
+                ObjectSerializer::toPathValue($branchName),
                 $resourcePath
             );
         }

@@ -22,7 +22,7 @@ class GetDatabaseBackup200Response implements ModelInterface, ArrayAccess, \Json
       * @var string[]
       */
     protected static $openAPITypes = [
-        'data' => '\Litebase\OpenAPI\Model\GetDatabaseBackup200ResponseData',
+        'data' => '\Litebase\OpenAPI\Model\DatabaseBackupShowResponse',
         'message' => 'string',
         'status' => 'string'
     ];
@@ -280,7 +280,7 @@ class GetDatabaseBackup200Response implements ModelInterface, ArrayAccess, \Json
     /**
      * Gets data
      *
-     * @return \Litebase\OpenAPI\Model\GetDatabaseBackup200ResponseData
+     * @return \Litebase\OpenAPI\Model\DatabaseBackupShowResponse
      */
     public function getData()
     {
@@ -290,7 +290,7 @@ class GetDatabaseBackup200Response implements ModelInterface, ArrayAccess, \Json
     /**
      * Sets data
      *
-     * @param \Litebase\OpenAPI\Model\GetDatabaseBackup200ResponseData $data data
+     * @param \Litebase\OpenAPI\Model\DatabaseBackupShowResponse $data data
      *
      * @return self
      */

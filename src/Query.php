@@ -2,7 +2,7 @@
 
 namespace Litebase;
 
-use Litebase\OpenAPI\Model\CreateQueryRequest;
+use Litebase\OpenAPI\Model\QueryRequest;
 
 class Query
 {
@@ -19,9 +19,9 @@ class Query
     /**
      * Convert the Query object to an associative array.
      */
-    public function toRequest(): CreateQueryRequest
+    public function toRequest(): QueryRequest
     {
-        $request = new CreateQueryRequest;
+        $request = new QueryRequest;
 
         $request->setQueries([
             (new \Litebase\OpenAPI\Model\QueryInput)

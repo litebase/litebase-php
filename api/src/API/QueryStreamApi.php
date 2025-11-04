@@ -4,7 +4,7 @@
  *
  * Litebase Server OpenAPI specification
  *
- * The version of the OpenAPI document: 1.0.0
+ * The version of the OpenAPI document: 0.5.0
  */
 
 
@@ -109,17 +109,17 @@ class QueryStreamApi
      *
      * Create a new query stream
      *
-     * @param  string $database_name The databaseName parameter (required)
-     * @param  string $branch_name The branchName parameter (required)
+     * @param  string $databaseName The databaseName parameter (required)
+     * @param  string $branchName The branchName parameter (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['createQueryStream'] to see the possible values for this operation
      *
      * @throws \Litebase\OpenAPI\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
      * @return void
      */
-    public function createQueryStream($database_name, $branch_name, string $contentType = self::contentTypes['createQueryStream'][0])
+    public function createQueryStream($databaseName, $branchName, string $contentType = self::contentTypes['createQueryStream'][0])
     {
-        $this->createQueryStreamWithHttpInfo($database_name, $branch_name, $contentType);
+        $this->createQueryStreamWithHttpInfo($databaseName, $branchName, $contentType);
     }
 
     /**
@@ -127,17 +127,17 @@ class QueryStreamApi
      *
      * Create a new query stream
      *
-     * @param  string $database_name The databaseName parameter (required)
-     * @param  string $branch_name The branchName parameter (required)
+     * @param  string $databaseName The databaseName parameter (required)
+     * @param  string $branchName The branchName parameter (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['createQueryStream'] to see the possible values for this operation
      *
      * @throws \Litebase\OpenAPI\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
      * @return array of null, HTTP status code, HTTP response headers (array of strings)
      */
-    public function createQueryStreamWithHttpInfo($database_name, $branch_name, string $contentType = self::contentTypes['createQueryStream'][0])
+    public function createQueryStreamWithHttpInfo($databaseName, $branchName, string $contentType = self::contentTypes['createQueryStream'][0])
     {
-        $request = $this->createQueryStreamRequest($database_name, $branch_name, $contentType);
+        $request = $this->createQueryStreamRequest($databaseName, $branchName, $contentType);
 
         try {
             $options = $this->createHttpClientOption();
@@ -185,16 +185,16 @@ class QueryStreamApi
      *
      * Create a new query stream
      *
-     * @param  string $database_name The databaseName parameter (required)
-     * @param  string $branch_name The branchName parameter (required)
+     * @param  string $databaseName The databaseName parameter (required)
+     * @param  string $branchName The branchName parameter (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['createQueryStream'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function createQueryStreamAsync($database_name, $branch_name, string $contentType = self::contentTypes['createQueryStream'][0])
+    public function createQueryStreamAsync($databaseName, $branchName, string $contentType = self::contentTypes['createQueryStream'][0])
     {
-        return $this->createQueryStreamAsyncWithHttpInfo($database_name, $branch_name, $contentType)
+        return $this->createQueryStreamAsyncWithHttpInfo($databaseName, $branchName, $contentType)
             ->then(
                 function ($response) {
                     return $response[0];
@@ -207,17 +207,17 @@ class QueryStreamApi
      *
      * Create a new query stream
      *
-     * @param  string $database_name The databaseName parameter (required)
-     * @param  string $branch_name The branchName parameter (required)
+     * @param  string $databaseName The databaseName parameter (required)
+     * @param  string $branchName The branchName parameter (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['createQueryStream'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function createQueryStreamAsyncWithHttpInfo($database_name, $branch_name, string $contentType = self::contentTypes['createQueryStream'][0])
+    public function createQueryStreamAsyncWithHttpInfo($databaseName, $branchName, string $contentType = self::contentTypes['createQueryStream'][0])
     {
         $returnType = '';
-        $request = $this->createQueryStreamRequest($database_name, $branch_name, $contentType);
+        $request = $this->createQueryStreamRequest($databaseName, $branchName, $contentType);
 
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
@@ -245,27 +245,27 @@ class QueryStreamApi
     /**
      * Create request for operation 'createQueryStream'
      *
-     * @param  string $database_name The databaseName parameter (required)
-     * @param  string $branch_name The branchName parameter (required)
+     * @param  string $databaseName The databaseName parameter (required)
+     * @param  string $branchName The branchName parameter (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['createQueryStream'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
      */
-    public function createQueryStreamRequest($database_name, $branch_name, string $contentType = self::contentTypes['createQueryStream'][0])
+    public function createQueryStreamRequest($databaseName, $branchName, string $contentType = self::contentTypes['createQueryStream'][0])
     {
 
-        // verify the required parameter 'database_name' is set
-        if ($database_name === null || (is_array($database_name) && count($database_name) === 0)) {
+        // verify the required parameter 'databaseName' is set
+        if ($databaseName === null || (is_array($databaseName) && count($databaseName) === 0)) {
             throw new \InvalidArgumentException(
-                'Missing the required parameter $database_name when calling createQueryStream'
+                'Missing the required parameter $databaseName when calling createQueryStream'
             );
         }
 
-        // verify the required parameter 'branch_name' is set
-        if ($branch_name === null || (is_array($branch_name) && count($branch_name) === 0)) {
+        // verify the required parameter 'branchName' is set
+        if ($branchName === null || (is_array($branchName) && count($branchName) === 0)) {
             throw new \InvalidArgumentException(
-                'Missing the required parameter $branch_name when calling createQueryStream'
+                'Missing the required parameter $branchName when calling createQueryStream'
             );
         }
 
@@ -280,18 +280,18 @@ class QueryStreamApi
 
 
         // path params
-        if ($database_name !== null) {
+        if ($databaseName !== null) {
             $resourcePath = str_replace(
                 '{' . 'databaseName' . '}',
-                ObjectSerializer::toPathValue($database_name),
+                ObjectSerializer::toPathValue($databaseName),
                 $resourcePath
             );
         }
         // path params
-        if ($branch_name !== null) {
+        if ($branchName !== null) {
             $resourcePath = str_replace(
                 '{' . 'branchName' . '}',
-                ObjectSerializer::toPathValue($branch_name),
+                ObjectSerializer::toPathValue($branchName),
                 $resourcePath
             );
         }

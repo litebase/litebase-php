@@ -22,7 +22,7 @@ class CreateDatabase200Response implements ModelInterface, ArrayAccess, \JsonSer
       * @var string[]
       */
     protected static $openAPITypes = [
-        'data' => '\Litebase\OpenAPI\Model\CreateDatabase200ResponseData',
+        'data' => '\Litebase\OpenAPI\Model\DatabaseStoreResponse',
         'message' => 'string',
         'status' => 'string'
     ];
@@ -280,7 +280,7 @@ class CreateDatabase200Response implements ModelInterface, ArrayAccess, \JsonSer
     /**
      * Gets data
      *
-     * @return \Litebase\OpenAPI\Model\CreateDatabase200ResponseData
+     * @return \Litebase\OpenAPI\Model\DatabaseStoreResponse
      */
     public function getData()
     {
@@ -290,7 +290,7 @@ class CreateDatabase200Response implements ModelInterface, ArrayAccess, \JsonSer
     /**
      * Sets data
      *
-     * @param \Litebase\OpenAPI\Model\CreateDatabase200ResponseData $data data
+     * @param \Litebase\OpenAPI\Model\DatabaseStoreResponse $data data
      *
      * @return self
      */

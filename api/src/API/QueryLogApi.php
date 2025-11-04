@@ -4,7 +4,7 @@
  *
  * Litebase Server OpenAPI specification
  *
- * The version of the OpenAPI document: 1.0.0
+ * The version of the OpenAPI document: 0.5.0
  */
 
 
@@ -109,17 +109,20 @@ class QueryLogApi
      *
      * List all query logs
      *
-     * @param  string $database_name The databaseName parameter (required)
-     * @param  string $branch_name The branchName parameter (required)
+     * @param  string $databaseName The databaseName parameter (required)
+     * @param  string $branchName The branchName parameter (required)
+     * @param  string|null $end The end timestamp for the query logs to retrieve (in seconds since epoch). (optional)
+     * @param  string|null $start The start timestamp for the query logs to retrieve (in seconds since epoch). (optional)
+     * @param  int|null $step The step interval (in seconds) to combine query metrics. For example, if step is 60, then all query metrics that occur within the same minute will be combined into a single metric. This is useful for reducing the number of query metrics returned when there are many queries executed within a short period of time. (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['listQueryLogs'] to see the possible values for this operation
      *
      * @throws \Litebase\OpenAPI\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
      * @return \Litebase\OpenAPI\Model\ListQueryLogs200Response|\Litebase\OpenAPI\Model\ErrorResponse|\Litebase\OpenAPI\Model\ErrorResponse|\Litebase\OpenAPI\Model\ErrorResponse
      */
-    public function listQueryLogs($database_name, $branch_name, string $contentType = self::contentTypes['listQueryLogs'][0])
+    public function listQueryLogs($databaseName, $branchName, $end = null, $start = null, $step = null, string $contentType = self::contentTypes['listQueryLogs'][0])
     {
-        list($response) = $this->listQueryLogsWithHttpInfo($database_name, $branch_name, $contentType);
+        list($response) = $this->listQueryLogsWithHttpInfo($databaseName, $branchName, $end, $start, $step, $contentType);
         return $response;
     }
 
@@ -128,17 +131,20 @@ class QueryLogApi
      *
      * List all query logs
      *
-     * @param  string $database_name The databaseName parameter (required)
-     * @param  string $branch_name The branchName parameter (required)
+     * @param  string $databaseName The databaseName parameter (required)
+     * @param  string $branchName The branchName parameter (required)
+     * @param  string|null $end The end timestamp for the query logs to retrieve (in seconds since epoch). (optional)
+     * @param  string|null $start The start timestamp for the query logs to retrieve (in seconds since epoch). (optional)
+     * @param  int|null $step The step interval (in seconds) to combine query metrics. For example, if step is 60, then all query metrics that occur within the same minute will be combined into a single metric. This is useful for reducing the number of query metrics returned when there are many queries executed within a short period of time. (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['listQueryLogs'] to see the possible values for this operation
      *
      * @throws \Litebase\OpenAPI\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
      * @return array of \Litebase\OpenAPI\Model\ListQueryLogs200Response|\Litebase\OpenAPI\Model\ErrorResponse|\Litebase\OpenAPI\Model\ErrorResponse|\Litebase\OpenAPI\Model\ErrorResponse, HTTP status code, HTTP response headers (array of strings)
      */
-    public function listQueryLogsWithHttpInfo($database_name, $branch_name, string $contentType = self::contentTypes['listQueryLogs'][0])
+    public function listQueryLogsWithHttpInfo($databaseName, $branchName, $end = null, $start = null, $step = null, string $contentType = self::contentTypes['listQueryLogs'][0])
     {
-        $request = $this->listQueryLogsRequest($database_name, $branch_name, $contentType);
+        $request = $this->listQueryLogsRequest($databaseName, $branchName, $end, $start, $step, $contentType);
 
         try {
             $options = $this->createHttpClientOption();
@@ -256,16 +262,19 @@ class QueryLogApi
      *
      * List all query logs
      *
-     * @param  string $database_name The databaseName parameter (required)
-     * @param  string $branch_name The branchName parameter (required)
+     * @param  string $databaseName The databaseName parameter (required)
+     * @param  string $branchName The branchName parameter (required)
+     * @param  string|null $end The end timestamp for the query logs to retrieve (in seconds since epoch). (optional)
+     * @param  string|null $start The start timestamp for the query logs to retrieve (in seconds since epoch). (optional)
+     * @param  int|null $step The step interval (in seconds) to combine query metrics. For example, if step is 60, then all query metrics that occur within the same minute will be combined into a single metric. This is useful for reducing the number of query metrics returned when there are many queries executed within a short period of time. (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['listQueryLogs'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function listQueryLogsAsync($database_name, $branch_name, string $contentType = self::contentTypes['listQueryLogs'][0])
+    public function listQueryLogsAsync($databaseName, $branchName, $end = null, $start = null, $step = null, string $contentType = self::contentTypes['listQueryLogs'][0])
     {
-        return $this->listQueryLogsAsyncWithHttpInfo($database_name, $branch_name, $contentType)
+        return $this->listQueryLogsAsyncWithHttpInfo($databaseName, $branchName, $end, $start, $step, $contentType)
             ->then(
                 function ($response) {
                     return $response[0];
@@ -278,17 +287,20 @@ class QueryLogApi
      *
      * List all query logs
      *
-     * @param  string $database_name The databaseName parameter (required)
-     * @param  string $branch_name The branchName parameter (required)
+     * @param  string $databaseName The databaseName parameter (required)
+     * @param  string $branchName The branchName parameter (required)
+     * @param  string|null $end The end timestamp for the query logs to retrieve (in seconds since epoch). (optional)
+     * @param  string|null $start The start timestamp for the query logs to retrieve (in seconds since epoch). (optional)
+     * @param  int|null $step The step interval (in seconds) to combine query metrics. For example, if step is 60, then all query metrics that occur within the same minute will be combined into a single metric. This is useful for reducing the number of query metrics returned when there are many queries executed within a short period of time. (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['listQueryLogs'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function listQueryLogsAsyncWithHttpInfo($database_name, $branch_name, string $contentType = self::contentTypes['listQueryLogs'][0])
+    public function listQueryLogsAsyncWithHttpInfo($databaseName, $branchName, $end = null, $start = null, $step = null, string $contentType = self::contentTypes['listQueryLogs'][0])
     {
         $returnType = '\Litebase\OpenAPI\Model\ListQueryLogs200Response';
-        $request = $this->listQueryLogsRequest($database_name, $branch_name, $contentType);
+        $request = $this->listQueryLogsRequest($databaseName, $branchName, $end, $start, $step, $contentType);
 
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
@@ -329,29 +341,35 @@ class QueryLogApi
     /**
      * Create request for operation 'listQueryLogs'
      *
-     * @param  string $database_name The databaseName parameter (required)
-     * @param  string $branch_name The branchName parameter (required)
+     * @param  string $databaseName The databaseName parameter (required)
+     * @param  string $branchName The branchName parameter (required)
+     * @param  string|null $end The end timestamp for the query logs to retrieve (in seconds since epoch). (optional)
+     * @param  string|null $start The start timestamp for the query logs to retrieve (in seconds since epoch). (optional)
+     * @param  int|null $step The step interval (in seconds) to combine query metrics. For example, if step is 60, then all query metrics that occur within the same minute will be combined into a single metric. This is useful for reducing the number of query metrics returned when there are many queries executed within a short period of time. (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['listQueryLogs'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
      */
-    public function listQueryLogsRequest($database_name, $branch_name, string $contentType = self::contentTypes['listQueryLogs'][0])
+    public function listQueryLogsRequest($databaseName, $branchName, $end = null, $start = null, $step = null, string $contentType = self::contentTypes['listQueryLogs'][0])
     {
 
-        // verify the required parameter 'database_name' is set
-        if ($database_name === null || (is_array($database_name) && count($database_name) === 0)) {
+        // verify the required parameter 'databaseName' is set
+        if ($databaseName === null || (is_array($databaseName) && count($databaseName) === 0)) {
             throw new \InvalidArgumentException(
-                'Missing the required parameter $database_name when calling listQueryLogs'
+                'Missing the required parameter $databaseName when calling listQueryLogs'
             );
         }
 
-        // verify the required parameter 'branch_name' is set
-        if ($branch_name === null || (is_array($branch_name) && count($branch_name) === 0)) {
+        // verify the required parameter 'branchName' is set
+        if ($branchName === null || (is_array($branchName) && count($branchName) === 0)) {
             throw new \InvalidArgumentException(
-                'Missing the required parameter $branch_name when calling listQueryLogs'
+                'Missing the required parameter $branchName when calling listQueryLogs'
             );
         }
+
+
+
 
 
         $resourcePath = '/v1/databases/{databaseName}/branches/{branchName}/metrics/query';
@@ -361,21 +379,48 @@ class QueryLogApi
         $httpBody = '';
         $multipart = false;
 
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $end,
+            'end', // param base name
+            'string', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $start,
+            'start', // param base name
+            'string', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $step,
+            'step', // param base name
+            'integer', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
 
 
         // path params
-        if ($database_name !== null) {
+        if ($databaseName !== null) {
             $resourcePath = str_replace(
                 '{' . 'databaseName' . '}',
-                ObjectSerializer::toPathValue($database_name),
+                ObjectSerializer::toPathValue($databaseName),
                 $resourcePath
             );
         }
         // path params
-        if ($branch_name !== null) {
+        if ($branchName !== null) {
             $resourcePath = str_replace(
                 '{' . 'branchName' . '}',
-                ObjectSerializer::toPathValue($branch_name),
+                ObjectSerializer::toPathValue($branchName),
                 $resourcePath
             );
         }

@@ -22,7 +22,7 @@ class ListClusterStatuses200Response implements ModelInterface, ArrayAccess, \Js
       * @var string[]
       */
     protected static $openAPITypes = [
-        'data' => '\Litebase\OpenAPI\Model\ListClusterStatuses200ResponseData',
+        'data' => '\Litebase\OpenAPI\Model\ClusterStatusResponse',
         'message' => 'string',
         'status' => 'string'
     ];
@@ -280,7 +280,7 @@ class ListClusterStatuses200Response implements ModelInterface, ArrayAccess, \Js
     /**
      * Gets data
      *
-     * @return \Litebase\OpenAPI\Model\ListClusterStatuses200ResponseData
+     * @return \Litebase\OpenAPI\Model\ClusterStatusResponse
      */
     public function getData()
     {
@@ -290,7 +290,7 @@ class ListClusterStatuses200Response implements ModelInterface, ArrayAccess, \Js
     /**
      * Sets data
      *
-     * @param \Litebase\OpenAPI\Model\ListClusterStatuses200ResponseData $data data
+     * @param \Litebase\OpenAPI\Model\ClusterStatusResponse $data data
      *
      * @return self
      */
