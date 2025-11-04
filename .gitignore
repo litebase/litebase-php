@@ -1,4 +1,5 @@
 .DS_Store
+.litebase
 .openapi-generator
 .phpunit.result.cache
 .vscode
