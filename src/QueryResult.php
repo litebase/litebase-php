@@ -14,11 +14,11 @@ class QueryResult
         public int $changes = 0,
         public array $columns = [],
         public string $id = '',
-        public int $lastInsertRowID = 0,
+        public int $lastInsertRowId = 0,
         public float $latency = 0.0,
-        public int $rowsCount = 0,
+        public int $rowCount = 0,
         public array $rows = [],
-        public string $transactionID = '',
+        public string $transactionId = '',
         public ?string $errorMessage = null,
     ) {}
 }

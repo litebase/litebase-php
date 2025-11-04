@@ -47,13 +47,14 @@ describe('HttpTransport', function () {
                             ['type' => ColumnType::INTEGER, 'name' => 'id'],
                             ['type' => ColumnType::TEXT, 'name' => 'name'],
                         ],
-                        'last_insert_row_id' => 1,
+                        'columnsCount' => 2,
+                        'lastInsertRowId' => 1,
                         'latency' => 10.0,
-                        'row_count' => 1,
+                        'rowCount' => 1,
                         'rows' => [
                             ['id' => 1, 'name' => 'Test'],
                         ],
-                        'transaction_id' => 'transaction-id',
+                        'transactionId' => 'transaction-id',
                     ],
                 ],
             ]) ?: null)
@@ -75,10 +76,10 @@ describe('HttpTransport', function () {
         expect($queryResult?->id)->toBe('query-id');
         expect($queryResult?->changes)->toBe(1);
         expect($queryResult?->columns)->toBe([['type' => ColumnType::INTEGER, 'name' => 'id'], ['type' => ColumnType::TEXT, 'name' => 'name']]);
-        expect($queryResult?->lastInsertRowID)->toBe(1);
+        expect($queryResult?->lastInsertRowId)->toBe(1);
         expect($queryResult?->latency)->toBe(10.0);
-        expect($queryResult?->rowsCount)->toBe(1);
+        expect($queryResult?->rowCount)->toBe(1);
         expect($queryResult?->rows)->toBe([['id' => 1, 'name' => 'Test']]);
-        expect($queryResult?->transactionID)->toBe('transaction-id');
+        expect($queryResult?->transactionId)->toBe('transaction-id');
     });
 });

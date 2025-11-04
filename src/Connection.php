@@ -357,7 +357,7 @@ class Connection
         stream_set_timeout($this->socket, 5);
 
         $error = fwrite($this->socket, "POST {$this->path} HTTP/1.1\r\n");
-        $error = fwrite($this->socket, implode("\r\n", $this->headers)."\r\n");
+        $error = fwrite($this->socket, implode("\r\n", $this->headers) . "\r\n");
         $error = fwrite($this->socket, "\r\n");
 
         if ($error === false) {
@@ -367,7 +367,7 @@ class Connection
         $this->open = true;
 
         $this->messages = [
-            pack('C', QueryStreamMessageType::OPEN_CONNECTION->value.pack('V', 0)),
+            pack('C', QueryStreamMessageType::OPEN_CONNECTION->value . pack('V', 0)),
             ...$this->messages,
         ];
 
@@ -381,7 +381,7 @@ class Connection
     {
         $queryRequest = $this->queryRequestEncoder->encode($query);
 
-        $frame = pack('C', QueryStreamMessageType::FRAME->value).pack('V', strlen($queryRequest)).$queryRequest;
+        $frame = pack('C', QueryStreamMessageType::FRAME->value) . pack('V', strlen($queryRequest)) . $queryRequest;
 
         $this->messages[] = $frame;
 
@@ -410,7 +410,7 @@ class Connection
 
                             continue;
                         } catch (Exception $reconnectException) {
-                            throw new Exception('[Litebase Client Error]: Failed to reconnect after connection loss: '.$reconnectException->getMessage());
+                            throw new Exception('[Litebase Client Error]: Failed to reconnect after connection loss: ' . $reconnectException->getMessage());
                         }
                     }
                 }
@@ -485,14 +485,14 @@ class Connection
             $changesValue = $response['changes'] ?? 0;
             $changes = is_int($changesValue) || is_float($changesValue) || is_string($changesValue) ? (int) $changesValue : 0;
 
-            $lastInsertRowIDValue = $response['last_insert_row_id'] ?? 0;
-            $lastInsertRowID = is_int($lastInsertRowIDValue) || is_float($lastInsertRowIDValue) || is_string($lastInsertRowIDValue) ? (int) $lastInsertRowIDValue : 0;
+            $lastInsertRowIdValue = $response['lastInsertRowId'] ?? 0;
+            $lastInsertRowId = is_int($lastInsertRowIdValue) || is_float($lastInsertRowIdValue) || is_string($lastInsertRowIdValue) ? (int) $lastInsertRowIdValue : 0;
 
             $latencyValue = $response['latency'] ?? 0;
             $latency = is_int($latencyValue) || is_float($latencyValue) || is_string($latencyValue) ? (float) $latencyValue : 0.0;
 
-            $rowsCountValue = $response['rowsCount'] ?? 0;
-            $rowsCount = is_int($rowsCountValue) || is_float($rowsCountValue) || is_string($rowsCountValue) ? (int) $rowsCountValue : 0;
+            $rowCountValue = $response['rowCount'] ?? 0;
+            $rowCount = is_int($rowCountValue) || is_float($rowCountValue) || is_string($rowCountValue) ? (int) $rowCountValue : 0;
 
             /** @var array<int, array<int, bool|float|int|string|null>> $rows */
             $rows = isset($response['rows']) && is_array($response['rows']) ? $response['rows'] : [];
@@ -507,11 +507,11 @@ class Connection
                 id: $id,
                 changes: $changes,
                 columns: $columns,
-                lastInsertRowID: $lastInsertRowID,
+                lastInsertRowId: $lastInsertRowId,
                 latency: $latency,
-                rowsCount: $rowsCount,
+                rowCount: $rowCount,
                 rows: $rows,
-                transactionID: $transactionID,
+                transactionId: $transactionID,
                 errorMessage: $errorMessage,
             );
         }
@@ -565,7 +565,7 @@ class Connection
         $chunkSize = dechex(strlen($message));
 
         $n = $this->socket ?
-            fwrite($this->socket, $chunkSize."\r\n".$message."\r\n") :
+            fwrite($this->socket, $chunkSize . "\r\n" . $message . "\r\n") :
             false;
 
         if ($n === false) {

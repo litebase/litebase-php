@@ -185,7 +185,7 @@ describe('LitebaseClient', function () {
         $this->assertStringContainsString('Test Error', (string) $client->errorInfo()[2]);
     });
 
-    test('it can execute a statment', function () use ($mock, $client) {
+    test('it can execute a statement', function () use ($mock, $client) {
         $mock->append(
             new Response(200, [], json_encode([
                 'status' => 'success',
@@ -222,6 +222,7 @@ describe('LitebaseClient', function () {
                         'id' => 'query-id-1',
                         'changes' => 0,
                         'columns' => [],
+                        'columnsCount' => 0,
                         'lastInsertRowId' => 0,
                         'latency' => 0.0,
                         'rowCount' => 0,

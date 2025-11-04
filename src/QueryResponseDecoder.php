@@ -94,8 +94,8 @@ class QueryResponseDecoder
                         $changes = unpack('V', substr($response, $offset += $transactionIdLength, 4))[1] ?? 0;
                         $latency = unpack('e', substr($response, $offset += 4, 8))[1] ?? 0;
                         $columnsCount = unpack('V', substr($response, $offset += 8, 4))[1] ?? 0;
-                        $rowsCount = unpack('V', substr($response, $offset += 4, 4))[1] ?? 0;
-                        $lastInsertRowID = unpack('V', substr($response, $offset += 4, 4))[1] ?? 0;
+                        $rowCount = unpack('V', substr($response, $offset += 4, 4))[1] ?? 0;
+                        $lastInsertRowId = unpack('V', substr($response, $offset += 4, 4))[1] ?? 0;
                         $columnsLength = unpack('V', substr($response, $offset += 4, 4))[1] ?? 0;
 
                         $columnBytes = substr($response, $offset += 4, $columnsLength);
@@ -105,14 +105,14 @@ class QueryResponseDecoder
 
                         $responses[] = [
                             'changes' => $changes,
-                            'column_count' => $columnsCount,
+                            'columnCount' => $columnsCount,
                             'columns' => $columns,
-                            'rows_count' => $rowsCount,
+                            'rowCount' => $rowCount,
                             'rows' => $rows,
                             'id' => $id,
-                            'last_insert_row_id' => $lastInsertRowID,
+                            'lastInsertRowId' => $lastInsertRowId,
                             'latency' => $latency,
-                            'transaction_id' => $transactionId,
+                            'transactionId' => $transactionId,
                             'version' => $version,
                         ];
                         break;

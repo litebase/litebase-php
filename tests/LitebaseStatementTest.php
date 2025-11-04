@@ -71,14 +71,14 @@ test('it can return a column count', function () {
         changes: 0,
         columns: [['name' => 'id', 'type' => ColumnType::INTEGER], ['name' => 'name', 'type' => ColumnType::TEXT]],
         id: '1',
-        lastInsertRowID: 0,
+        lastInsertRowId: 0,
         latency: 0.1,
-        rowsCount: 2,
+        rowCount: 2,
         rows: [
             ['1', 'John'],
             ['2', 'Jane'],
         ],
-        transactionID: '',
+        transactionId: '',
         errorMessage: null,
     ));
 
@@ -121,14 +121,14 @@ test('it can return the row count', function () {
         changes: 0,
         columns: [['type' => ColumnType::INTEGER, 'name' => 'id'], ['type' => ColumnType::TEXT, 'name' => 'name']],
         id: '1',
-        lastInsertRowID: 0,
+        lastInsertRowId: 0,
         latency: 0.1,
-        rowsCount: 2,
+        rowCount: 2,
         rows: [
             ['1', 'John'],
             ['2', 'Jane'],
         ],
-        transactionID: '',
+        transactionId: '',
     ));
 
     $statement->execute();

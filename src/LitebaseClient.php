@@ -72,13 +72,13 @@ class LitebaseClient
                 return false;
             }
 
-            if (empty($response->transactionID)) {
+            if (empty($response->transactionId)) {
                 $this->errorInfo = [0, 0, 'Transaction ID not found'];
 
                 return false;
             }
 
-            $this->transaction = new Transaction($response->transactionID);
+            $this->transaction = new Transaction($response->transactionId);
 
             return true;
         } catch (Exception $e) {
@@ -162,8 +162,8 @@ class LitebaseClient
         ));
 
         // Store the last insert ID if available
-        if (isset($result->lastInsertRowID)) {
-            $this->lastInsertId = (string) $result->lastInsertRowID;
+        if (isset($result->lastInsertRowId)) {
+            $this->lastInsertId = (string) $result->lastInsertRowId;
         }
 
         return $result;
@@ -219,7 +219,7 @@ class LitebaseClient
                 $this->transport = new HttpStreamingTransport($this->configuration);
                 break;
             default:
-                throw new Exception('Invalid transport type: '.$transportType);
+                throw new Exception('Invalid transport type: ' . $transportType);
         }
 
         return $this;

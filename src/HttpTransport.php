@@ -50,22 +50,22 @@ class HttpTransport implements TransportInterface
 
         /** @var array<int, array<int, bool|float|int|string|null>> $rows */
         $rows = array_values(array_map(
-            fn ($row) => is_array($row) ? array_values($row) : (array) $row,
+            fn($row) => is_array($row) ? array_values($row) : (array) $row,
             $firstResult->getRows() ?? []
         ));
 
         return new QueryResult(
             changes: $firstResult->getChanges() ?? 0,
-            columns: array_values(array_map(fn ($col) => [
+            columns: array_values(array_map(fn($col) => [
                 'type' => ColumnType::from($col->getType() ?? 1),
                 'name' => $col->getName() ?? '',
             ], $firstResult->getColumns() ?? [])),
             id: $firstResult->getId() ?? '',
-            lastInsertRowID: $firstResult->getLastInsertRowId() ?? 0,
+            lastInsertRowId: $firstResult->getLastInsertRowId() ?? 0,
             latency: $firstResult->getLatency() ?? 0,
-            rowsCount: $firstResult->getRowCount() ?? 0,
+            rowCount: $firstResult->getRowCount() ?? 0,
             rows: $rows,
-            transactionID: $firstResult->getTransactionId() ?? '',
+            transactionId: $firstResult->getTransactionId() ?? '',
         );
     }
 

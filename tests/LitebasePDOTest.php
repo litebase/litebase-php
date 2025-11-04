@@ -52,11 +52,11 @@ test('it can execute a statment', function () {
         changes: 0,
         columns: [['type' => ColumnType::INTEGER, 'name' => 'id']],
         id: '1',
-        lastInsertRowID: 0,
+        lastInsertRowId: 0,
         latency: 0.1,
-        rowsCount: 2,
+        rowCount: 2,
         rows: [[1], [2]],
-        transactionID: '',
+        transactionId: '',
         errorMessage: null,
     ));
 
