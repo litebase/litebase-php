@@ -1,0 +1,22 @@
+services:
+    database:
+        image: litebase/litebase:dev
+        ports:
+            - "8888:8888"
+        volumes:
+            - ./.litebase:/etc/data
+        environment:
+            - LITEBASE_CLUSTER_ID=cluster-1
+            - LITEBASE_DEBUG=true
+            - LITEBASE_ENV=development
+            - LITEBASE_DATA_PATH=/etc/data
+            - LITEBASE_STORAGE_NETWORK_PATH=/etc/data/_network
+            - LITEBASE_PORT=8888
+            - LITEBASE_ROOT_PASSWORD=password
+            - LITEBASE_ROOT_USERNAME=root
+            - LITEBASE_ENCRYPTION_KEY=aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+            - LITEBASE_STORAGE_OBJECT_MODE=local
+            - LITEBASE_STORAGE_TMP_PATH=/tmp
+
+volumes:
+    data:

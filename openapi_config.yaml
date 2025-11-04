@@ -10,7 +10,6 @@ licenseName: MIT
 packageName: Litebase PHP SDK
 outputDir: ./api
 templateDir: ./api/templates
-inputSpec: https://raw.githubusercontent.com/litebase/litebase/refs/heads/main/api/generated_openapi.json
 inputSpec: https://raw.githubusercontent.com/litebase/litebase/refs/heads/main/api/generated_open_api.json
 generatorName: php
 variableNamingConvention: camelCase
