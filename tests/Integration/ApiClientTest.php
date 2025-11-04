@@ -19,7 +19,7 @@ afterAll(function () {
 });
 
 describe('ApiClient', function () {
-    $configuration = new Configuration();
+    $configuration = new Configuration;
 
     $configuration
         ->setHost('localhost')

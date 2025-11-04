@@ -13,7 +13,7 @@ class TestCases
     /**
      * Convert the given JSON array into an array of test cases.
      *
-     * @param array<string, mixed> $json
+     * @param  array<string, mixed>  $json
      * @return array<string, TestCase>
      */
     public static function fromJson(array $json): array
@@ -83,8 +83,7 @@ class TestCase
     public array $tests = [];
 
     /**
-     * @param string $name
-     * @param array<string, Test> $tests
+     * @param  array<string, Test>  $tests
      */
     public function __construct(
         public string $name = '',
@@ -100,10 +99,7 @@ class Test
     public array $steps = [];
 
     /**
-     * @param string $operation
-     * @param string $name
-     * @param string $description
-     * @param Step[] $steps
+     * @param  Step[]  $steps
      */
     public function __construct(
         public string $operation = '',
@@ -118,7 +114,9 @@ class Test
 class Step
 {
     public ?RequestData $request;
+
     public ?ResponseData $response;
+
     public ?WaitData $wait;
 
     public function __construct(?RequestData $request = null, ?ResponseData $response = null, ?WaitData $wait = null)
@@ -138,7 +136,7 @@ class RequestData
     public ?array $parameters;
 
     /**
-     * @param array<mixed,mixed> $data
+     * @param  array<mixed,mixed>  $data
      */
     public function __construct(array $data = [])
     {
@@ -151,8 +149,11 @@ class RequestData
     }
 
     public string $name = '';
+
     public string $model = '';
+
     public string $operation = '';
+
     public ?string $requestModel = null;
 }
 
@@ -164,7 +165,7 @@ class ResponseData
     public ?int $statusCode = null;
 
     /**
-     * @param array<mixed,mixed> $data
+     * @param  array<mixed,mixed>  $data
      */
     public function __construct(array $data = [])
     {
@@ -175,19 +176,20 @@ class ResponseData
             }
 
             $s = json_encode($v);
+
             return $s === false ? '' : $s;
         }, $data['captures'])) : [];
     }
 }
 
-
 class WaitData
 {
     public int $duration = 0;
+
     public string $name = '';
 
     /**
-     * @param array<mixed,mixed> $data
+     * @param  array<mixed,mixed>  $data
      */
     public function __construct(array $data = [])
     {
@@ -206,9 +208,7 @@ class ApiClientTestRunner
     /**
      * Capture response data based on the response specification.
      *
-     * @param array<int|string, mixed> $captured
-     * @param ResponseData $responseSpec
-     * @param mixed $response
+     * @param  array<int|string, mixed>  $captured
      * @return array<int|string, mixed>
      */
     protected function captureResponseData(array $captured, ResponseData $responseSpec, mixed $response = null): array
@@ -250,13 +250,13 @@ class ApiClientTestRunner
                         $method = "get$pascalCasePart";
 
                         if (! is_object($currentObject) || ! method_exists($currentObject, $method)) {
-                            throw new \Exception("Method {$method} does not exist on " . (is_object($currentObject) ? get_class($currentObject) : gettype($currentObject)));
+                            throw new \Exception("Method {$method} does not exist on ".(is_object($currentObject) ? get_class($currentObject) : gettype($currentObject)));
                         }
 
                         $array = $currentObject->{$method}();
 
                         if (! is_array($array)) {
-                            throw new \Exception("Expected array from {$method}(), got " . gettype($array));
+                            throw new \Exception("Expected array from {$method}(), got ".gettype($array));
                         }
 
                         if (! isset($array[$index])) {
@@ -284,13 +284,13 @@ class ApiClientTestRunner
                             $snakeCaseKey = strtolower((string) preg_replace('/(?<!^)[A-Z]/', '_$0', $segment));
 
                             if (! property_exists($currentObject, $snakeCaseKey) && ! property_exists($currentObject, $segment)) {
-                                throw new \Exception("Property '{$segment}' (or '{$snakeCaseKey}') does not exist on " . get_class($currentObject));
+                                throw new \Exception("Property '{$segment}' (or '{$snakeCaseKey}') does not exist on ".get_class($currentObject));
                             }
 
                             $currentObject = $currentObject->{$snakeCaseKey} ?? $currentObject->{$segment};
                         }
                     } else {
-                        throw new \Exception("Cannot access property '{$segment}' on " . gettype($currentObject));
+                        throw new \Exception("Cannot access property '{$segment}' on ".gettype($currentObject));
                     }
                 }
             }
@@ -308,9 +308,7 @@ class ApiClientTestRunner
     /**
      * Get the request object for the given request data.
      *
-     * @param RequestData $request
-     * @param array<int|string, mixed> $captured
-     * @return mixed
+     * @param  array<int|string, mixed>  $captured
      */
     protected function getRequestObject(RequestData $request, array $captured): mixed
     {
@@ -348,10 +346,8 @@ class ApiClientTestRunner
     /**
      * Get the response from the API operation, handling expected exceptions.
      *
-     * @param mixed $api
-     * @param ResponseData $responseSpec
-     * @param array<int|string, mixed> $args
-     * @return mixed
+     * @param  mixed  $api
+     * @param  array<int|string, mixed>  $args
      */
     protected function getResponse($api, string $operationId, ?ResponseData $responseSpec, array $args): mixed
     {
@@ -381,9 +377,7 @@ class ApiClientTestRunner
     /**
      * Prepare the request arguments for the given request data.
      *
-     * @param RequestData $request
-     * @param array<int|string, mixed> $params
-     * @param mixed $requestObject
+     * @param  array<int|string, mixed>  $params
      * @return array<int|string, mixed>
      */
     protected function prepareRequestArguments(RequestData $request, array $params, mixed $requestObject): array
@@ -406,8 +400,7 @@ class ApiClientTestRunner
     /**
      *  // Prepare parameters (if any). Resolve values from previously captured values.
      *
-     * @param RequestData $request
-     * @param array<int|string, mixed> $captured
+     * @param  array<int|string, mixed>  $captured
      * @return array<int|string>
      */
     protected function prepareRequestParameters(RequestData $request, $captured): array
@@ -429,13 +422,14 @@ class ApiClientTestRunner
                 if (array_key_exists($key, $captured)) {
                     $params[] = $captured[$key];
                 } else {
-                    throw new \Exception("Captured parameter '" . $key . "' not found for operation '{$request->operation}'");
+                    throw new \Exception("Captured parameter '".$key."' not found for operation '{$request->operation}'");
                 }
             }
         }
 
         return $params;
     }
+
     public static function run(ApiClient $client): void
     {
         $runner = new self($client);
@@ -473,7 +467,7 @@ class ApiClientTestRunner
     /**
      * Run the given test steps against the API client.
      *
-     * @param Step[] $steps
+     * @param  Step[]  $steps
      */
     public function runSteps(array $steps): void
     {
