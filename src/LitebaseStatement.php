@@ -71,14 +71,14 @@ class LitebaseStatement extends PDOStatement implements IteratorAggregate
             case PDO::PARAM_NULL:
                 $type = 'NULL';
                 break;
-            // TODO: Test BLOB type
+                // TODO: Test BLOB type
             case PDO::PARAM_LOB:
                 $type = 'BLOB';
                 break;
-            // TODO: Add a case for float type
-            // case PDO::PARAM_FLOAT:
-            // $type = "REAL";
-            // break;
+                // TODO: Add a case for float type
+                // case PDO::PARAM_FLOAT:
+                // $type = "REAL";
+                // break;
             default:
                 $type = 'TEXT'; // Default to TEXT if no match
                 break;
@@ -210,7 +210,7 @@ class LitebaseStatement extends PDOStatement implements IteratorAggregate
                 $columns = $this->columns ?? [];
 
                 return array_combine(
-                    array_map(fn($col) => $col['name'], $columns),
+                    array_map(fn ($col) => $col['name'], $columns),
                     $row
                 );
             }, $this->result->rows);

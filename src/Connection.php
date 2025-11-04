@@ -357,7 +357,7 @@ class Connection
         stream_set_timeout($this->socket, 5);
 
         $error = fwrite($this->socket, "POST {$this->path} HTTP/1.1\r\n");
-        $error = fwrite($this->socket, implode("\r\n", $this->headers) . "\r\n");
+        $error = fwrite($this->socket, implode("\r\n", $this->headers)."\r\n");
         $error = fwrite($this->socket, "\r\n");
 
         if ($error === false) {
@@ -367,7 +367,7 @@ class Connection
         $this->open = true;
 
         $this->messages = [
-            pack('C', QueryStreamMessageType::OPEN_CONNECTION->value . pack('V', 0)),
+            pack('C', QueryStreamMessageType::OPEN_CONNECTION->value.pack('V', 0)),
             ...$this->messages,
         ];
 
@@ -381,7 +381,7 @@ class Connection
     {
         $queryRequest = $this->queryRequestEncoder->encode($query);
 
-        $frame = pack('C', QueryStreamMessageType::FRAME->value) . pack('V', strlen($queryRequest)) . $queryRequest;
+        $frame = pack('C', QueryStreamMessageType::FRAME->value).pack('V', strlen($queryRequest)).$queryRequest;
 
         $this->messages[] = $frame;
 
@@ -410,7 +410,7 @@ class Connection
 
                             continue;
                         } catch (Exception $reconnectException) {
-                            throw new Exception('[Litebase Client Error]: Failed to reconnect after connection loss: ' . $reconnectException->getMessage());
+                            throw new Exception('[Litebase Client Error]: Failed to reconnect after connection loss: '.$reconnectException->getMessage());
                         }
                     }
                 }
@@ -565,7 +565,7 @@ class Connection
         $chunkSize = dechex(strlen($message));
 
         $n = $this->socket ?
-            fwrite($this->socket, $chunkSize . "\r\n" . $message . "\r\n") :
+            fwrite($this->socket, $chunkSize."\r\n".$message."\r\n") :
             false;
 
         if ($n === false) {
