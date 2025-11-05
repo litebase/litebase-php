@@ -22,7 +22,7 @@ jobs:
               uses: docker/setup-compose-action@v1
 
             - name: Run integration tests
-              run: vendor/bin/phpunit tests/Integration
+              run: vendor/bin/pest tests/Integration
 
             - name: Report results
               if: always()
