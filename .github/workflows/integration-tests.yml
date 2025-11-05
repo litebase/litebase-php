@@ -6,17 +6,6 @@ jobs:
     build:
         runs-on: ubuntu-latest
 
-        services:
-            api:
-                image: litebase/litebase
-                ports:
-                    - 8080:8080
-                options: >-
-                    --health-cmd="curl --fail http://localhost:8080/ || exit 1"
-                    --health-interval=30s
-                    --health-timeout=10s
-                    --health-retries=5
-
         steps:
             - name: Checkout code
               uses: actions/checkout@v4
@@ -28,6 +17,9 @@ jobs:
 
             - name: Install dependencies
               run: composer install
+
+            - name: Set up Docker Compose
+              uses: docker/setup-compose-action@v1
 
             - name: Run integration tests
               run: vendor/bin/phpunit tests/Integration
