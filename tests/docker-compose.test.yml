@@ -1,6 +1,6 @@
 services:
     database:
-        image: litebase/litebase:dev
+        image: litebase/litebase
         ports:
             - "8888:8888"
         volumes:
