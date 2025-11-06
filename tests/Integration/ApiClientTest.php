@@ -10,18 +10,24 @@ use Litebase\Configuration;
 beforeAll(function () {
     exec('docker compose -f ./tests/docker-compose.test.yml up -d');
 
+    // Give the container a moment to initialize
+    sleep(2);
+
     // Wait for the API to be healthy. Poll the configured host/port until we receive a response
     $url = 'http://localhost:8888/';
-    $timeoutSeconds = 3;
+    $timeoutSeconds = 60;
     $start = time();
 
     while (true) {
-        $success = file_get_contents($url, false, stream_context_create([
+        $context = stream_context_create([
             'http' => [
                 'method' => 'GET',
+                'timeout' => 2,
                 'ignore_errors' => true,
             ],
-        ]));
+        ]);
+
+        $success = @file_get_contents($url, false, $context);
 
         if ($success !== false) {
             // API is healthy
@@ -35,7 +41,7 @@ beforeAll(function () {
         }
 
         // Back off before retrying
-        sleep(1);
+        sleep(2);
     }
 });
 
