@@ -42,7 +42,7 @@ beforeAll(function () use ($client) {
 
         $logs = implode("\n", $lines);
 
-        throw new \RuntimeException('Failed to connect to Litebase server for integration tests.' . "Container logs:\n{$logs}");
+        throw new \RuntimeException('Failed to connect to Litebase server for integration tests.'."Container logs:\n{$logs}");
     }
 });
 
