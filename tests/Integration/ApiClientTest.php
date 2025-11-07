@@ -23,7 +23,17 @@ beforeAll(function () use ($client) {
     // Give the container a moment to initialize
     sleep(2);
 
-    $response = $client->clusterStatus()->listClusterStatuses();
+    try {
+        $response = $client->clusterStatus()->listClusterStatuses();
+    } catch (\Exception $e) {
+        $lines = [];
+        exec('docker ps -a');
+        exec('docker compose -f ./tests/docker-compose.test.yml logs --tail=200 --no-color', $lines, $rc);
+
+        $logs = implode("\n", $lines);
+
+        throw new \RuntimeException('Failed to connect to Litebase server for integration tests: ' . $e->getMessage() . "\nContainer logs:\n{$logs}");
+    }
 
     if ($response->getStatus() !== 'success') {
         $lines = [];
