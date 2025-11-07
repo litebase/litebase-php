@@ -3,27 +3,32 @@ name: Integration Tests
 on: [push, pull_request]
 
 jobs:
-    test:
-        runs-on: ubuntu-latest
+  test:
+    runs-on: ubuntu-latest
 
-        steps:
-            - name: Checkout code
-              uses: actions/checkout@v4
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-            - name: Set up PHP
-              uses: shivammathur/setup-php@v2
-              with:
-                  php-version: "8.4"
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.4"
 
-            - name: Install dependencies
-              run: composer install
+      - name: Install dependencies
+        run: composer install
 
-            - name: Set up Docker Compose
-              uses: docker/setup-compose-action@v1
+      - name: Set up Docker Compose
+        uses: docker/setup-compose-action@v1
 
-            - name: Run integration tests
-              run: vendor/bin/pest tests/Integration
+      - name: Prepare data directory with correct permissions
+        run: |
+          mkdir -p ./tests/.litebase
+          chmod 777 ./tests/.litebase
 
-            - name: Report results
-              if: always()
-              run: echo "Integration tests completed."
+      - name: Run integration tests
+        run: vendor/bin/pest tests/Integration
+
+      - name: Report results
+        if: always()
+        run: echo "Integration tests completed."

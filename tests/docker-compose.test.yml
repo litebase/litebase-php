@@ -4,13 +4,13 @@ services:
         ports:
             - "8888:8888"
         volumes:
-            - ./.litebase:/.litebase
+            - ./.litebase:/home/appuser/data
         environment:
             - LITEBASE_CLUSTER_ID=cluster-1
             - LITEBASE_DEBUG=true
             - LITEBASE_ENV=development
-            - LITEBASE_DATA_PATH=/.litebase
-            - LITEBASE_STORAGE_NETWORK_PATH=/.litebase/_network
+            - LITEBASE_DATA_PATH=/home/appuser/data
+            - LITEBASE_STORAGE_NETWORK_PATH=/home/appuser/data/_network
             - LITEBASE_PORT=8888
             - LITEBASE_ROOT_PASSWORD=password
             - LITEBASE_ROOT_USERNAME=root
@@ -19,4 +19,4 @@ services:
             - LITEBASE_STORAGE_TMP_PATH=/tmp
 
 volumes:
-    data:
+    litebase_data:
