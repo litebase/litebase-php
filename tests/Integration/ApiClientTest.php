@@ -10,7 +10,7 @@ use Litebase\Configuration;
 $configuration = new Configuration;
 
 $configuration
-    ->setHost('localhost')
+    ->setHost('127.0.0.1')
     ->setPort('8888')
     ->setUsername('root')
     ->setPassword('password');
