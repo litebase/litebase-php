@@ -26,6 +26,8 @@ beforeAll(function () use ($client) {
     $response = $client->clusterStatus()->listClusterStatuses();
 
     if ($response->getStatus() !== 'success') {
+        exec('docker ps -a');
+        exec('docker compose -f ./tests/docker-compose.test.yml logs --tail=200 --no-color');
         throw new \RuntimeException('Failed to connect to Litebase server for integration tests.');
     }
 });
