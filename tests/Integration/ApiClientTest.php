@@ -18,7 +18,11 @@ $configuration
 $client = new ApiClient($configuration);
 
 beforeAll(function () use ($client) {
-    exec('docker compose -f ./tests/docker-compose.test.yml up -d');
+    if (file_exists('./tests/.litebase')) {
+        exec('rm -rf ./tests/.litebase');
+    }
+
+    exec('mkdir -p ./tests/.litebase');
 
     // Give the container a moment to initialize
     sleep(2);
@@ -27,7 +31,6 @@ beforeAll(function () use ($client) {
         $response = $client->clusterStatus()->listClusterStatuses();
     } catch (\Exception $e) {
         $lines = [];
-        exec('docker ps -a');
         exec('docker compose -f ./tests/docker-compose.test.yml logs --tail=200 --no-color', $lines, $rc);
 
         $logs = implode("\n", $lines);
@@ -37,7 +40,6 @@ beforeAll(function () use ($client) {
 
     if ($response->getStatus() !== 'success') {
         $lines = [];
-        exec('docker ps -a');
         exec('docker compose -f ./tests/docker-compose.test.yml logs --tail=200 --no-color', $lines, $rc);
 
         $logs = implode("\n", $lines);
@@ -48,6 +50,7 @@ beforeAll(function () use ($client) {
 
 afterAll(function () {
     exec('docker compose -f ./tests/docker-compose.test.yml down -v');
+
     // Delete the .litebase directory to clean up any persisted data
     exec('rm -rf ./tests/.litebase');
 });
