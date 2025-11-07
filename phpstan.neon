@@ -1,7 +1,5 @@
 parameters:
     level: 9
-    excludePaths:
-        - src/Generated/*
     paths:
         - src
         - tests
