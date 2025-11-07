@@ -26,9 +26,13 @@ beforeAll(function () use ($client) {
     $response = $client->clusterStatus()->listClusterStatuses();
 
     if ($response->getStatus() !== 'success') {
+        $lines = [];
         exec('docker ps -a');
-        exec('docker compose -f ./tests/docker-compose.test.yml logs --tail=200 --no-color');
-        throw new \RuntimeException('Failed to connect to Litebase server for integration tests.');
+        exec('docker compose -f ./tests/docker-compose.test.yml logs --tail=200 --no-color', $lines, $rc);
+
+        $logs = implode("\n", $lines);
+
+        throw new \RuntimeException('Failed to connect to Litebase server for integration tests.' . "Container logs:\n{$logs}");
     }
 });
 
