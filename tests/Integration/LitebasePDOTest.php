@@ -17,6 +17,7 @@ beforeAll(function () {
     }
 
     exec('mkdir -p ./tests/.litebase');
+    exec('chmod 777 ./tests/.litebase');
 
     exec('docker compose -f ./tests/docker-compose.test.yml up -d');
     sleep(2);

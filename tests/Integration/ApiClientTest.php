@@ -23,6 +23,7 @@ beforeAll(function () use ($client) {
     }
 
     exec('mkdir -p ./tests/.litebase');
+    exec('chmod 777 ./tests/.litebase');
     exec('docker compose -f ./tests/docker-compose.test.yml up -d');
 
     // Give the container a moment to initialize
