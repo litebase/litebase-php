@@ -50,7 +50,8 @@
         "generate_open_api": "openapi-generator-cli generate -c openapi_config.yaml",
         "phpstan": "vendor/bin/phpstan analyse -c phpstan.neon --memory-limit=512M src tests",
         "pint": "vendor/bin/pint --no-interaction",
-        "test": "vendor/bin/pest",
+        "test": "vendor/bin/pest tests/Unit",
+        "test-integration": "vendor/bin/pest tests/Integration",
         "test-coverage": "vendor/bin/pest --coverage-html coverage"
     }
 }

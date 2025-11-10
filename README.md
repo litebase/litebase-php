@@ -9,13 +9,45 @@ A PHP SDK for interacting with [Litebase](https://github.com/litebase/litebase),
 You can install the package via composer:
 
 ```bash
-composer require ...
+composer require litebase/litebase-php
 ```
 
 ## Usage
 
-``` php
-// Usage description here
+```php
+use Litebase\Configuration;
+use Litebase\LitebasePDO;
+
+$pdo = new LitebasePDO([
+    'host' => 'localhost',
+    'port' => 8888,
+    'token' => 'your_api_token',
+    'database' => 'your_database_name/main',
+]);
+
+$statement = $pdo->prepare('SELECT * FROM users WHERE id = ?');
+$statement->execute([1]);
+$result = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+foreach ($result as $row) {
+    print_r($row);
+}
+
+// Use transactions
+$pdo = $pdo->beginTransaction();
+
+try {
+    $statement = $pdo->prepare('INSERT INTO users (name, email) VALUES (?, ?)');
+    $statement->execute(['John Doe', 'john@example.com']);
+
+    $statement = $pdo->prepare('INSERT INTO logs (user_id, action) VALUES (?, ?)');
+    $statement->execute([$pdo->lastInsertId(), 'user_created']);
+    
+    $pdo->commit();
+} catch (\Exception $e) {
+    $pdo->rollBack();
+    throw $e;
+}
 ```
 
 ## Contributing
@@ -24,8 +56,15 @@ Please see [CONTRIBUTING](https://github.com/litebase/litebase-php?tab=contribut
 
 ### Testing
 
+You can run the tests with:
 ``` bash
 composer test
+```
+
+Integration test requires a running Litebase instance. You can start one using Docker:
+
+```bash
+docker run -d -p 8888:8888 --name litebase litebase/litebase:latest
 ```
 
 ## Code of Conduct
