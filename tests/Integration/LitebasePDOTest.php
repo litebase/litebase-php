@@ -11,16 +11,7 @@ use Litebase\OpenAPI\Model\DatabaseStoreRequest;
 use PDO;
 
 beforeAll(function () {
-    // Create Test directory
-    if (file_exists('./tests/.litebase')) {
-        exec('rm -rf ./tests/.litebase');
-    }
-
-    exec('mkdir -p ./tests/.litebase');
-    exec('chmod 777 ./tests/.litebase');
-
-    exec('docker compose -f ./tests/docker-compose.test.yml up -d');
-    sleep(2);
+    LitebaseContainer::start();
 
     $configuration = new Configuration();
 
@@ -32,26 +23,17 @@ beforeAll(function () {
 
     $client = new ApiClient($configuration);
 
-
     try {
         $client->database()->createDatabase(new DatabaseStoreRequest([
             'name' => 'test',
         ]));
     } catch (\Exception $e) {
-        $lines = [];
-        exec('docker compose -f ./tests/docker-compose.test.yml logs --tail=200 --no-color', $lines, $rc);
-
-        $logs = implode("\n", $lines);
-
-        throw new \RuntimeException('Failed to connect to Litebase server for integration tests: ' . $e->getMessage() . "\nContainer logs:\n{$logs}");
+        throw new \RuntimeException('Failed to connect to Litebase server for integration tests: ' . $e->getMessage());
     }
 });
 
 afterAll(function () {
-    exec('docker compose -f ./tests/docker-compose.test.yml down -v');
-
-    // Delete the .litebase directory to clean up any persisted data
-    exec('rm -rf ./tests/.litebase');
+    LitebaseContainer::stop();
 });
 
 describe('LitebasePDO', function () {

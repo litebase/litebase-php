@@ -21,9 +21,6 @@ jobs:
             - name: Install dependencies
               run: composer install
 
-            - name: Set up Docker Compose
-              uses: docker/setup-compose-action@v1
-
             - name: Run integration tests
               run: vendor/bin/pest tests/Integration
 
