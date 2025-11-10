@@ -13,7 +13,7 @@ use PDO;
 beforeAll(function () {
     LitebaseContainer::start();
 
-    $configuration = new Configuration();
+    $configuration = new Configuration;
 
     $configuration
         ->setHost('127.0.0.1')
@@ -28,7 +28,7 @@ beforeAll(function () {
             'name' => 'test',
         ]));
     } catch (\Exception $e) {
-        throw new \RuntimeException('Failed to connect to Litebase server for integration tests: ' . $e->getMessage());
+        throw new \RuntimeException('Failed to connect to Litebase server for integration tests: '.$e->getMessage());
     }
 });
 

@@ -9,9 +9,9 @@ class LitebaseContainer
     public static function start(): void
     {
         // Remove any existing container first
-        shell_exec("docker rm -f litebase-test 2>/dev/null || true");
+        shell_exec('docker rm -f litebase-test 2>/dev/null || true');
 
-        $startCommand = "docker run -d --rm --name litebase-test -p 8888:8888 \\
+        $startCommand = 'docker run -d --rm --name litebase-test -p 8888:8888 \\
             -e LITEBASE_CLUSTER_ID=cluster-1 \\
             -e LITEBASE_DATA_PATH=/tmp/data \\
             -e LITEBASE_ENCRYPTION_KEY=aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa \\
@@ -22,7 +22,7 @@ class LitebaseContainer
             -e LITEBASE_STORAGE_NETWORK_PATH=/tmp/data/_network \\
             -e LITEBASE_STORAGE_TMP_PATH=/tmp \\
             -e LITEBASE_STORAGE_OBJECT_MODE=local \\
-            litebase/litebase start";
+            litebase/litebase start';
 
         shell_exec($startCommand);
 
@@ -31,7 +31,7 @@ class LitebaseContainer
 
     public static function stop(): void
     {
-        $stopCommand = "docker stop litebase-test";
+        $stopCommand = 'docker stop litebase-test';
         shell_exec($stopCommand);
     }
 }
