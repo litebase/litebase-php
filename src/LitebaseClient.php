@@ -5,6 +5,7 @@ namespace Litebase;
 use Exception;
 use GuzzleHttp\Client;
 use Litebase\OpenAPI\Model\StatementParameter;
+use Ramsey\Uuid\Uuid;
 use Throwable;
 
 class LitebaseClient
@@ -61,7 +62,7 @@ class LitebaseClient
         try {
             $response = $this->transport->send(
                 new Query(
-                    id: uniqid(),
+                    id: Uuid::uuid4()->toString(),
                     statement: 'BEGIN',
                 )
             );
@@ -100,7 +101,7 @@ class LitebaseClient
         try {
             $this->transport->send(
                 new Query(
-                    id: uniqid(),
+                    id: Uuid::uuid4()->toString(),
                     transactionId: $this->transaction->id,
                     statement: 'COMMIT',
                 )
@@ -141,7 +142,7 @@ class LitebaseClient
     public function exec(array $input): ?QueryResult
     {
         // Set a unique id for the request.
-        $input['id'] = uniqid();
+        $input['id'] = Uuid::uuid4()->toString();
 
         if ($this->transaction) {
             $input['transaction_id'] = $this->transaction->id;
@@ -198,7 +199,7 @@ class LitebaseClient
 
         $this->transport->send(
             new Query(
-                id: uniqid(),
+                id: Uuid::uuid4()->toString(),
                 transactionId: $this->transaction->id,
                 statement: 'ROLLBACK',
             )
@@ -219,7 +220,7 @@ class LitebaseClient
                 $this->transport = new HttpStreamingTransport($this->configuration);
                 break;
             default:
-                throw new Exception('Invalid transport type: '.$transportType);
+                throw new Exception('Invalid transport type: ' . $transportType);
         }
 
         return $this;

@@ -11,6 +11,7 @@ use Litebase\Configuration;
 use Litebase\HttpTransport;
 use Litebase\Query;
 use Litebase\QueryResult;
+use Ramsey\Uuid\Uuid;
 
 describe('HttpTransport', function () {
     $mock = new MockHandler;
@@ -65,7 +66,7 @@ describe('HttpTransport', function () {
         $transport->setClient(new ApiClient($configuration, $httpClient));
 
         $query = new Query(
-            id: 'test-query',
+            id: Uuid::uuid4()->toString(),
             statement: 'SELECT 1',
             parameters: [],
         );
