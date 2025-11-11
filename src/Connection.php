@@ -42,23 +42,25 @@ class Connection
     /** @var \Fiber<never, void, \Throwable|null, \Throwable|null>|null */
     protected ?Fiber $writer;
 
+    protected ?ChunkedSignatureSigner $chunkedSigner;
+
     /**
      * Create a new connection instance.
      *
      * @param  array<string, int|string>  $requestHeaders
      */
-    public function __construct(public string $url, public array $requestHeaders = [])
+    public function __construct(public string $url, public array $requestHeaders = [], ?ChunkedSignatureSigner $chunkedSigner = null)
     {
-        $host = parse_url($url, PHP_URL_HOST);
+        $host = parse_url($this->url, PHP_URL_HOST);
 
         if ($host === false || $host === null) {
             throw new Exception('[Litebase Client Error]: Invalid URL provided');
         }
         $this->host = $host;
 
-        $this->port = parse_url($url, PHP_URL_PORT) ?: 80;
+        $this->port = parse_url($this->url, PHP_URL_PORT) ?: 80;
 
-        $path = parse_url($url, PHP_URL_PATH);
+        $path = parse_url($this->url, PHP_URL_PATH);
 
         if ($path === false || $path === null) {
             throw new Exception('[Litebase Client Error]: Invalid URL provided');
@@ -71,6 +73,7 @@ class Connection
         }
 
         $this->queryRequestEncoder = new QueryRequestEncoder;
+        $this->chunkedSigner = $chunkedSigner;
     }
 
     /**
@@ -357,7 +360,7 @@ class Connection
         stream_set_timeout($this->socket, 5);
 
         $error = fwrite($this->socket, "POST {$this->path} HTTP/1.1\r\n");
-        $error = fwrite($this->socket, implode("\r\n", $this->headers)."\r\n");
+        $error = fwrite($this->socket, implode("\r\n", $this->headers) . "\r\n");
         $error = fwrite($this->socket, "\r\n");
 
         if ($error === false) {
@@ -367,7 +370,7 @@ class Connection
         $this->open = true;
 
         $this->messages = [
-            pack('C', QueryStreamMessageType::OPEN_CONNECTION->value.pack('V', 0)),
+            pack('C', QueryStreamMessageType::OPEN_CONNECTION->value . pack('V', 0)),
             ...$this->messages,
         ];
 
@@ -381,7 +384,28 @@ class Connection
     {
         $queryRequest = $this->queryRequestEncoder->encode($query);
 
-        $frame = pack('C', QueryStreamMessageType::FRAME->value).pack('V', strlen($queryRequest)).$queryRequest;
+        // If chunked signer is available, create a signed frame per LQTP protocol
+        if ($this->chunkedSigner !== null) {
+            // Frame data: [QueryLength:4][QueryData]
+            $frameData = pack('V', strlen($queryRequest)) . $queryRequest;
+
+            // Sign the frame data using chunked signature scheme (similar to AWS Sig4)
+            $chunkSignature = $this->chunkedSigner->signChunk($frameData);
+
+            // Build complete frame with signature per LQTP protocol
+            // Frame format: [MessageType:1][FrameLength:4][SignatureLength:4][Signature:N][FrameData]
+            $signatureBytes = $chunkSignature;
+            $totalLength = 4 + strlen($signatureBytes) + strlen($frameData);
+
+            $frame = pack('C', QueryStreamMessageType::FRAME->value) // Message type (0x04)
+                . pack('V', $totalLength)                            // Total length (signature metadata + frame data)
+                . pack('V', strlen($signatureBytes))                 // Signature length
+                . $signatureBytes                                     // Hex-encoded chunk signature
+                . $frameData;                                         // Frame data
+        } else {
+            // Fallback to unsigned frame format (deprecated)
+            $frame = pack('C', QueryStreamMessageType::FRAME->value) . pack('V', strlen($queryRequest)) . $queryRequest;
+        }
 
         $this->messages[] = $frame;
 
@@ -410,7 +434,7 @@ class Connection
 
                             continue;
                         } catch (Exception $reconnectException) {
-                            throw new Exception('[Litebase Client Error]: Failed to reconnect after connection loss: '.$reconnectException->getMessage());
+                            throw new Exception('[Litebase Client Error]: Failed to reconnect after connection loss: ' . $reconnectException->getMessage());
                         }
                     }
                 }
@@ -565,7 +589,7 @@ class Connection
         $chunkSize = dechex(strlen($message));
 
         $n = $this->socket ?
-            fwrite($this->socket, $chunkSize."\r\n".$message."\r\n") :
+            fwrite($this->socket, $chunkSize . "\r\n" . $message . "\r\n") :
             false;
 
         if ($n === false) {
