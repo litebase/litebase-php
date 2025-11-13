@@ -47,15 +47,7 @@ class LitebaseClient
      */
     public function __construct(
         protected Configuration $configuration,
-    ) {
-        if (!$this->configuration->getDatabase()) {
-            throw new Exception('[Litebase Client Error] Database name must be set in the configuration.');
-        }
-
-        if (!$this->configuration->getBranch()) {
-            throw new Exception('[Litebase Client Error] Branch name must be set in the configuration.');
-        }
-    }
+    ) {}
 
     /**
      * Begin a transaction.
