@@ -56,6 +56,7 @@ class Connection
         if ($host === false || $host === null) {
             throw new Exception('[Litebase Client Error]: Invalid URL provided');
         }
+
         $this->host = $host;
 
         $this->port = parse_url($this->url, PHP_URL_PORT) ?: 80;

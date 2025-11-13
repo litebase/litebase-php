@@ -23,6 +23,12 @@ class HttpStreamingTransport implements TransportInterface
 
     public function send(Query $query): ?QueryResult
     {
+        if (empty($this->config->getDatabase()) || empty($this->config->getBranch())) {
+            throw new LitebaseConnectionException(
+                message: '[Litebase Client Error] Database and Branch names must be set for the streaming transport',
+            );
+        }
+
         $path = sprintf(
             'v1/databases/%s/branches/%s/query/stream',
             $this->config->getDatabase(),
@@ -43,38 +49,34 @@ class HttpStreamingTransport implements TransportInterface
                 ? sprintf('https://%s/%s', $this->config->getHost(), $path)
                 : sprintf('http://%s:%d/%s', $this->config->getHost(), $this->config->getPort(), $path);
 
-            if (! empty($this->config->getUsername()) || ! (empty($this->config->getPassword()))) {
-                $headers['Authorization'] = 'Basic ' . base64_encode($this->config->getUsername() . ':' . $this->config->getPassword());
-            }
-
-            if (! empty($this->config->getAccessToken())) {
-                $headers['Authorization'] = 'Bearer ' . $this->config->getAccessToken();
-            }
-
-            if (! empty($this->config->getAccessKeyId())) {
-                // Use the streaming payload marker for chunked signature validation
-                $token = $this->getToken(
-                    accessKeyID: $this->config->getAccessKeyId(),
-                    accessKeySecret: $this->config->getAccessKeySecret(),
-                    method: 'POST',
-                    path: $path,
-                    headers: $headers,
-                    data: 'STREAMING-LITEBASE-HMAC-SHA256-PAYLOAD',
+            if (empty($this->config->getAccessKeyId())) {
+                throw new LitebaseConnectionException(
+                    message: '[Litebase Client Error] An Access key is required for the streaming transport',
                 );
+            }
 
-                $headers['Authorization'] = sprintf('Litebase-HMAC-SHA256 %s', $token);
+            // Use the streaming payload marker for chunked signature validation
+            $token = $this->getToken(
+                accessKeyID: $this->config->getAccessKeyId(),
+                accessKeySecret: $this->config->getAccessKeySecret(),
+                method: 'POST',
+                path: $path,
+                headers: $headers,
+                data: 'STREAMING-LITEBASE-HMAC-SHA256-PAYLOAD',
+            );
 
-                // Extract the seed signature from the token for chunk signing
-                $seedSignature = ChunkedSignatureSigner::extractSignatureFromToken($token);
+            $headers['Authorization'] = sprintf('Litebase-HMAC-SHA256 %s', $token);
 
-                if ($seedSignature !== null) {
-                    // Create the chunked signature signer with the seed signature
-                    $this->chunkedSigner = new ChunkedSignatureSigner(
-                        $this->config->getAccessKeySecret(),
-                        $headers['X-Litebase-Date'],
-                        $seedSignature
-                    );
-                }
+            // Extract the seed signature from the token for chunk signing
+            $seedSignature = ChunkedSignatureSigner::extractSignatureFromToken($token);
+
+            if ($seedSignature !== null) {
+                // Create the chunked signature signer with the seed signature
+                $this->chunkedSigner = new ChunkedSignatureSigner(
+                    $this->config->getAccessKeySecret(),
+                    $headers['X-Litebase-Date'],
+                    $seedSignature
+                );
             }
 
             $this->connection = new Connection($url, $headers, $this->chunkedSigner);

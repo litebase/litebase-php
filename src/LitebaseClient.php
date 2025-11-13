@@ -47,7 +47,15 @@ class LitebaseClient
      */
     public function __construct(
         protected Configuration $configuration,
-    ) {}
+    ) {
+        if (!$this->configuration->getDatabase()) {
+            throw new Exception('[Litebase Client Error] Database name must be set in the configuration.');
+        }
+
+        if (!$this->configuration->getBranch()) {
+            throw new Exception('[Litebase Client Error] Branch name must be set in the configuration.');
+        }
+    }
 
     /**
      * Begin a transaction.
@@ -220,7 +228,7 @@ class LitebaseClient
                 $this->transport = new HttpStreamingTransport($this->configuration);
                 break;
             default:
-                throw new Exception('Invalid transport type: '.$transportType);
+                throw new Exception('Invalid transport type: ' . $transportType);
         }
 
         return $this;

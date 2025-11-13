@@ -8,7 +8,7 @@ namespace Litebase;
  */
 class ChunkedSignatureSigner
 {
-    protected string $accessKeySecret;
+    protected ?string $accessKeySecret;
 
     protected string $date;
 
@@ -16,12 +16,8 @@ class ChunkedSignatureSigner
 
     /**
      * Create a new ChunkedSignatureSigner instance.
-     *
-     * @param  string  $accessKeySecret  The access key secret for signing
-     * @param  string  $date  The date timestamp used in the initial request
-     * @param  string  $seedSignature  The signature from the initial HTTP request
      */
-    public function __construct(string $accessKeySecret, string $date, string $seedSignature)
+    public function __construct(?string $accessKeySecret, string $date, string $seedSignature)
     {
         $this->accessKeySecret = $accessKeySecret;
         $this->date = $date;
@@ -40,9 +36,6 @@ class ChunkedSignatureSigner
      *  4. Sign: signature = HMAC-SHA256(serviceKey, stringToSign)
      *
      * The signature chains ensure chunks are sent in the correct order and prevents tampering.
-     *
-     * @param  string  $chunkData  The raw chunk data to sign
-     * @return string The hex-encoded signature
      */
     public function signChunk(string $chunkData): string
     {
@@ -54,7 +47,7 @@ class ChunkedSignatureSigner
         $stringToSign = $this->previousSignature . $chunkHash;
 
         // Create the signing key chain (same as in request signature validation)
-        $dateKey = hash_hmac('sha256', $this->date, $this->accessKeySecret);
+        $dateKey = hash_hmac('sha256', $this->date, $this->accessKeySecret ?? '');
         $serviceKey = hash_hmac('sha256', 'litebase_request', $dateKey);
 
         // Sign the chunk
