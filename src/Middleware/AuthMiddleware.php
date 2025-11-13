@@ -46,16 +46,13 @@ class AuthMiddleware
             contentLength: strlen($body)
         );
 
-        $decodedBody = json_decode($body, true);
-        $data = is_array($decodedBody) ? $decodedBody : null;
-
         $token = $this->getToken(
             accessKeyID: $this->config->getAccessKeyId(),
             accessKeySecret: $this->config->getAccessKeySecret(),
             method: $request->getMethod(),
             path: $request->getUri()->getPath(),
             headers: $headers,
-            data: $data,
+            data: $body,
         );
 
         // Add signed headers to request

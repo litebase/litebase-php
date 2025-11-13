@@ -220,7 +220,7 @@ class LitebaseClient
                 $this->transport = new HttpStreamingTransport($this->configuration);
                 break;
             default:
-                throw new Exception('Invalid transport type: '.$transportType);
+                throw new Exception('Invalid transport type: ' . $transportType);
         }
 
         return $this;

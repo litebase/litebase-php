@@ -9,9 +9,9 @@ use Litebase\OpenAPI\Configuration as BaseConfiguration;
  */
 class Configuration extends BaseConfiguration
 {
-    protected string $accessKeyId = '';
+    protected ?string $accessKeyId;
 
-    protected string $accessKeySecret = '';
+    protected ?string $accessKeySecret;
 
     protected ?string $database = '';
 
@@ -24,7 +24,7 @@ class Configuration extends BaseConfiguration
      */
     public function getAccessKeyId(): string
     {
-        return $this->accessKeyId;
+        return $this->accessKeyId ?? '';
     }
 
     /**
@@ -32,7 +32,7 @@ class Configuration extends BaseConfiguration
      */
     public function getAccessKeySecret(): string
     {
-        return $this->accessKeySecret;
+        return $this->accessKeySecret ?? '';
     }
 
     /**
@@ -70,7 +70,7 @@ class Configuration extends BaseConfiguration
     /**
      * Set access key credentials for HMAC-SHA256 authentication
      */
-    public function setAccessKey(string $accessKeyId, string $accessKeySecret): self
+    public function setAccessKey(?string $accessKeyId, ?string $accessKeySecret): self
     {
         $this->accessKeyId = $accessKeyId;
         $this->accessKeySecret = $accessKeySecret;
