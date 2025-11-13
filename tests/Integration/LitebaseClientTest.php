@@ -27,7 +27,7 @@ beforeAll(function () use ($client) {
     try {
         $response = $client->clusterStatus()->listClusterStatuses();
     } catch (\Exception $e) {
-        throw new \RuntimeException('Failed to connect to Litebase server for integration tests: ' . $e->getMessage());
+        throw new \RuntimeException('Failed to connect to Litebase server for integration tests: '.$e->getMessage());
     }
 
     if ($response->getStatus() !== 'success') {
@@ -46,7 +46,7 @@ describe('LitebaseClient', function () use ($client) {
                 'name' => 'test',
             ]));
 
-        if (!$databaseResponse instanceof \Litebase\OpenAPI\Model\CreateDatabase200Response) {
+        if (! $databaseResponse instanceof \Litebase\OpenAPI\Model\CreateDatabase200Response) {
             throw new \RuntimeException('Invalid response when creating database for integration tests.');
         }
 
@@ -63,7 +63,7 @@ describe('LitebaseClient', function () use ($client) {
             ])
         );
 
-        if (!$response instanceof \Litebase\OpenAPI\Model\CreateAccessKey201Response) {
+        if (! $response instanceof \Litebase\OpenAPI\Model\CreateAccessKey201Response) {
             throw new \RuntimeException('Invalid response when creating access key for integration tests.');
         }
 
@@ -88,7 +88,7 @@ describe('LitebaseClient', function () use ($client) {
 
         // Create a table
         $result = $litebaseClient->exec([
-            'statement' => 'CREATE TABLE IF NOT EXISTS lqtp_test (id INTEGER PRIMARY KEY AUTOINCREMENT, test_value INTEGER)'
+            'statement' => 'CREATE TABLE IF NOT EXISTS lqtp_test (id INTEGER PRIMARY KEY AUTOINCREMENT, test_value INTEGER)',
         ]);
 
         expect($result?->errorMessage)->toBeNull();
@@ -99,8 +99,8 @@ describe('LitebaseClient', function () use ($client) {
             'parameters' => [
                 [
                     'type' => 'INTEGER',
-                    'value' => 42
-                ]
+                    'value' => 42,
+                ],
             ],
         ]);
 
@@ -112,8 +112,8 @@ describe('LitebaseClient', function () use ($client) {
             'parameters' => [
                 [
                     'type' => 'INTEGER',
-                    'value' => 1
-                ]
+                    'value' => 1,
+                ],
             ],
         ]);
 

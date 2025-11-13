@@ -23,7 +23,7 @@ class RequestSigner
         ksort($headers);
         $headers = array_filter(
             $headers,
-            fn($value, $key) => in_array($key, ['content-type', 'host', 'x-litebase-date']),
+            fn ($value, $key) => in_array($key, ['content-type', 'host', 'x-litebase-date']),
             ARRAY_FILTER_USE_BOTH
         );
 
@@ -39,7 +39,7 @@ class RequestSigner
 
         $requestString = implode('', [
             $method,
-            '/' . ltrim($path, '/'),
+            '/'.ltrim($path, '/'),
             json_encode($headers, JSON_UNESCAPED_SLASHES),
             json_encode((empty($queryParams)) ? (object) [] : $queryParams, JSON_UNESCAPED_SLASHES),
             $bodyHash,
