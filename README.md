@@ -56,15 +56,17 @@ Please see [CONTRIBUTING](https://github.com/litebase/litebase-php?tab=contribut
 
 ### Testing
 
-You can run the tests with:
+You can run the tests:
+
 ``` bash
 composer test
 ```
 
-Integration test requires a running Litebase instance. You can start one using Docker:
+*Integration tests require a running Litebase Server. When running integration tests, a server will be automatically started using Docker.*
+You can run the tests with:
 
-```bash
-docker run -d -p 8888:8888 --name litebase litebase/litebase:latest
+``` bash
+composer test-integration
 ```
 
 ## Code of Conduct
@@ -77,4 +79,4 @@ All security related issues should be reported directly to [security@litebase.co
 
 ## License
 
-The MIT License (MIT). Please see [License File](LICENSE.md) for more information.
+Litebase is [open-sourced](https://opensource.org/) software licensed under the [MIT License](LICENSE.md).
