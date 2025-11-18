@@ -1,6 +1,6 @@
 <?php
 
-uses(\Litebase\Tests\TestCase::class);
+uses(\Tests\TestCase::class);
 
 use Litebase\ColumnType;
 use Litebase\LitebaseClient;

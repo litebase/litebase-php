@@ -1,15 +1,31 @@
 <?php
 
-uses(\Litebase\Tests\TestCase::class);
+namespace Tests\Unit;
+
+uses(\Tests\TestCase::class);
 
 use Litebase\ColumnType;
+use Litebase\Configuration;
 use Litebase\LitebaseClient;
 use Litebase\LitebasePDO;
 use Litebase\LitebaseStatement;
 use Litebase\QueryResult;
+use Mockery;
 
 test('it can be created', function () {
-    expect(new LitebasePDO(['access_key_id' => 'key', 'access_key_secret' => 'secret', 'url' => 'http://litebase.test']))->toBeInstanceOf(LitebasePDO::class);
+    $pdo = new LitebasePDO(
+        new LitebaseClient(
+            Configuration::create([
+                'host' => 'localhost',
+                'port' => '8888',
+                'username' => 'root',
+                'password' => 'password',
+                'database' => 'test/main',
+            ])
+        )
+    );
+
+    expect($pdo)->toBeInstanceOf(LitebasePDO::class);
 });
 
 test('it can begin a transaction', function () {
@@ -120,7 +136,5 @@ test('the client can be set', function () {
 
 function createPDO(LitebaseClient $client): LitebasePDO
 {
-    $pdo = new LitebasePDO(['access_key_id' => 'key', 'access_key_secret' => 'secret', 'url' => 'http://litebase.test']);
-
-    return $pdo->setClient($client);
+    return new LitebasePDO($client);
 }

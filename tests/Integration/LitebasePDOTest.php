@@ -2,10 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Litebase\Tests\Integration;
+namespace Tests\Integration;
 
 use Litebase\ApiClient;
 use Litebase\Configuration;
+use Litebase\LitebaseClient;
 use Litebase\LitebasePDO;
 use Litebase\OpenAPI\Model\DatabaseStoreRequest;
 use PDO;
@@ -28,7 +29,7 @@ beforeAll(function () {
             'name' => 'test',
         ]));
     } catch (\Exception $e) {
-        throw new \RuntimeException('Failed to connect to Litebase server for integration tests: '.$e->getMessage());
+        throw new \RuntimeException('Failed to connect to Litebase server for integration tests: ' . $e->getMessage());
     }
 });
 
@@ -37,13 +38,17 @@ afterAll(function () {
 });
 
 describe('LitebasePDO', function () {
-    $pdo = new LitebasePDO([
-        'host' => 'localhost',
-        'port' => '8888',
-        'username' => 'root',
-        'password' => 'password',
-        'database' => 'test/main',
-    ]);
+    $client = new LitebaseClient(
+        Configuration::create([
+            'host' => 'localhost',
+            'port' => '8888',
+            'username' => 'root',
+            'password' => 'password',
+            'database' => 'test/main',
+        ])
+    );
+
+    $pdo = new LitebasePDO($client);
 
     test('can perform a transaction', function () use ($pdo) {
         $result = $pdo->beginTransaction();

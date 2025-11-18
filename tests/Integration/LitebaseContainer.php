@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Litebase\Tests\Integration;
+namespace Tests\Integration;
 
 class LitebaseContainer
 {

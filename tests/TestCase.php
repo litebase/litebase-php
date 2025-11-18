@@ -1,6 +1,6 @@
 <?php
 
-namespace Litebase\Tests;
+namespace Tests;
 
 use PHPUnit\Framework\TestCase as BaseTestCase;
 

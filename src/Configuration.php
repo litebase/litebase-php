@@ -20,6 +20,43 @@ class Configuration extends BaseConfiguration
     protected ?string $port = null;
 
     /**
+     * Create a new Configuration instance from an array of settings
+     *
+     * @param  array<string, string|null>  $config
+     */
+    public static function create(array $config = []): self
+    {
+        $configuration = new self();
+
+        $host = $config['host'] ?? '';
+        $port = $config['port'] ?? null;
+        $database = $config['database'] ?? null;
+        $transport = $config['transport'] ?? 'http';
+
+        $configuration = new Configuration;
+
+        $configuration
+            ->setHost($host)
+            ->setPort($port)
+            ->setDatabase($database);
+
+        if (isset($config['access_key_id'], $config['access_key_secret'])) {
+            $configuration->setAccessKey($config['access_key_id'], $config['access_key_secret']);
+        }
+
+        if (isset($config['token'])) {
+            $configuration->setAccessToken($config['token']);
+        }
+
+        if (isset($config['username'], $config['password'])) {
+            $configuration->setUsername($config['username'])
+                ->setPassword($config['password']);
+        }
+
+        return $configuration;
+    }
+
+    /**
      * Get the access key ID
      */
     public function getAccessKeyId(): string

@@ -9,45 +9,9 @@ use PDOStatement;
 class LitebasePDO extends Sqlite
 {
     /**
-     * The Litebase client instance.
-     */
-    protected LitebaseClient $client;
-
-    /**
      * Create a new instance of the PDO connection.
-     *
-     * @param  array<string, string|null>  $config
      */
-    public function __construct(array $config)
-    {
-        $host = $config['host'] ?? '';
-        $port = $config['port'] ?? null;
-        $database = $config['database'] ?? null;
-        $transport = $config['transport'] ?? 'http';
-
-        $configuration = new Configuration;
-
-        $configuration
-            ->setHost($host)
-            ->setPort($port)
-            ->setDatabase($database);
-
-        if (isset($config['access_key_id'], $config['access_key_secret'])) {
-            $configuration->setAccessKey($config['access_key_id'], $config['access_key_secret']);
-        }
-
-        if (isset($config['token'])) {
-            $configuration->setAccessToken($config['token']);
-        }
-
-        if (isset($config['username'], $config['password'])) {
-            $configuration->setUsername($config['username'])
-                ->setPassword($config['password']);
-        }
-
-        $this->client = new LitebaseClient($configuration)
-            ->withTransport($transport);
-    }
+    public function __construct(protected LitebaseClient $client) {}
 
     /**
      * Being a database transaction.
@@ -162,15 +126,5 @@ class LitebasePDO extends Sqlite
     public function rollBack(): bool
     {
         return $this->client->rollback();
-    }
-
-    /**
-     * Set the Litebase client instance.
-     */
-    public function setClient(LitebaseClient $client): self
-    {
-        $this->client = $client;
-
-        return $this;
     }
 }
