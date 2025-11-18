@@ -84,7 +84,7 @@ describe('LitebaseClient', function () use ($client) {
 
         $litebaseClient = new LitebaseClient($configuration);
 
-        $litebaseClient = $litebaseClient->withTransport('http');
+        $litebaseClient = $litebaseClient->withTransport('http_streaming');
 
         // Create a table
         $result = $litebaseClient->exec([

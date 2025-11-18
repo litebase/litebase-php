@@ -7,7 +7,7 @@ namespace Litebase;
 use Litebase\OpenAPI\Configuration as BaseConfiguration;
 
 /**
- * Extended configuration class with HMAC-SHA256 authentication support
+ * Extended configuration class with HMAC-SHA256 authentication support.
  */
 class Configuration extends BaseConfiguration
 {
@@ -21,8 +21,10 @@ class Configuration extends BaseConfiguration
 
     protected ?string $port = null;
 
+    protected ?string $transport = null;
+
     /**
-     * Create a new Configuration instance from an array of settings
+     * Create a new Configuration instance from an array of settings.
      *
      * @param  array<string, string|null>  $config
      */
@@ -33,9 +35,7 @@ class Configuration extends BaseConfiguration
         $host = $config['host'] ?? '';
         $port = $config['port'] ?? null;
         $database = $config['database'] ?? null;
-        $transport = $config['transport'] ?? 'http';
-
-        $configuration = new Configuration;
+        $configuration->transport = $config['transport'] ?? 'http';
 
         $configuration
             ->setHost($host)
@@ -59,7 +59,7 @@ class Configuration extends BaseConfiguration
     }
 
     /**
-     * Get the access key ID
+     * Get the access key ID.
      */
     public function getAccessKeyId(): string
     {
@@ -67,7 +67,7 @@ class Configuration extends BaseConfiguration
     }
 
     /**
-     * Get the access key secret
+     * Get the access key secret.
      */
     public function getAccessKeySecret(): string
     {
@@ -75,7 +75,7 @@ class Configuration extends BaseConfiguration
     }
 
     /**
-     * Get the database name
+     * Get the database name.
      */
     public function getDatabase(): ?string
     {
@@ -83,7 +83,7 @@ class Configuration extends BaseConfiguration
     }
 
     /**
-     * Get the branch name
+     * Get the branch name.
      */
     public function getBranch(): ?string
     {
@@ -91,7 +91,7 @@ class Configuration extends BaseConfiguration
     }
 
     /**
-     * Check if access key authentication is configured
+     * Check if access key authentication is configured.
      */
     public function hasAccessKey(): bool
     {
@@ -99,7 +99,7 @@ class Configuration extends BaseConfiguration
     }
 
     /**
-     * Get the port
+     * Get the port.
      */
     public function getPort(): ?string
     {
@@ -107,7 +107,15 @@ class Configuration extends BaseConfiguration
     }
 
     /**
-     * Set access key credentials for HMAC-SHA256 authentication
+     * Get the transport type.
+     */
+    public function getTransport(): ?string
+    {
+        return $this->transport;
+    }
+
+    /**
+     * Set access key credentials for HMAC-SHA256 authentication.
      */
     public function setAccessKey(?string $accessKeyId, ?string $accessKeySecret): self
     {
@@ -118,7 +126,7 @@ class Configuration extends BaseConfiguration
     }
 
     /**
-     * Set the database name (and optional branch) in the format "database/branch"
+     * Set the database name (and optional branch) in the format "database/branch".
      */
     public function setDatabase(?string $database): self
     {
@@ -130,11 +138,21 @@ class Configuration extends BaseConfiguration
     }
 
     /**
-     * Set the port
+     * Set the port.
      */
     public function setPort(?string $port): self
     {
         $this->port = $port;
+
+        return $this;
+    }
+
+    /**
+     * Set the transport type.
+     */
+    public function setTransport(?string $transport): self
+    {
+        $this->transport = $transport;
 
         return $this;
     }

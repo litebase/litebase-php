@@ -524,7 +524,7 @@ class Connection
             /** @var array<int, array<int, bool|float|int|string|null>> $rows */
             $rows = isset($response['rows']) && is_array($response['rows']) ? $response['rows'] : [];
 
-            $transactionIDValue = $response['transactionID'] ?? '';
+            $transactionIDValue = $response['transactionId'] ?? '';
             $transactionID = is_scalar($transactionIDValue) ? (string) $transactionIDValue : '';
 
             $errorMessageValue = $response['errorMessage'] ?? null;
