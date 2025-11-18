@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Litebase;
 
 use Exception;
@@ -47,7 +49,9 @@ class LitebaseClient
      */
     public function __construct(
         protected Configuration $configuration,
-    ) {}
+    ) {
+        $this->withTransport($configuration->getTransport() ?? 'http');
+    }
 
     /**
      * Begin a transaction.
@@ -115,9 +119,14 @@ class LitebaseClient
         }
     }
 
+    /**
+     * Return the error code.
+     */
     public function errorCode(): ?string
     {
-        return (string) $this->errorInfo()[0];
+        $errorInfo = $this->errorInfo();
+
+        return isset($errorInfo[0]) ? (string) $errorInfo[0] : null;
     }
 
     /**
@@ -183,6 +192,9 @@ class LitebaseClient
         return $this->lastInsertId;
     }
 
+    /**
+     * Prepare a statement for execution.
+     */
     public function prepare(string $statement): LitebaseStatement
     {
         return new LitebaseStatement($this, $statement);
@@ -210,6 +222,9 @@ class LitebaseClient
         return true;
     }
 
+    /**
+     * Set the transport type for the client.
+     */
     public function withTransport(string $transportType): LitebaseClient
     {
         switch ($transportType) {
@@ -220,12 +235,15 @@ class LitebaseClient
                 $this->transport = new HttpStreamingTransport($this->configuration);
                 break;
             default:
-                throw new Exception('Invalid transport type: '.$transportType);
+                throw new Exception('Invalid transport type: ' . $transportType);
         }
 
         return $this;
     }
 
+    /**
+     * Set the HTTP transport with a custom HTTP client.
+     */
     public function withHttpTransport(?Client $httpClient): LitebaseClient
     {
         $transport = new HttpTransport($this->configuration, $httpClient);
@@ -235,6 +253,9 @@ class LitebaseClient
         return $this;
     }
 
+    /**
+     * Set the access key authentication for the client.
+     */
     public function withAccessKey(string $accessKeyID, string $accessKeySecret): LitebaseClient
     {
         $this->configuration->setAccessKey($accessKeyID, $accessKeySecret);
@@ -242,6 +263,9 @@ class LitebaseClient
         return $this;
     }
 
+    /**
+     * Set the basic authentication for the client.
+     */
     public function withBasicAuth(string $username, string $password): LitebaseClient
     {
         $this->configuration->setUsername($username);

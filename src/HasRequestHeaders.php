@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Litebase;
 
 trait HasRequestHeaders
@@ -11,10 +13,8 @@ trait HasRequestHeaders
     protected function requestHeaders(string $host, ?string $port, int $contentLength, array $headers = []): array
     {
         // Include port if non standard port is used
-        if ($port !== null && ! in_array($port, [80, 443])) {
-            $host = sprintf('%s:%d', $host, $port);
-        } else {
-            $host = $host;
+        if ($port !== null && ! in_array($port, ['80', '443'], true)) {
+            $host = sprintf('%s:%s', $host, $port);
         }
 
         return [

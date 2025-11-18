@@ -1,6 +1,8 @@
 <?php
 
-namespace Litebase\Tests\Unit;
+declare(strict_types=1);
+
+namespace Tests\Unit;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Handler\MockHandler;

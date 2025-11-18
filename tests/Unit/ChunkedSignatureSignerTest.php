@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Litebase\Tests;
+namespace Tests\Unit;
 
 use Litebase\ChunkedSignatureSigner;
 

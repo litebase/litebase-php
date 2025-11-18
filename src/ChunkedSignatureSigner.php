@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Litebase;
 
 /**
@@ -44,7 +46,7 @@ class ChunkedSignatureSigner
 
         // Create the string to sign for this chunk
         // Format: previousSignature + chunkHash
-        $stringToSign = $this->previousSignature.$chunkHash;
+        $stringToSign = $this->previousSignature . $chunkHash;
 
         // Create the signing key chain (same as in request signature validation)
         $dateKey = hash_hmac('sha256', $this->date, $this->accessKeySecret ?? '');

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Litebase\Tests\Integration;
+namespace Tests\Integration;
 
 use Litebase\ApiClient;
 
@@ -250,13 +250,13 @@ class ApiClientTestRunner
                         $method = "get$pascalCasePart";
 
                         if (! is_object($currentObject) || ! method_exists($currentObject, $method)) {
-                            throw new \Exception("Method {$method} does not exist on ".(is_object($currentObject) ? get_class($currentObject) : gettype($currentObject)));
+                            throw new \Exception("Method {$method} does not exist on " . (is_object($currentObject) ? get_class($currentObject) : gettype($currentObject)));
                         }
 
                         $array = $currentObject->{$method}();
 
                         if (! is_array($array)) {
-                            throw new \Exception("Expected array from {$method}(), got ".gettype($array));
+                            throw new \Exception("Expected array from {$method}(), got " . gettype($array));
                         }
 
                         if (! isset($array[$index])) {
@@ -284,13 +284,13 @@ class ApiClientTestRunner
                             $snakeCaseKey = strtolower((string) preg_replace('/(?<!^)[A-Z]/', '_$0', $segment));
 
                             if (! property_exists($currentObject, $snakeCaseKey) && ! property_exists($currentObject, $segment)) {
-                                throw new \Exception("Property '{$segment}' (or '{$snakeCaseKey}') does not exist on ".get_class($currentObject));
+                                throw new \Exception("Property '{$segment}' (or '{$snakeCaseKey}') does not exist on " . get_class($currentObject));
                             }
 
                             $currentObject = $currentObject->{$snakeCaseKey} ?? $currentObject->{$segment};
                         }
                     } else {
-                        throw new \Exception("Cannot access property '{$segment}' on ".gettype($currentObject));
+                        throw new \Exception("Cannot access property '{$segment}' on " . gettype($currentObject));
                     }
                 }
             }
@@ -422,7 +422,7 @@ class ApiClientTestRunner
                 if (array_key_exists($key, $captured)) {
                     $params[] = $captured[$key];
                 } else {
-                    throw new \Exception("Captured parameter '".$key."' not found for operation '{$request->operation}'");
+                    throw new \Exception("Captured parameter '" . $key . "' not found for operation '{$request->operation}'");
                 }
             }
         }
