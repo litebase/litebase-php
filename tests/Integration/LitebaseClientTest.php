@@ -27,7 +27,7 @@ beforeAll(function () use ($client) {
     try {
         $response = $client->clusterStatus()->listClusterStatuses();
     } catch (\Exception $e) {
-        throw new \RuntimeException('Failed to connect to Litebase server for integration tests: ' . $e->getMessage());
+        throw new \RuntimeException('Failed to connect to Litebase server for integration tests: '.$e->getMessage());
     }
 
     if ($response->getStatus() !== 'success') {

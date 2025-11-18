@@ -30,7 +30,7 @@ class Configuration extends BaseConfiguration
      */
     public static function create(array $config = []): self
     {
-        $configuration = new self();
+        $configuration = new self;
 
         $host = $config['host'] ?? '';
         $port = $config['port'] ?? null;

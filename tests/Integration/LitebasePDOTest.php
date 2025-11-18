@@ -29,7 +29,7 @@ beforeAll(function () {
             'name' => 'test',
         ]));
     } catch (\Exception $e) {
-        throw new \RuntimeException('Failed to connect to Litebase server for integration tests: ' . $e->getMessage());
+        throw new \RuntimeException('Failed to connect to Litebase server for integration tests: '.$e->getMessage());
     }
 });
 
