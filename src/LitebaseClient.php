@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Litebase;
 
 use Exception;
@@ -220,7 +222,7 @@ class LitebaseClient
                 $this->transport = new HttpStreamingTransport($this->configuration);
                 break;
             default:
-                throw new Exception('Invalid transport type: '.$transportType);
+                throw new Exception('Invalid transport type: ' . $transportType);
         }
 
         return $this;

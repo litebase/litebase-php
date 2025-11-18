@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Litebase;
 
 class QueryRequestEncoder
@@ -9,7 +11,7 @@ class QueryRequestEncoder
         $binaryData = '';
         $id = $query->id;
         $idLength = pack('V', strlen($id));
-        $binaryData .= $idLength.$id;
+        $binaryData .= $idLength . $id;
 
         $transactionIdLength = pack('V', strlen($query->transactionId ?? ''));
         $binaryData .= $transactionIdLength;
@@ -20,7 +22,7 @@ class QueryRequestEncoder
 
         $statement = $query->statement;
         $statementLength = pack('V', strlen($statement));
-        $binaryData .= $statementLength.$statement;
+        $binaryData .= $statementLength . $statement;
 
         $parametersBinary = '';
 
@@ -72,13 +74,13 @@ class QueryRequestEncoder
             $parameterType = pack('C', $parameterType);
 
             // Parameter value with length prefix (4 bytes little-endian + value)
-            $parameterValueWithLength = pack('V', $parameterValueLength).$parameterValue;
+            $parameterValueWithLength = pack('V', $parameterValueLength) . $parameterValue;
 
-            $parametersBinary .= $parameterType.$parameterValueWithLength;
+            $parametersBinary .= $parameterType . $parameterValueWithLength;
         }
 
         $parametersBinaryLength = pack('V', strlen($parametersBinary));
-        $binaryData .= $parametersBinaryLength.$parametersBinary;
+        $binaryData .= $parametersBinaryLength . $parametersBinary;
 
         return $binaryData;
     }
