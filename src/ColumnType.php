@@ -11,4 +11,5 @@ enum ColumnType: int
     case INTEGER = 1;
     case NULL = 5;
     case TEXT = 3;
+    case UNKNOWN = 0;
 }
