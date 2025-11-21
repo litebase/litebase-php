@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Litebase;
 
+use Composer\InstalledVersions;
 use PDO;
 use PDO\Sqlite;
 use PDOStatement;
@@ -68,8 +69,8 @@ class LitebasePDO extends Sqlite
     public function getAttribute(int $attribute): mixed
     {
         return match ($attribute) {
-            PDO::ATTR_SERVER_VERSION => '0.0.0',
-            PDO::ATTR_CLIENT_VERSION => '0.0.0',
+            PDO::ATTR_SERVER_VERSION => $this->getClientVersion(),
+            PDO::ATTR_CLIENT_VERSION => $this->getClientVersion(),
             default => null,
         };
     }
@@ -80,6 +81,14 @@ class LitebasePDO extends Sqlite
     public function getClient(): LitebaseClient
     {
         return $this->client;
+    }
+
+    /**
+     * Return the client version.
+     */
+    protected function getClientVersion(): string
+    {
+        return InstalledVersions::getPrettyVersion('litebase/litebase-php') ?? '0.0.0';
     }
 
     /**
