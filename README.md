@@ -1,4 +1,4 @@
-# Litebase PHP SDK
+# Litebase PHP SDK (Alpha)
 
 [![tests](https://github.com/litebase/litebase-php/actions/workflows/tests.yml/badge.svg)](https://github.com/litebase/litebase-php/actions/workflows/tests.yml)
 
