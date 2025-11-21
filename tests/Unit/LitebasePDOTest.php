@@ -13,6 +13,7 @@ use Litebase\LitebasePDO;
 use Litebase\LitebaseStatement;
 use Litebase\QueryResult;
 use Mockery;
+use PDO;
 
 test('it can be created', function () {
     $pdo = new LitebasePDO(
@@ -134,6 +135,18 @@ test('the client can be set', function () {
     $client = Mockery::mock(LitebaseClient::class);
     $pdo = createPDO($client);
     expect($pdo->getClient())->toBeInstanceOf(LitebaseClient::class);
+});
+
+test('it returns the client version from composer', function () {
+    $client = Mockery::mock(LitebaseClient::class);
+    $pdo = createPDO($client);
+
+    $clientVersion = $pdo->getAttribute(PDO::ATTR_CLIENT_VERSION);
+    $serverVersion = $pdo->getAttribute(PDO::ATTR_SERVER_VERSION);
+
+    expect($clientVersion)->toBeString();
+    expect($clientVersion)->not->toBeEmpty();
+    expect($serverVersion)->toEqual($clientVersion);
 });
 
 function createPDO(LitebaseClient $client): LitebasePDO
