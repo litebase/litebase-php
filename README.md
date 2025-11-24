@@ -8,7 +8,7 @@ A PHP SDK for interacting with [Litebase](https://github.com/litebase/litebase),
 
 You can install the package via composer:
 
-```bash
+```sh
 composer require litebase/litebase-php
 ```
 
@@ -58,14 +58,14 @@ Please see [CONTRIBUTING](https://github.com/litebase/litebase-php?tab=contribut
 
 You can run the tests:
 
-``` bash
+``` sh
 composer test
 ```
 
 *Integration tests require a running Litebase Server. When running integration tests, a server will be automatically started using Docker.*
 You can run the tests with:
 
-``` bash
+``` sh
 composer test-integration
 ```
 
