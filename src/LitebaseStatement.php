@@ -60,29 +60,29 @@ class LitebaseStatement extends PDOStatement implements IteratorAggregate
      */
     public function bindValue(int|string $parameter, mixed $value, int $data_type = PDO::PARAM_STR): bool
     {
-        $type = 'NULL';
+        $type = ColumnType::TEXT->name;
 
         switch ($data_type) {
             case PDO::PARAM_BOOL:
             case PDO::PARAM_INT:
-                $type = 'INTEGER';
+                $type = ColumnType::INTEGER->name;
                 break;
             case PDO::PARAM_STR:
-                $type = 'TEXT';
+                // Auto-detect float type when PDO::PARAM_STR is passed
+                if (is_float($value)) {
+                    $type = ColumnType::FLOAT->name;
+                } else {
+                    $type = ColumnType::TEXT->name;
+                }
                 break;
             case PDO::PARAM_NULL:
-                $type = 'NULL';
+                $type = ColumnType::NULL->name;
                 break;
-                // TODO: Test BLOB type
             case PDO::PARAM_LOB:
-                $type = 'BLOB';
+                $type = ColumnType::BLOB->name;
                 break;
-                // TODO: Add a case for float type
-                // case PDO::PARAM_FLOAT:
-                // $type = "REAL";
-                // break;
             default:
-                $type = 'TEXT'; // Default to TEXT if no match
+                $type = ColumnType::TEXT->name; // Default to TEXT if no match
                 break;
         }
 
@@ -164,11 +164,11 @@ class LitebaseStatement extends PDOStatement implements IteratorAggregate
             foreach ($params as $key => $value) {
                 // Determine the type based on the value
                 $type = match (true) {
-                    $value === null => 'NULL',
-                    is_int($value) => 'INTEGER',
-                    is_float($value) => 'REAL',
-                    is_bool($value) => 'INTEGER',
-                    default => 'TEXT',
+                    $value === null => ColumnType::NULL->name,
+                    is_int($value) => ColumnType::INTEGER->name,
+                    is_float($value) => ColumnType::FLOAT->name,
+                    is_bool($value) => ColumnType::INTEGER->name,
+                    default => ColumnType::TEXT->name,
                 };
 
                 $transformedParams[$key] = [
@@ -212,14 +212,14 @@ class LitebaseStatement extends PDOStatement implements IteratorAggregate
                 $columns = $this->columns ?? [];
 
                 return array_combine(
-                    array_map(fn ($col) => $col['name'], $columns),
+                    array_map(fn($col) => $col['name'], $columns),
                     $row
                 );
             }, $this->result->rows);
         }
 
-        if (isset($this->result->rowCount)) {
-            $this->rowCount = $this->result->rowCount;
+        if (isset($this->result->changes)) {
+            $this->rowCount = $this->result->changes;
         }
 
         return true;
@@ -282,6 +282,9 @@ class LitebaseStatement extends PDOStatement implements IteratorAggregate
         return $value !== false ? $row[$value] : null;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function rowCount(): int
     {
         return $this->rowCount;

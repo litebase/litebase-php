@@ -161,6 +161,12 @@ class LitebaseClient
         $parameters = [];
 
         foreach ($input['parameters'] ?? [] as $param) {
+            // Base64 encode BLOB values for HTTP transport (JSON serialization)
+            // The binary streaming transport handles raw binary data
+            if ($param['type'] === 'BLOB' && $this->transport instanceof HttpTransport) {
+                $param['value'] = base64_encode((string) $param['value']);
+            }
+
             $parameters[] = new StatementParameter($param);
         }
 
@@ -235,7 +241,7 @@ class LitebaseClient
                 $this->transport = new HttpStreamingTransport($this->configuration);
                 break;
             default:
-                throw new Exception('Invalid transport type: '.$transportType);
+                throw new Exception('Invalid transport type: ' . $transportType);
         }
 
         return $this;
