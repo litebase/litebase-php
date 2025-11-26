@@ -29,7 +29,7 @@ beforeAll(function () {
             'name' => 'test',
         ]));
     } catch (\Exception $e) {
-        throw new \RuntimeException('Failed to connect to Litebase server for integration tests: ' . $e->getMessage());
+        throw new \RuntimeException('Failed to connect to Litebase server for integration tests: '.$e->getMessage());
     }
 });
 
@@ -202,7 +202,7 @@ describe('LitebasePDO', function () {
         $row = $statement->fetch(PDO::FETCH_ASSOC);
         /** @var float $floatValue */
         $floatValue = $row['float_col'];
-        /** @var string  $blobValue */
+        /** @var string $blobValue */
         $blobValue = $row['blob_col'];
 
         expect($row)->not->toBeNull();

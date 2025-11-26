@@ -212,7 +212,7 @@ class LitebaseStatement extends PDOStatement implements IteratorAggregate
                 $columns = $this->columns ?? [];
 
                 return array_combine(
-                    array_map(fn($col) => $col['name'], $columns),
+                    array_map(fn ($col) => $col['name'], $columns),
                     $row
                 );
             }, $this->result->rows);
