@@ -1,6 +1,7 @@
 # Litebase PHP SDK (Alpha)
 
 [![tests](https://github.com/litebase/litebase-php/actions/workflows/tests.yml/badge.svg)](https://github.com/litebase/litebase-php/actions/workflows/tests.yml)
+<a href="https://github.com/litebase/litebase-php/blob/main/LICENSE.md"><img alt="GitHub License" src="https://img.shields.io/github/license/litebase/litebase-php"></a>
 
 A PHP SDK for interacting with [Litebase](https://github.com/litebase/litebase), an open source distributed database built on SQLite, distributed file systems, and object storage.
 
