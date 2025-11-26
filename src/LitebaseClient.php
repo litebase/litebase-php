@@ -161,6 +161,12 @@ class LitebaseClient
         $parameters = [];
 
         foreach ($input['parameters'] ?? [] as $param) {
+            // Base64 encode BLOB values for HTTP transport (JSON serialization)
+            // The binary streaming transport handles raw binary data
+            if (isset($param['type']) && $param['type'] === 'BLOB' && $this->transport instanceof HttpTransport) {
+                $param['value'] = base64_encode($param['value']);
+            }
+            
             $parameters[] = new StatementParameter($param);
         }
 
