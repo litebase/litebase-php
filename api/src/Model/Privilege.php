@@ -38,6 +38,10 @@ class Privilege
 
     public const DATABASE_RESTORE = 'database:restore';
 
+    public const DATABASE_EXPORT = 'database:export';
+
+    public const DATABASE_IMPORT = 'database:import';
+
     public const DATABASE_QUERY = 'database:query';
 
     public const DATABASE_ANALYZE = 'database:analyze';
@@ -128,6 +132,8 @@ class Privilege
             self::DATABASE_BRANCH_MANAGE,
             self::DATABASE_BACKUP,
             self::DATABASE_RESTORE,
+            self::DATABASE_EXPORT,
+            self::DATABASE_IMPORT,
             self::DATABASE_QUERY,
             self::DATABASE_ANALYZE,
             self::DATABASE_ATTACH,
