@@ -12,8 +12,12 @@ use Litebase\OpenAPI\API\ClusterStatusApi;
 use Litebase\OpenAPI\API\DatabaseApi;
 use Litebase\OpenAPI\API\DatabaseBackupApi;
 use Litebase\OpenAPI\API\DatabaseBranchApi;
+use Litebase\OpenAPI\API\DatabaseExportApi;
+use Litebase\OpenAPI\API\DatabaseExportPartApi;
 use Litebase\OpenAPI\API\DatabaseRestoreApi;
 use Litebase\OpenAPI\API\DatabaseSnapshotApi;
+use Litebase\OpenAPI\API\ImportApi;
+use Litebase\OpenAPI\API\ImportChunkApi;
 use Litebase\OpenAPI\API\KeyActivateApi;
 use Litebase\OpenAPI\API\KeyApi;
 use Litebase\OpenAPI\API\QueryApi;
@@ -102,6 +106,16 @@ class ApiClient
         return new DatabaseBranchApi($this->getHttpClient(), $this->config);
     }
 
+    public function databaseExport(): DatabaseExportApi
+    {
+        return new DatabaseExportApi($this->getHttpClient(), $this->config);
+    }
+
+    public function databaseExportPart(): DatabaseExportPartApi
+    {
+        return new DatabaseExportPartApi($this->getHttpClient(), $this->config);
+    }
+
     public function databaseRestore(): DatabaseRestoreApi
     {
         return new DatabaseRestoreApi($this->getHttpClient(), $this->config);
@@ -110,6 +124,16 @@ class ApiClient
     public function databaseSnapshot(): DatabaseSnapshotApi
     {
         return new DatabaseSnapshotApi($this->getHttpClient(), $this->config);
+    }
+
+    public function import(): ImportApi
+    {
+        return new ImportApi($this->getHttpClient(), $this->config);
+    }
+
+    public function importChunk(): ImportChunkApi
+    {
+        return new ImportChunkApi($this->getHttpClient(), $this->config);
     }
 
     public function key(): KeyApi
