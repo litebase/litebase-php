@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Litebase Server API
  *
@@ -29,7 +30,7 @@ use Litebase\OpenAPI\FormDataProcessor;
 use Litebase\OpenAPI\HeaderSelector;
 use Litebase\OpenAPI\ObjectSerializer;
 
-class DatabaseExportPartApi
+class DatabaseExportEndApi
 {
     /**
      * @var ClientInterface
@@ -53,7 +54,7 @@ class DatabaseExportPartApi
 
     /** @var string[] $contentTypes **/
     public const contentTypes = [
-        'getDatabaseExportPart' => [
+        'createDatabaseExportEnd' => [
             'application/json',
         ],
     ];
@@ -105,44 +106,44 @@ class DatabaseExportPartApi
     }
 
     /**
-     * Operation getDatabaseExportPart
+     * Operation createDatabaseExportEnd
      *
-     * Show details of a specific database export part
+     * Create a new database export end
      *
      * @param  string $databaseName The databaseName parameter (required)
      * @param  string $branchName The branchName parameter (required)
      * @param  string $exportId The exportId parameter (required)
-     * @param  string $rangeNumber The rangeNumber parameter (required)
-     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getDatabaseExportPart'] to see the possible values for this operation
+     * @param  object $body Database export end creation data (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['createDatabaseExportEnd'] to see the possible values for this operation
      *
      * @throws \Litebase\OpenAPI\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
      * @return object|\Litebase\OpenAPI\Model\ErrorResponse|\Litebase\OpenAPI\Model\ErrorResponse|\Litebase\OpenAPI\Model\ErrorResponse|\Litebase\OpenAPI\Model\ErrorResponse
      */
-    public function getDatabaseExportPart($databaseName, $branchName, $exportId, $rangeNumber, string $contentType = self::contentTypes['getDatabaseExportPart'][0])
+    public function createDatabaseExportEnd($databaseName, $branchName, $exportId, $body, string $contentType = self::contentTypes['createDatabaseExportEnd'][0])
     {
-        list($response) = $this->getDatabaseExportPartWithHttpInfo($databaseName, $branchName, $exportId, $rangeNumber, $contentType);
+        list($response) = $this->createDatabaseExportEndWithHttpInfo($databaseName, $branchName, $exportId, $body, $contentType);
         return $response;
     }
 
     /**
-     * Operation getDatabaseExportPartWithHttpInfo
+     * Operation createDatabaseExportEndWithHttpInfo
      *
-     * Show details of a specific database export part
+     * Create a new database export end
      *
      * @param  string $databaseName The databaseName parameter (required)
      * @param  string $branchName The branchName parameter (required)
      * @param  string $exportId The exportId parameter (required)
-     * @param  string $rangeNumber The rangeNumber parameter (required)
-     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getDatabaseExportPart'] to see the possible values for this operation
+     * @param  object $body Database export end creation data (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['createDatabaseExportEnd'] to see the possible values for this operation
      *
      * @throws \Litebase\OpenAPI\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
      * @return array of object|\Litebase\OpenAPI\Model\ErrorResponse|\Litebase\OpenAPI\Model\ErrorResponse|\Litebase\OpenAPI\Model\ErrorResponse|\Litebase\OpenAPI\Model\ErrorResponse, HTTP status code, HTTP response headers (array of strings)
      */
-    public function getDatabaseExportPartWithHttpInfo($databaseName, $branchName, $exportId, $rangeNumber, string $contentType = self::contentTypes['getDatabaseExportPart'][0])
+    public function createDatabaseExportEndWithHttpInfo($databaseName, $branchName, $exportId, $body, string $contentType = self::contentTypes['createDatabaseExportEnd'][0])
     {
-        $request = $this->getDatabaseExportPartRequest($databaseName, $branchName, $exportId, $rangeNumber, $contentType);
+        $request = $this->createDatabaseExportEndRequest($databaseName, $branchName, $exportId, $body, $contentType);
 
         try {
             $options = $this->createHttpClientOption();
@@ -167,7 +168,7 @@ class DatabaseExportPartApi
             $statusCode = $response->getStatusCode();
 
 
-            switch($statusCode) {
+            switch ($statusCode) {
                 case 200:
                     return $this->handleResponseWithDataType(
                         'object',
@@ -200,7 +201,7 @@ class DatabaseExportPartApi
                     );
             }
 
-            
+
 
             if ($statusCode < 200 || $statusCode > 299) {
                 throw new ApiException(
@@ -263,29 +264,29 @@ class DatabaseExportPartApi
                     $e->setResponseObject($data);
                     throw $e;
             }
-        
+
 
             throw $e;
         }
     }
 
     /**
-     * Operation getDatabaseExportPartAsync
+     * Operation createDatabaseExportEndAsync
      *
-     * Show details of a specific database export part
+     * Create a new database export end
      *
      * @param  string $databaseName The databaseName parameter (required)
      * @param  string $branchName The branchName parameter (required)
      * @param  string $exportId The exportId parameter (required)
-     * @param  string $rangeNumber The rangeNumber parameter (required)
-     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getDatabaseExportPart'] to see the possible values for this operation
+     * @param  object $body Database export end creation data (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['createDatabaseExportEnd'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function getDatabaseExportPartAsync($databaseName, $branchName, $exportId, $rangeNumber, string $contentType = self::contentTypes['getDatabaseExportPart'][0])
+    public function createDatabaseExportEndAsync($databaseName, $branchName, $exportId, $body, string $contentType = self::contentTypes['createDatabaseExportEnd'][0])
     {
-        return $this->getDatabaseExportPartAsyncWithHttpInfo($databaseName, $branchName, $exportId, $rangeNumber, $contentType)
+        return $this->createDatabaseExportEndAsyncWithHttpInfo($databaseName, $branchName, $exportId, $body, $contentType)
             ->then(
                 function ($response) {
                     return $response[0];
@@ -294,23 +295,23 @@ class DatabaseExportPartApi
     }
 
     /**
-     * Operation getDatabaseExportPartAsyncWithHttpInfo
+     * Operation createDatabaseExportEndAsyncWithHttpInfo
      *
-     * Show details of a specific database export part
+     * Create a new database export end
      *
      * @param  string $databaseName The databaseName parameter (required)
      * @param  string $branchName The branchName parameter (required)
      * @param  string $exportId The exportId parameter (required)
-     * @param  string $rangeNumber The rangeNumber parameter (required)
-     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getDatabaseExportPart'] to see the possible values for this operation
+     * @param  object $body Database export end creation data (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['createDatabaseExportEnd'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function getDatabaseExportPartAsyncWithHttpInfo($databaseName, $branchName, $exportId, $rangeNumber, string $contentType = self::contentTypes['getDatabaseExportPart'][0])
+    public function createDatabaseExportEndAsyncWithHttpInfo($databaseName, $branchName, $exportId, $body, string $contentType = self::contentTypes['createDatabaseExportEnd'][0])
     {
         $returnType = 'object';
-        $request = $this->getDatabaseExportPartRequest($databaseName, $branchName, $exportId, $rangeNumber, $contentType);
+        $request = $this->createDatabaseExportEndRequest($databaseName, $branchName, $exportId, $body, $contentType);
 
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
@@ -349,50 +350,50 @@ class DatabaseExportPartApi
     }
 
     /**
-     * Create request for operation 'getDatabaseExportPart'
+     * Create request for operation 'createDatabaseExportEnd'
      *
      * @param  string $databaseName The databaseName parameter (required)
      * @param  string $branchName The branchName parameter (required)
      * @param  string $exportId The exportId parameter (required)
-     * @param  string $rangeNumber The rangeNumber parameter (required)
-     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getDatabaseExportPart'] to see the possible values for this operation
+     * @param  object $body Database export end creation data (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['createDatabaseExportEnd'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
      */
-    public function getDatabaseExportPartRequest($databaseName, $branchName, $exportId, $rangeNumber, string $contentType = self::contentTypes['getDatabaseExportPart'][0])
+    public function createDatabaseExportEndRequest($databaseName, $branchName, $exportId, $body, string $contentType = self::contentTypes['createDatabaseExportEnd'][0])
     {
 
         // verify the required parameter 'databaseName' is set
         if ($databaseName === null || (is_array($databaseName) && count($databaseName) === 0)) {
             throw new \InvalidArgumentException(
-                'Missing the required parameter $databaseName when calling getDatabaseExportPart'
+                'Missing the required parameter $databaseName when calling createDatabaseExportEnd'
             );
         }
 
         // verify the required parameter 'branchName' is set
         if ($branchName === null || (is_array($branchName) && count($branchName) === 0)) {
             throw new \InvalidArgumentException(
-                'Missing the required parameter $branchName when calling getDatabaseExportPart'
+                'Missing the required parameter $branchName when calling createDatabaseExportEnd'
             );
         }
 
         // verify the required parameter 'exportId' is set
         if ($exportId === null || (is_array($exportId) && count($exportId) === 0)) {
             throw new \InvalidArgumentException(
-                'Missing the required parameter $exportId when calling getDatabaseExportPart'
+                'Missing the required parameter $exportId when calling createDatabaseExportEnd'
             );
         }
 
-        // verify the required parameter 'rangeNumber' is set
-        if ($rangeNumber === null || (is_array($rangeNumber) && count($rangeNumber) === 0)) {
+        // verify the required parameter 'body' is set
+        if ($body === null || (is_array($body) && count($body) === 0)) {
             throw new \InvalidArgumentException(
-                'Missing the required parameter $rangeNumber when calling getDatabaseExportPart'
+                'Missing the required parameter $body when calling createDatabaseExportEnd'
             );
         }
 
 
-        $resourcePath = '/v1/databases/{databaseName}/branches/{branchName}/export/{exportId}/ranges/{rangeNumber}';
+        $resourcePath = '/v1/databases/{databaseName}/branches/{branchName}/export/{exportId}/end';
         $formParams = [];
         $queryParams = [];
         $headerParams = [];
@@ -425,24 +426,23 @@ class DatabaseExportPartApi
                 $resourcePath
             );
         }
-        // path params
-        if ($rangeNumber !== null) {
-            $resourcePath = str_replace(
-                '{' . 'rangeNumber' . '}',
-                ObjectSerializer::toPathValue($rangeNumber),
-                $resourcePath
-            );
-        }
 
 
         $headers = $this->headerSelector->selectHeaders(
-            ['application/octet-stream', 'application/json', ],
+            ['application/json',],
             $contentType,
             $multipart
         );
 
         // for model (json/xml)
-        if (count($formParams) > 0) {
+        if (isset($body)) {
+            if (stripos($headers['Content-Type'], 'application/json') !== false) {
+                # if Content-Type contains "application/json", json_encode the body
+                $httpBody = \GuzzleHttp\Utils::jsonEncode(ObjectSerializer::sanitizeForSerialization($body));
+            } else {
+                $httpBody = $body;
+            }
+        } elseif (count($formParams) > 0) {
             if ($multipart) {
                 $multipartContents = [];
                 foreach ($formParams as $formParamName => $formParamValue) {
@@ -456,7 +456,6 @@ class DatabaseExportPartApi
                 }
                 // for HTTP post (form)
                 $httpBody = new MultipartStream($multipartContents);
-
             } elseif (stripos($headers['Content-Type'], 'application/json') !== false) {
                 # if Content-Type contains "application/json", json_encode the form parameters
                 $httpBody = \GuzzleHttp\Utils::jsonEncode($formParams);
@@ -488,7 +487,7 @@ class DatabaseExportPartApi
 
         $query = ObjectSerializer::buildQuery($queryParams);
         return new Request(
-            'GET',
+            'POST',
             $resourcePath . ($query ? "?{$query}" : ''),
             $headers,
             $httpBody
@@ -551,8 +550,8 @@ class DatabaseExportPartApi
         string $rangeCode,
         int $statusCode
     ): bool {
-        $left = (int) ($rangeCode[0].'00');
-        $right = (int) ($rangeCode[0].'99');
+        $left = (int) ($rangeCode[0] . '00');
+        $right = (int) ($rangeCode[0] . '99');
 
         return $statusCode >= $left && $statusCode <= $right;
     }

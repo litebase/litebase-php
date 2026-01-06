@@ -118,16 +118,16 @@ class ImportApi
      *
      * Create a new import
      *
-     * @param  \Litebase\OpenAPI\Model\ImportControllerStoreRequest $importControllerStoreRequest Import creation data (required)
+     * @param  \Litebase\OpenAPI\Model\ImportStoreRequest $importStoreRequest Import creation data (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['createImport'] to see the possible values for this operation
      *
      * @throws \Litebase\OpenAPI\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
      * @return \Litebase\OpenAPI\Model\CreateImport201Response|\Litebase\OpenAPI\Model\ErrorResponse|\Litebase\OpenAPI\Model\ErrorResponse|\Litebase\OpenAPI\Model\ValidationErrorResponse|\Litebase\OpenAPI\Model\ErrorResponse
      */
-    public function createImport($importControllerStoreRequest, string $contentType = self::contentTypes['createImport'][0])
+    public function createImport($importStoreRequest, string $contentType = self::contentTypes['createImport'][0])
     {
-        list($response) = $this->createImportWithHttpInfo($importControllerStoreRequest, $contentType);
+        list($response) = $this->createImportWithHttpInfo($importStoreRequest, $contentType);
         return $response;
     }
 
@@ -136,16 +136,16 @@ class ImportApi
      *
      * Create a new import
      *
-     * @param  \Litebase\OpenAPI\Model\ImportControllerStoreRequest $importControllerStoreRequest Import creation data (required)
+     * @param  \Litebase\OpenAPI\Model\ImportStoreRequest $importStoreRequest Import creation data (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['createImport'] to see the possible values for this operation
      *
      * @throws \Litebase\OpenAPI\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
      * @return array of \Litebase\OpenAPI\Model\CreateImport201Response|\Litebase\OpenAPI\Model\ErrorResponse|\Litebase\OpenAPI\Model\ErrorResponse|\Litebase\OpenAPI\Model\ValidationErrorResponse|\Litebase\OpenAPI\Model\ErrorResponse, HTTP status code, HTTP response headers (array of strings)
      */
-    public function createImportWithHttpInfo($importControllerStoreRequest, string $contentType = self::contentTypes['createImport'][0])
+    public function createImportWithHttpInfo($importStoreRequest, string $contentType = self::contentTypes['createImport'][0])
     {
-        $request = $this->createImportRequest($importControllerStoreRequest, $contentType);
+        $request = $this->createImportRequest($importStoreRequest, $contentType);
 
         try {
             $options = $this->createHttpClientOption();
@@ -277,15 +277,15 @@ class ImportApi
      *
      * Create a new import
      *
-     * @param  \Litebase\OpenAPI\Model\ImportControllerStoreRequest $importControllerStoreRequest Import creation data (required)
+     * @param  \Litebase\OpenAPI\Model\ImportStoreRequest $importStoreRequest Import creation data (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['createImport'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function createImportAsync($importControllerStoreRequest, string $contentType = self::contentTypes['createImport'][0])
+    public function createImportAsync($importStoreRequest, string $contentType = self::contentTypes['createImport'][0])
     {
-        return $this->createImportAsyncWithHttpInfo($importControllerStoreRequest, $contentType)
+        return $this->createImportAsyncWithHttpInfo($importStoreRequest, $contentType)
             ->then(
                 function ($response) {
                     return $response[0];
@@ -298,16 +298,16 @@ class ImportApi
      *
      * Create a new import
      *
-     * @param  \Litebase\OpenAPI\Model\ImportControllerStoreRequest $importControllerStoreRequest Import creation data (required)
+     * @param  \Litebase\OpenAPI\Model\ImportStoreRequest $importStoreRequest Import creation data (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['createImport'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function createImportAsyncWithHttpInfo($importControllerStoreRequest, string $contentType = self::contentTypes['createImport'][0])
+    public function createImportAsyncWithHttpInfo($importStoreRequest, string $contentType = self::contentTypes['createImport'][0])
     {
         $returnType = '\Litebase\OpenAPI\Model\CreateImport201Response';
-        $request = $this->createImportRequest($importControllerStoreRequest, $contentType);
+        $request = $this->createImportRequest($importStoreRequest, $contentType);
 
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
@@ -348,19 +348,19 @@ class ImportApi
     /**
      * Create request for operation 'createImport'
      *
-     * @param  \Litebase\OpenAPI\Model\ImportControllerStoreRequest $importControllerStoreRequest Import creation data (required)
+     * @param  \Litebase\OpenAPI\Model\ImportStoreRequest $importStoreRequest Import creation data (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['createImport'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
      */
-    public function createImportRequest($importControllerStoreRequest, string $contentType = self::contentTypes['createImport'][0])
+    public function createImportRequest($importStoreRequest, string $contentType = self::contentTypes['createImport'][0])
     {
 
-        // verify the required parameter 'importControllerStoreRequest' is set
-        if ($importControllerStoreRequest === null || (is_array($importControllerStoreRequest) && count($importControllerStoreRequest) === 0)) {
+        // verify the required parameter 'importStoreRequest' is set
+        if ($importStoreRequest === null || (is_array($importStoreRequest) && count($importStoreRequest) === 0)) {
             throw new \InvalidArgumentException(
-                'Missing the required parameter $importControllerStoreRequest when calling createImport'
+                'Missing the required parameter $importStoreRequest when calling createImport'
             );
         }
 
@@ -383,12 +383,12 @@ class ImportApi
         );
 
         // for model (json/xml)
-        if (isset($importControllerStoreRequest)) {
+        if (isset($importStoreRequest)) {
             if (stripos($headers['Content-Type'], 'application/json') !== false) {
                 # if Content-Type contains "application/json", json_encode the body
-                $httpBody = \GuzzleHttp\Utils::jsonEncode(ObjectSerializer::sanitizeForSerialization($importControllerStoreRequest));
+                $httpBody = \GuzzleHttp\Utils::jsonEncode(ObjectSerializer::sanitizeForSerialization($importStoreRequest));
             } else {
-                $httpBody = $importControllerStoreRequest;
+                $httpBody = $importStoreRequest;
             }
         } elseif (count($formParams) > 0) {
             if ($multipart) {
@@ -1111,15 +1111,16 @@ class ImportApi
      * Update an existing import
      *
      * @param  string $importId The importId parameter (required)
+     * @param  \Litebase\OpenAPI\Model\ImportUpdateRequest $importUpdateRequest Import update data (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['updateImport'] to see the possible values for this operation
      *
      * @throws \Litebase\OpenAPI\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
      * @return \Litebase\OpenAPI\Model\UpdateImport200Response|\Litebase\OpenAPI\Model\ErrorResponse|\Litebase\OpenAPI\Model\ErrorResponse|\Litebase\OpenAPI\Model\ValidationErrorResponse
      */
-    public function updateImport($importId, string $contentType = self::contentTypes['updateImport'][0])
+    public function updateImport($importId, $importUpdateRequest, string $contentType = self::contentTypes['updateImport'][0])
     {
-        list($response) = $this->updateImportWithHttpInfo($importId, $contentType);
+        list($response) = $this->updateImportWithHttpInfo($importId, $importUpdateRequest, $contentType);
         return $response;
     }
 
@@ -1129,15 +1130,16 @@ class ImportApi
      * Update an existing import
      *
      * @param  string $importId The importId parameter (required)
+     * @param  \Litebase\OpenAPI\Model\ImportUpdateRequest $importUpdateRequest Import update data (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['updateImport'] to see the possible values for this operation
      *
      * @throws \Litebase\OpenAPI\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
      * @return array of \Litebase\OpenAPI\Model\UpdateImport200Response|\Litebase\OpenAPI\Model\ErrorResponse|\Litebase\OpenAPI\Model\ErrorResponse|\Litebase\OpenAPI\Model\ValidationErrorResponse, HTTP status code, HTTP response headers (array of strings)
      */
-    public function updateImportWithHttpInfo($importId, string $contentType = self::contentTypes['updateImport'][0])
+    public function updateImportWithHttpInfo($importId, $importUpdateRequest, string $contentType = self::contentTypes['updateImport'][0])
     {
-        $request = $this->updateImportRequest($importId, $contentType);
+        $request = $this->updateImportRequest($importId, $importUpdateRequest, $contentType);
 
         try {
             $options = $this->createHttpClientOption();
@@ -1256,14 +1258,15 @@ class ImportApi
      * Update an existing import
      *
      * @param  string $importId The importId parameter (required)
+     * @param  \Litebase\OpenAPI\Model\ImportUpdateRequest $importUpdateRequest Import update data (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['updateImport'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function updateImportAsync($importId, string $contentType = self::contentTypes['updateImport'][0])
+    public function updateImportAsync($importId, $importUpdateRequest, string $contentType = self::contentTypes['updateImport'][0])
     {
-        return $this->updateImportAsyncWithHttpInfo($importId, $contentType)
+        return $this->updateImportAsyncWithHttpInfo($importId, $importUpdateRequest, $contentType)
             ->then(
                 function ($response) {
                     return $response[0];
@@ -1277,15 +1280,16 @@ class ImportApi
      * Update an existing import
      *
      * @param  string $importId The importId parameter (required)
+     * @param  \Litebase\OpenAPI\Model\ImportUpdateRequest $importUpdateRequest Import update data (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['updateImport'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function updateImportAsyncWithHttpInfo($importId, string $contentType = self::contentTypes['updateImport'][0])
+    public function updateImportAsyncWithHttpInfo($importId, $importUpdateRequest, string $contentType = self::contentTypes['updateImport'][0])
     {
         $returnType = '\Litebase\OpenAPI\Model\UpdateImport200Response';
-        $request = $this->updateImportRequest($importId, $contentType);
+        $request = $this->updateImportRequest($importId, $importUpdateRequest, $contentType);
 
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
@@ -1327,18 +1331,26 @@ class ImportApi
      * Create request for operation 'updateImport'
      *
      * @param  string $importId The importId parameter (required)
+     * @param  \Litebase\OpenAPI\Model\ImportUpdateRequest $importUpdateRequest Import update data (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['updateImport'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
      */
-    public function updateImportRequest($importId, string $contentType = self::contentTypes['updateImport'][0])
+    public function updateImportRequest($importId, $importUpdateRequest, string $contentType = self::contentTypes['updateImport'][0])
     {
 
         // verify the required parameter 'importId' is set
         if ($importId === null || (is_array($importId) && count($importId) === 0)) {
             throw new \InvalidArgumentException(
                 'Missing the required parameter $importId when calling updateImport'
+            );
+        }
+
+        // verify the required parameter 'importUpdateRequest' is set
+        if ($importUpdateRequest === null || (is_array($importUpdateRequest) && count($importUpdateRequest) === 0)) {
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $importUpdateRequest when calling updateImport'
             );
         }
 
@@ -1369,7 +1381,14 @@ class ImportApi
         );
 
         // for model (json/xml)
-        if (count($formParams) > 0) {
+        if (isset($importUpdateRequest)) {
+            if (stripos($headers['Content-Type'], 'application/json') !== false) {
+                # if Content-Type contains "application/json", json_encode the body
+                $httpBody = \GuzzleHttp\Utils::jsonEncode(ObjectSerializer::sanitizeForSerialization($importUpdateRequest));
+            } else {
+                $httpBody = $importUpdateRequest;
+            }
+        } elseif (count($formParams) > 0) {
             if ($multipart) {
                 $multipartContents = [];
                 foreach ($formParams as $formParamName => $formParamValue) {

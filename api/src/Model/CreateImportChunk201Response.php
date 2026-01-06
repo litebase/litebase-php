@@ -22,7 +22,7 @@ class CreateImportChunk201Response implements ModelInterface, ArrayAccess, \Json
       * @var string[]
       */
     protected static $openAPITypes = [
-        'data' => '\Litebase\OpenAPI\Model\ImportChunkControllerStoreResponse',
+        'data' => '\Litebase\OpenAPI\Model\ImportChunkStoreResponse',
         'message' => 'string',
         'status' => 'string'
     ];
@@ -280,7 +280,7 @@ class CreateImportChunk201Response implements ModelInterface, ArrayAccess, \Json
     /**
      * Gets data
      *
-     * @return \Litebase\OpenAPI\Model\ImportChunkControllerStoreResponse
+     * @return \Litebase\OpenAPI\Model\ImportChunkStoreResponse
      */
     public function getData()
     {
@@ -290,7 +290,7 @@ class CreateImportChunk201Response implements ModelInterface, ArrayAccess, \Json
     /**
      * Sets data
      *
-     * @param \Litebase\OpenAPI\Model\ImportChunkControllerStoreResponse $data data
+     * @param \Litebase\OpenAPI\Model\ImportChunkStoreResponse $data data
      *
      * @return self
      */

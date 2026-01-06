@@ -22,7 +22,7 @@ class GetImport200Response implements ModelInterface, ArrayAccess, \JsonSerializ
       * @var string[]
       */
     protected static $openAPITypes = [
-        'data' => '\Litebase\OpenAPI\Model\ImportControllerShowResponse',
+        'data' => '\Litebase\OpenAPI\Model\ImportShowResponse',
         'message' => 'string',
         'status' => 'string'
     ];
@@ -280,7 +280,7 @@ class GetImport200Response implements ModelInterface, ArrayAccess, \JsonSerializ
     /**
      * Gets data
      *
-     * @return \Litebase\OpenAPI\Model\ImportControllerShowResponse
+     * @return \Litebase\OpenAPI\Model\ImportShowResponse
      */
     public function getData()
     {
@@ -290,7 +290,7 @@ class GetImport200Response implements ModelInterface, ArrayAccess, \JsonSerializ
     /**
      * Sets data
      *
-     * @param \Litebase\OpenAPI\Model\ImportControllerShowResponse $data data
+     * @param \Litebase\OpenAPI\Model\ImportShowResponse $data data
      *
      * @return self
      */

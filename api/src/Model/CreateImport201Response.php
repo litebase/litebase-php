@@ -22,7 +22,7 @@ class CreateImport201Response implements ModelInterface, ArrayAccess, \JsonSeria
       * @var string[]
       */
     protected static $openAPITypes = [
-        'data' => '\Litebase\OpenAPI\Model\ImportControllerStoreResponse',
+        'data' => '\Litebase\OpenAPI\Model\ImportStoreResponse',
         'message' => 'string',
         'status' => 'string'
     ];
@@ -280,7 +280,7 @@ class CreateImport201Response implements ModelInterface, ArrayAccess, \JsonSeria
     /**
      * Gets data
      *
-     * @return \Litebase\OpenAPI\Model\ImportControllerStoreResponse
+     * @return \Litebase\OpenAPI\Model\ImportStoreResponse
      */
     public function getData()
     {
@@ -290,7 +290,7 @@ class CreateImport201Response implements ModelInterface, ArrayAccess, \JsonSeria
     /**
      * Sets data
      *
-     * @param \Litebase\OpenAPI\Model\ImportControllerStoreResponse $data data
+     * @param \Litebase\OpenAPI\Model\ImportStoreResponse $data data
      *
      * @return self
      */

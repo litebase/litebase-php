@@ -13,6 +13,7 @@ use Litebase\OpenAPI\API\DatabaseApi;
 use Litebase\OpenAPI\API\DatabaseBackupApi;
 use Litebase\OpenAPI\API\DatabaseBranchApi;
 use Litebase\OpenAPI\API\DatabaseExportApi;
+use Litebase\OpenAPI\API\DatabaseExportEndApi;
 use Litebase\OpenAPI\API\DatabaseExportPartApi;
 use Litebase\OpenAPI\API\DatabaseRestoreApi;
 use Litebase\OpenAPI\API\DatabaseSnapshotApi;
@@ -109,6 +110,11 @@ class ApiClient
     public function databaseExport(): DatabaseExportApi
     {
         return new DatabaseExportApi($this->getHttpClient(), $this->config);
+    }
+
+    public function databaseExportEnd(): DatabaseExportEndApi
+    {
+        return new DatabaseExportEndApi($this->getHttpClient(), $this->config);
     }
 
     public function databaseExportPart(): DatabaseExportPartApi

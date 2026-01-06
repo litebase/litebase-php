@@ -22,7 +22,7 @@ class CreateUser201Response implements ModelInterface, ArrayAccess, \JsonSeriali
       * @var string[]
       */
     protected static $openAPITypes = [
-        'data' => '\Litebase\OpenAPI\Model\UserControllerStoreResponse',
+        'data' => '\Litebase\OpenAPI\Model\UserStoreResponse',
         'message' => 'string',
         'status' => 'string'
     ];
@@ -280,7 +280,7 @@ class CreateUser201Response implements ModelInterface, ArrayAccess, \JsonSeriali
     /**
      * Gets data
      *
-     * @return \Litebase\OpenAPI\Model\UserControllerStoreResponse
+     * @return \Litebase\OpenAPI\Model\UserStoreResponse
      */
     public function getData()
     {
@@ -290,7 +290,7 @@ class CreateUser201Response implements ModelInterface, ArrayAccess, \JsonSeriali
     /**
      * Sets data
      *
-     * @param \Litebase\OpenAPI\Model\UserControllerStoreResponse $data data
+     * @param \Litebase\OpenAPI\Model\UserStoreResponse $data data
      *
      * @return self
      */

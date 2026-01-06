@@ -116,7 +116,7 @@ class DatabaseExportApi
      *
      * @throws \Litebase\OpenAPI\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
-     * @return object|\Litebase\OpenAPI\Model\ErrorResponse|\Litebase\OpenAPI\Model\ErrorResponse
+     * @return \Litebase\OpenAPI\Model\CreateDatabaseExport200Response|\Litebase\OpenAPI\Model\ErrorResponse|\Litebase\OpenAPI\Model\ErrorResponse
      */
     public function createDatabaseExport($databaseName, $branchName, $body, string $contentType = self::contentTypes['createDatabaseExport'][0])
     {
@@ -136,7 +136,7 @@ class DatabaseExportApi
      *
      * @throws \Litebase\OpenAPI\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
-     * @return array of object|\Litebase\OpenAPI\Model\ErrorResponse|\Litebase\OpenAPI\Model\ErrorResponse, HTTP status code, HTTP response headers (array of strings)
+     * @return array of \Litebase\OpenAPI\Model\CreateDatabaseExport200Response|\Litebase\OpenAPI\Model\ErrorResponse|\Litebase\OpenAPI\Model\ErrorResponse, HTTP status code, HTTP response headers (array of strings)
      */
     public function createDatabaseExportWithHttpInfo($databaseName, $branchName, $body, string $contentType = self::contentTypes['createDatabaseExport'][0])
     {
@@ -168,7 +168,7 @@ class DatabaseExportApi
             switch($statusCode) {
                 case 200:
                     return $this->handleResponseWithDataType(
-                        'object',
+                        '\Litebase\OpenAPI\Model\CreateDatabaseExport200Response',
                         $request,
                         $response,
                     );
@@ -202,7 +202,7 @@ class DatabaseExportApi
             }
 
             return $this->handleResponseWithDataType(
-                'object',
+                '\Litebase\OpenAPI\Model\CreateDatabaseExport200Response',
                 $request,
                 $response,
             );
@@ -211,7 +211,7 @@ class DatabaseExportApi
                 case 200:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        'object',
+                        '\Litebase\OpenAPI\Model\CreateDatabaseExport200Response',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -277,7 +277,7 @@ class DatabaseExportApi
      */
     public function createDatabaseExportAsyncWithHttpInfo($databaseName, $branchName, $body, string $contentType = self::contentTypes['createDatabaseExport'][0])
     {
-        $returnType = 'object';
+        $returnType = '\Litebase\OpenAPI\Model\CreateDatabaseExport200Response';
         $request = $this->createDatabaseExportRequest($databaseName, $branchName, $body, $contentType);
 
         return $this->client

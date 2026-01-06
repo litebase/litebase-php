@@ -22,6 +22,7 @@ class UpdateImport200Response implements ModelInterface, ArrayAccess, \JsonSeria
       * @var string[]
       */
     protected static $openAPITypes = [
+        'data' => '\Litebase\OpenAPI\Model\ImportUpdateResponse',
         'message' => 'string',
         'status' => 'string'
     ];
@@ -34,6 +35,7 @@ class UpdateImport200Response implements ModelInterface, ArrayAccess, \JsonSeria
       * @psalm-var array<string, string|null>
       */
     protected static $openAPIFormats = [
+        'data' => null,
         'message' => null,
         'status' => null
     ];
@@ -44,6 +46,7 @@ class UpdateImport200Response implements ModelInterface, ArrayAccess, \JsonSeria
       * @var boolean[]
       */
     protected static array $openAPINullables = [
+        'data' => false,
         'message' => false,
         'status' => false
     ];
@@ -134,6 +137,7 @@ class UpdateImport200Response implements ModelInterface, ArrayAccess, \JsonSeria
      * @var string[]
      */
     protected static $attributeMap = [
+        'data' => 'data',
         'message' => 'message',
         'status' => 'status'
     ];
@@ -144,6 +148,7 @@ class UpdateImport200Response implements ModelInterface, ArrayAccess, \JsonSeria
      * @var string[]
      */
     protected static $setters = [
+        'data' => 'setData',
         'message' => 'setMessage',
         'status' => 'setStatus'
     ];
@@ -154,6 +159,7 @@ class UpdateImport200Response implements ModelInterface, ArrayAccess, \JsonSeria
      * @var string[]
      */
     protected static $getters = [
+        'data' => 'getData',
         'message' => 'getMessage',
         'status' => 'getStatus'
     ];
@@ -215,6 +221,7 @@ class UpdateImport200Response implements ModelInterface, ArrayAccess, \JsonSeria
      */
     public function __construct(?array $data = null)
     {
+        $this->setIfExists('data', $data ?? [], null);
         $this->setIfExists('message', $data ?? [], null);
         $this->setIfExists('status', $data ?? [], null);
     }
@@ -246,6 +253,9 @@ class UpdateImport200Response implements ModelInterface, ArrayAccess, \JsonSeria
     {
         $invalidProperties = [];
 
+        if ($this->container['data'] === null) {
+            $invalidProperties[] = "'data' can't be null";
+        }
         if ($this->container['message'] === null) {
             $invalidProperties[] = "'message' can't be null";
         }
@@ -266,6 +276,33 @@ class UpdateImport200Response implements ModelInterface, ArrayAccess, \JsonSeria
         return count($this->listInvalidProperties()) === 0;
     }
 
+
+    /**
+     * Gets data
+     *
+     * @return \Litebase\OpenAPI\Model\ImportUpdateResponse
+     */
+    public function getData()
+    {
+        return $this->container['data'];
+    }
+
+    /**
+     * Sets data
+     *
+     * @param \Litebase\OpenAPI\Model\ImportUpdateResponse $data data
+     *
+     * @return self
+     */
+    public function setData($data)
+    {
+        if (is_null($data)) {
+            throw new \InvalidArgumentException('non-nullable data cannot be null');
+        }
+        $this->container['data'] = $data;
+
+        return $this;
+    }
 
     /**
      * Gets message

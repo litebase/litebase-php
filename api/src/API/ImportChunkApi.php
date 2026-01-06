@@ -110,16 +110,16 @@ class ImportChunkApi
      * Create a new import chunk
      *
      * @param  string $importId The importId parameter (required)
-     * @param  \Litebase\OpenAPI\Model\ImportChunkControllerStoreRequest $importChunkControllerStoreRequest Import chunk creation data (required)
+     * @param  \Litebase\OpenAPI\Model\ImportChunkStoreRequest $importChunkStoreRequest Import chunk creation data (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['createImportChunk'] to see the possible values for this operation
      *
      * @throws \Litebase\OpenAPI\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
      * @return \Litebase\OpenAPI\Model\CreateImportChunk201Response|\Litebase\OpenAPI\Model\ErrorResponse|\Litebase\OpenAPI\Model\ErrorResponse|\Litebase\OpenAPI\Model\ErrorResponse|\Litebase\OpenAPI\Model\ValidationErrorResponse|\Litebase\OpenAPI\Model\ErrorResponse
      */
-    public function createImportChunk($importId, $importChunkControllerStoreRequest, string $contentType = self::contentTypes['createImportChunk'][0])
+    public function createImportChunk($importId, $importChunkStoreRequest, string $contentType = self::contentTypes['createImportChunk'][0])
     {
-        list($response) = $this->createImportChunkWithHttpInfo($importId, $importChunkControllerStoreRequest, $contentType);
+        list($response) = $this->createImportChunkWithHttpInfo($importId, $importChunkStoreRequest, $contentType);
         return $response;
     }
 
@@ -129,16 +129,16 @@ class ImportChunkApi
      * Create a new import chunk
      *
      * @param  string $importId The importId parameter (required)
-     * @param  \Litebase\OpenAPI\Model\ImportChunkControllerStoreRequest $importChunkControllerStoreRequest Import chunk creation data (required)
+     * @param  \Litebase\OpenAPI\Model\ImportChunkStoreRequest $importChunkStoreRequest Import chunk creation data (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['createImportChunk'] to see the possible values for this operation
      *
      * @throws \Litebase\OpenAPI\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
      * @return array of \Litebase\OpenAPI\Model\CreateImportChunk201Response|\Litebase\OpenAPI\Model\ErrorResponse|\Litebase\OpenAPI\Model\ErrorResponse|\Litebase\OpenAPI\Model\ErrorResponse|\Litebase\OpenAPI\Model\ValidationErrorResponse|\Litebase\OpenAPI\Model\ErrorResponse, HTTP status code, HTTP response headers (array of strings)
      */
-    public function createImportChunkWithHttpInfo($importId, $importChunkControllerStoreRequest, string $contentType = self::contentTypes['createImportChunk'][0])
+    public function createImportChunkWithHttpInfo($importId, $importChunkStoreRequest, string $contentType = self::contentTypes['createImportChunk'][0])
     {
-        $request = $this->createImportChunkRequest($importId, $importChunkControllerStoreRequest, $contentType);
+        $request = $this->createImportChunkRequest($importId, $importChunkStoreRequest, $contentType);
 
         try {
             $options = $this->createHttpClientOption();
@@ -285,15 +285,15 @@ class ImportChunkApi
      * Create a new import chunk
      *
      * @param  string $importId The importId parameter (required)
-     * @param  \Litebase\OpenAPI\Model\ImportChunkControllerStoreRequest $importChunkControllerStoreRequest Import chunk creation data (required)
+     * @param  \Litebase\OpenAPI\Model\ImportChunkStoreRequest $importChunkStoreRequest Import chunk creation data (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['createImportChunk'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function createImportChunkAsync($importId, $importChunkControllerStoreRequest, string $contentType = self::contentTypes['createImportChunk'][0])
+    public function createImportChunkAsync($importId, $importChunkStoreRequest, string $contentType = self::contentTypes['createImportChunk'][0])
     {
-        return $this->createImportChunkAsyncWithHttpInfo($importId, $importChunkControllerStoreRequest, $contentType)
+        return $this->createImportChunkAsyncWithHttpInfo($importId, $importChunkStoreRequest, $contentType)
             ->then(
                 function ($response) {
                     return $response[0];
@@ -307,16 +307,16 @@ class ImportChunkApi
      * Create a new import chunk
      *
      * @param  string $importId The importId parameter (required)
-     * @param  \Litebase\OpenAPI\Model\ImportChunkControllerStoreRequest $importChunkControllerStoreRequest Import chunk creation data (required)
+     * @param  \Litebase\OpenAPI\Model\ImportChunkStoreRequest $importChunkStoreRequest Import chunk creation data (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['createImportChunk'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function createImportChunkAsyncWithHttpInfo($importId, $importChunkControllerStoreRequest, string $contentType = self::contentTypes['createImportChunk'][0])
+    public function createImportChunkAsyncWithHttpInfo($importId, $importChunkStoreRequest, string $contentType = self::contentTypes['createImportChunk'][0])
     {
         $returnType = '\Litebase\OpenAPI\Model\CreateImportChunk201Response';
-        $request = $this->createImportChunkRequest($importId, $importChunkControllerStoreRequest, $contentType);
+        $request = $this->createImportChunkRequest($importId, $importChunkStoreRequest, $contentType);
 
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
@@ -358,13 +358,13 @@ class ImportChunkApi
      * Create request for operation 'createImportChunk'
      *
      * @param  string $importId The importId parameter (required)
-     * @param  \Litebase\OpenAPI\Model\ImportChunkControllerStoreRequest $importChunkControllerStoreRequest Import chunk creation data (required)
+     * @param  \Litebase\OpenAPI\Model\ImportChunkStoreRequest $importChunkStoreRequest Import chunk creation data (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['createImportChunk'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
      */
-    public function createImportChunkRequest($importId, $importChunkControllerStoreRequest, string $contentType = self::contentTypes['createImportChunk'][0])
+    public function createImportChunkRequest($importId, $importChunkStoreRequest, string $contentType = self::contentTypes['createImportChunk'][0])
     {
 
         // verify the required parameter 'importId' is set
@@ -374,10 +374,10 @@ class ImportChunkApi
             );
         }
 
-        // verify the required parameter 'importChunkControllerStoreRequest' is set
-        if ($importChunkControllerStoreRequest === null || (is_array($importChunkControllerStoreRequest) && count($importChunkControllerStoreRequest) === 0)) {
+        // verify the required parameter 'importChunkStoreRequest' is set
+        if ($importChunkStoreRequest === null || (is_array($importChunkStoreRequest) && count($importChunkStoreRequest) === 0)) {
             throw new \InvalidArgumentException(
-                'Missing the required parameter $importChunkControllerStoreRequest when calling createImportChunk'
+                'Missing the required parameter $importChunkStoreRequest when calling createImportChunk'
             );
         }
 
@@ -408,12 +408,12 @@ class ImportChunkApi
         );
 
         // for model (json/xml)
-        if (isset($importChunkControllerStoreRequest)) {
+        if (isset($importChunkStoreRequest)) {
             if (stripos($headers['Content-Type'], 'application/json') !== false) {
                 # if Content-Type contains "application/json", json_encode the body
-                $httpBody = \GuzzleHttp\Utils::jsonEncode(ObjectSerializer::sanitizeForSerialization($importChunkControllerStoreRequest));
+                $httpBody = \GuzzleHttp\Utils::jsonEncode(ObjectSerializer::sanitizeForSerialization($importChunkStoreRequest));
             } else {
-                $httpBody = $importChunkControllerStoreRequest;
+                $httpBody = $importChunkStoreRequest;
             }
         } elseif (count($formParams) > 0) {
             if ($multipart) {
