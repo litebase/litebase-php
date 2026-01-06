@@ -5,7 +5,7 @@ namespace Litebase\OpenAPI\Model;
 use \ArrayAccess;
 use \Litebase\OpenAPI\ObjectSerializer;
 
-class GetToken200Response implements ModelInterface, ArrayAccess, \JsonSerializable
+class CreateImport201Response implements ModelInterface, ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
@@ -14,7 +14,7 @@ class GetToken200Response implements ModelInterface, ArrayAccess, \JsonSerializa
       *
       * @var string
       */
-    protected static $openAPIModelName = 'getToken_200_response';
+    protected static $openAPIModelName = 'createImport_201_response';
 
     /**
       * Array of property to type mappings. Used for (de)serialization
@@ -22,7 +22,7 @@ class GetToken200Response implements ModelInterface, ArrayAccess, \JsonSerializa
       * @var string[]
       */
     protected static $openAPITypes = [
-        'data' => '\Litebase\OpenAPI\Model\TokenShowResponse',
+        'data' => '\Litebase\OpenAPI\Model\ImportStoreResponse',
         'message' => 'string',
         'status' => 'string'
     ];
@@ -280,7 +280,7 @@ class GetToken200Response implements ModelInterface, ArrayAccess, \JsonSerializa
     /**
      * Gets data
      *
-     * @return \Litebase\OpenAPI\Model\TokenShowResponse
+     * @return \Litebase\OpenAPI\Model\ImportStoreResponse
      */
     public function getData()
     {
@@ -290,7 +290,7 @@ class GetToken200Response implements ModelInterface, ArrayAccess, \JsonSerializa
     /**
      * Sets data
      *
-     * @param \Litebase\OpenAPI\Model\TokenShowResponse $data data
+     * @param \Litebase\OpenAPI\Model\ImportStoreResponse $data data
      *
      * @return self
      */

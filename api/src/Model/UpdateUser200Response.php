@@ -22,7 +22,7 @@ class UpdateUser200Response implements ModelInterface, ArrayAccess, \JsonSeriali
       * @var string[]
       */
     protected static $openAPITypes = [
-        'data' => '\Litebase\OpenAPI\Model\UserControllerUpdateResponse',
+        'data' => '\Litebase\OpenAPI\Model\UserUpdateResponse',
         'message' => 'string',
         'status' => 'string'
     ];
@@ -280,7 +280,7 @@ class UpdateUser200Response implements ModelInterface, ArrayAccess, \JsonSeriali
     /**
      * Gets data
      *
-     * @return \Litebase\OpenAPI\Model\UserControllerUpdateResponse
+     * @return \Litebase\OpenAPI\Model\UserUpdateResponse
      */
     public function getData()
     {
@@ -290,7 +290,7 @@ class UpdateUser200Response implements ModelInterface, ArrayAccess, \JsonSeriali
     /**
      * Sets data
      *
-     * @param \Litebase\OpenAPI\Model\UserControllerUpdateResponse $data data
+     * @param \Litebase\OpenAPI\Model\UserUpdateResponse $data data
      *
      * @return self
      */

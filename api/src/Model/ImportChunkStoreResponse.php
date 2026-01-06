@@ -5,7 +5,7 @@ namespace Litebase\OpenAPI\Model;
 use \ArrayAccess;
 use \Litebase\OpenAPI\ObjectSerializer;
 
-class GetToken200Response implements ModelInterface, ArrayAccess, \JsonSerializable
+class ImportChunkStoreResponse implements ModelInterface, ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
@@ -14,7 +14,7 @@ class GetToken200Response implements ModelInterface, ArrayAccess, \JsonSerializa
       *
       * @var string
       */
-    protected static $openAPIModelName = 'getToken_200_response';
+    protected static $openAPIModelName = 'ImportChunkStoreResponse';
 
     /**
       * Array of property to type mappings. Used for (de)serialization
@@ -22,8 +22,8 @@ class GetToken200Response implements ModelInterface, ArrayAccess, \JsonSerializa
       * @var string[]
       */
     protected static $openAPITypes = [
-        'data' => '\Litebase\OpenAPI\Model\TokenShowResponse',
-        'message' => 'string',
+        'chunkIndex' => 'int',
+        'importId' => 'int',
         'status' => 'string'
     ];
 
@@ -35,8 +35,8 @@ class GetToken200Response implements ModelInterface, ArrayAccess, \JsonSerializa
       * @psalm-var array<string, string|null>
       */
     protected static $openAPIFormats = [
-        'data' => null,
-        'message' => null,
+        'chunkIndex' => null,
+        'importId' => null,
         'status' => null
     ];
 
@@ -46,8 +46,8 @@ class GetToken200Response implements ModelInterface, ArrayAccess, \JsonSerializa
       * @var boolean[]
       */
     protected static array $openAPINullables = [
-        'data' => false,
-        'message' => false,
+        'chunkIndex' => false,
+        'importId' => false,
         'status' => false
     ];
 
@@ -137,8 +137,8 @@ class GetToken200Response implements ModelInterface, ArrayAccess, \JsonSerializa
      * @var string[]
      */
     protected static $attributeMap = [
-        'data' => 'data',
-        'message' => 'message',
+        'chunkIndex' => 'chunkIndex',
+        'importId' => 'importId',
         'status' => 'status'
     ];
 
@@ -148,8 +148,8 @@ class GetToken200Response implements ModelInterface, ArrayAccess, \JsonSerializa
      * @var string[]
      */
     protected static $setters = [
-        'data' => 'setData',
-        'message' => 'setMessage',
+        'chunkIndex' => 'setChunkIndex',
+        'importId' => 'setImportId',
         'status' => 'setStatus'
     ];
 
@@ -159,8 +159,8 @@ class GetToken200Response implements ModelInterface, ArrayAccess, \JsonSerializa
      * @var string[]
      */
     protected static $getters = [
-        'data' => 'getData',
-        'message' => 'getMessage',
+        'chunkIndex' => 'getChunkIndex',
+        'importId' => 'getImportId',
         'status' => 'getStatus'
     ];
 
@@ -221,8 +221,8 @@ class GetToken200Response implements ModelInterface, ArrayAccess, \JsonSerializa
      */
     public function __construct(?array $data = null)
     {
-        $this->setIfExists('data', $data ?? [], null);
-        $this->setIfExists('message', $data ?? [], null);
+        $this->setIfExists('chunkIndex', $data ?? [], null);
+        $this->setIfExists('importId', $data ?? [], null);
         $this->setIfExists('status', $data ?? [], null);
     }
 
@@ -253,15 +253,6 @@ class GetToken200Response implements ModelInterface, ArrayAccess, \JsonSerializa
     {
         $invalidProperties = [];
 
-        if ($this->container['data'] === null) {
-            $invalidProperties[] = "'data' can't be null";
-        }
-        if ($this->container['message'] === null) {
-            $invalidProperties[] = "'message' can't be null";
-        }
-        if ($this->container['status'] === null) {
-            $invalidProperties[] = "'status' can't be null";
-        }
         return $invalidProperties;
     }
 
@@ -278,55 +269,55 @@ class GetToken200Response implements ModelInterface, ArrayAccess, \JsonSerializa
 
 
     /**
-     * Gets data
+     * Gets chunkIndex
      *
-     * @return \Litebase\OpenAPI\Model\TokenShowResponse
+     * @return int|null
      */
-    public function getData()
+    public function getChunkIndex()
     {
-        return $this->container['data'];
+        return $this->container['chunkIndex'];
     }
 
     /**
-     * Sets data
+     * Sets chunkIndex
      *
-     * @param \Litebase\OpenAPI\Model\TokenShowResponse $data data
+     * @param int|null $chunkIndex chunkIndex
      *
      * @return self
      */
-    public function setData($data)
+    public function setChunkIndex($chunkIndex)
     {
-        if (is_null($data)) {
-            throw new \InvalidArgumentException('non-nullable data cannot be null');
+        if (is_null($chunkIndex)) {
+            throw new \InvalidArgumentException('non-nullable chunkIndex cannot be null');
         }
-        $this->container['data'] = $data;
+        $this->container['chunkIndex'] = $chunkIndex;
 
         return $this;
     }
 
     /**
-     * Gets message
+     * Gets importId
      *
-     * @return string
+     * @return int|null
      */
-    public function getMessage()
+    public function getImportId()
     {
-        return $this->container['message'];
+        return $this->container['importId'];
     }
 
     /**
-     * Sets message
+     * Sets importId
      *
-     * @param string $message Response message
+     * @param int|null $importId importId
      *
      * @return self
      */
-    public function setMessage($message)
+    public function setImportId($importId)
     {
-        if (is_null($message)) {
-            throw new \InvalidArgumentException('non-nullable message cannot be null');
+        if (is_null($importId)) {
+            throw new \InvalidArgumentException('non-nullable importId cannot be null');
         }
-        $this->container['message'] = $message;
+        $this->container['importId'] = $importId;
 
         return $this;
     }
@@ -334,7 +325,7 @@ class GetToken200Response implements ModelInterface, ArrayAccess, \JsonSerializa
     /**
      * Gets status
      *
-     * @return string
+     * @return string|null
      */
     public function getStatus()
     {
@@ -344,7 +335,7 @@ class GetToken200Response implements ModelInterface, ArrayAccess, \JsonSerializa
     /**
      * Sets status
      *
-     * @param string $status Response status
+     * @param string|null $status status
      *
      * @return self
      */

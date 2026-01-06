@@ -5,7 +5,7 @@ namespace Litebase\OpenAPI\Model;
 use \ArrayAccess;
 use \Litebase\OpenAPI\ObjectSerializer;
 
-class GetToken200Response implements ModelInterface, ArrayAccess, \JsonSerializable
+class DeleteImport200Response implements ModelInterface, ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
@@ -14,7 +14,7 @@ class GetToken200Response implements ModelInterface, ArrayAccess, \JsonSerializa
       *
       * @var string
       */
-    protected static $openAPIModelName = 'getToken_200_response';
+    protected static $openAPIModelName = 'deleteImport_200_response';
 
     /**
       * Array of property to type mappings. Used for (de)serialization
@@ -22,7 +22,6 @@ class GetToken200Response implements ModelInterface, ArrayAccess, \JsonSerializa
       * @var string[]
       */
     protected static $openAPITypes = [
-        'data' => '\Litebase\OpenAPI\Model\TokenShowResponse',
         'message' => 'string',
         'status' => 'string'
     ];
@@ -35,7 +34,6 @@ class GetToken200Response implements ModelInterface, ArrayAccess, \JsonSerializa
       * @psalm-var array<string, string|null>
       */
     protected static $openAPIFormats = [
-        'data' => null,
         'message' => null,
         'status' => null
     ];
@@ -46,7 +44,6 @@ class GetToken200Response implements ModelInterface, ArrayAccess, \JsonSerializa
       * @var boolean[]
       */
     protected static array $openAPINullables = [
-        'data' => false,
         'message' => false,
         'status' => false
     ];
@@ -137,7 +134,6 @@ class GetToken200Response implements ModelInterface, ArrayAccess, \JsonSerializa
      * @var string[]
      */
     protected static $attributeMap = [
-        'data' => 'data',
         'message' => 'message',
         'status' => 'status'
     ];
@@ -148,7 +144,6 @@ class GetToken200Response implements ModelInterface, ArrayAccess, \JsonSerializa
      * @var string[]
      */
     protected static $setters = [
-        'data' => 'setData',
         'message' => 'setMessage',
         'status' => 'setStatus'
     ];
@@ -159,7 +154,6 @@ class GetToken200Response implements ModelInterface, ArrayAccess, \JsonSerializa
      * @var string[]
      */
     protected static $getters = [
-        'data' => 'getData',
         'message' => 'getMessage',
         'status' => 'getStatus'
     ];
@@ -221,7 +215,6 @@ class GetToken200Response implements ModelInterface, ArrayAccess, \JsonSerializa
      */
     public function __construct(?array $data = null)
     {
-        $this->setIfExists('data', $data ?? [], null);
         $this->setIfExists('message', $data ?? [], null);
         $this->setIfExists('status', $data ?? [], null);
     }
@@ -253,9 +246,6 @@ class GetToken200Response implements ModelInterface, ArrayAccess, \JsonSerializa
     {
         $invalidProperties = [];
 
-        if ($this->container['data'] === null) {
-            $invalidProperties[] = "'data' can't be null";
-        }
         if ($this->container['message'] === null) {
             $invalidProperties[] = "'message' can't be null";
         }
@@ -276,33 +266,6 @@ class GetToken200Response implements ModelInterface, ArrayAccess, \JsonSerializa
         return count($this->listInvalidProperties()) === 0;
     }
 
-
-    /**
-     * Gets data
-     *
-     * @return \Litebase\OpenAPI\Model\TokenShowResponse
-     */
-    public function getData()
-    {
-        return $this->container['data'];
-    }
-
-    /**
-     * Sets data
-     *
-     * @param \Litebase\OpenAPI\Model\TokenShowResponse $data data
-     *
-     * @return self
-     */
-    public function setData($data)
-    {
-        if (is_null($data)) {
-            throw new \InvalidArgumentException('non-nullable data cannot be null');
-        }
-        $this->container['data'] = $data;
-
-        return $this;
-    }
 
     /**
      * Gets message

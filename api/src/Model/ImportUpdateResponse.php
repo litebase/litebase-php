@@ -5,7 +5,7 @@ namespace Litebase\OpenAPI\Model;
 use \ArrayAccess;
 use \Litebase\OpenAPI\ObjectSerializer;
 
-class GetToken200Response implements ModelInterface, ArrayAccess, \JsonSerializable
+class ImportUpdateResponse implements ModelInterface, ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
@@ -14,7 +14,7 @@ class GetToken200Response implements ModelInterface, ArrayAccess, \JsonSerializa
       *
       * @var string
       */
-    protected static $openAPIModelName = 'getToken_200_response';
+    protected static $openAPIModelName = 'ImportUpdateResponse';
 
     /**
       * Array of property to type mappings. Used for (de)serialization
@@ -22,9 +22,13 @@ class GetToken200Response implements ModelInterface, ArrayAccess, \JsonSerializa
       * @var string[]
       */
     protected static $openAPITypes = [
-        'data' => '\Litebase\OpenAPI\Model\TokenShowResponse',
-        'message' => 'string',
-        'status' => 'string'
+        'branchName' => 'string',
+        'chunkCount' => 'int',
+        'databaseId' => 'string',
+        'databaseName' => 'string',
+        'importId' => 'int',
+        'status' => 'string',
+        'updatedAt' => '\DateTime'
     ];
 
     /**
@@ -35,9 +39,13 @@ class GetToken200Response implements ModelInterface, ArrayAccess, \JsonSerializa
       * @psalm-var array<string, string|null>
       */
     protected static $openAPIFormats = [
-        'data' => null,
-        'message' => null,
-        'status' => null
+        'branchName' => null,
+        'chunkCount' => null,
+        'databaseId' => null,
+        'databaseName' => null,
+        'importId' => null,
+        'status' => null,
+        'updatedAt' => 'date-time'
     ];
 
     /**
@@ -46,9 +54,13 @@ class GetToken200Response implements ModelInterface, ArrayAccess, \JsonSerializa
       * @var boolean[]
       */
     protected static array $openAPINullables = [
-        'data' => false,
-        'message' => false,
-        'status' => false
+        'branchName' => false,
+        'chunkCount' => false,
+        'databaseId' => false,
+        'databaseName' => false,
+        'importId' => false,
+        'status' => false,
+        'updatedAt' => false
     ];
 
     /**
@@ -137,9 +149,13 @@ class GetToken200Response implements ModelInterface, ArrayAccess, \JsonSerializa
      * @var string[]
      */
     protected static $attributeMap = [
-        'data' => 'data',
-        'message' => 'message',
-        'status' => 'status'
+        'branchName' => 'branchName',
+        'chunkCount' => 'chunkCount',
+        'databaseId' => 'databaseId',
+        'databaseName' => 'databaseName',
+        'importId' => 'importId',
+        'status' => 'status',
+        'updatedAt' => 'updatedAt'
     ];
 
     /**
@@ -148,9 +164,13 @@ class GetToken200Response implements ModelInterface, ArrayAccess, \JsonSerializa
      * @var string[]
      */
     protected static $setters = [
-        'data' => 'setData',
-        'message' => 'setMessage',
-        'status' => 'setStatus'
+        'branchName' => 'setBranchName',
+        'chunkCount' => 'setChunkCount',
+        'databaseId' => 'setDatabaseId',
+        'databaseName' => 'setDatabaseName',
+        'importId' => 'setImportId',
+        'status' => 'setStatus',
+        'updatedAt' => 'setUpdatedAt'
     ];
 
     /**
@@ -159,9 +179,13 @@ class GetToken200Response implements ModelInterface, ArrayAccess, \JsonSerializa
      * @var string[]
      */
     protected static $getters = [
-        'data' => 'getData',
-        'message' => 'getMessage',
-        'status' => 'getStatus'
+        'branchName' => 'getBranchName',
+        'chunkCount' => 'getChunkCount',
+        'databaseId' => 'getDatabaseId',
+        'databaseName' => 'getDatabaseName',
+        'importId' => 'getImportId',
+        'status' => 'getStatus',
+        'updatedAt' => 'getUpdatedAt'
     ];
 
     /**
@@ -221,9 +245,13 @@ class GetToken200Response implements ModelInterface, ArrayAccess, \JsonSerializa
      */
     public function __construct(?array $data = null)
     {
-        $this->setIfExists('data', $data ?? [], null);
-        $this->setIfExists('message', $data ?? [], null);
+        $this->setIfExists('branchName', $data ?? [], null);
+        $this->setIfExists('chunkCount', $data ?? [], null);
+        $this->setIfExists('databaseId', $data ?? [], null);
+        $this->setIfExists('databaseName', $data ?? [], null);
+        $this->setIfExists('importId', $data ?? [], null);
         $this->setIfExists('status', $data ?? [], null);
+        $this->setIfExists('updatedAt', $data ?? [], null);
     }
 
     /**
@@ -253,15 +281,6 @@ class GetToken200Response implements ModelInterface, ArrayAccess, \JsonSerializa
     {
         $invalidProperties = [];
 
-        if ($this->container['data'] === null) {
-            $invalidProperties[] = "'data' can't be null";
-        }
-        if ($this->container['message'] === null) {
-            $invalidProperties[] = "'message' can't be null";
-        }
-        if ($this->container['status'] === null) {
-            $invalidProperties[] = "'status' can't be null";
-        }
         return $invalidProperties;
     }
 
@@ -278,55 +297,136 @@ class GetToken200Response implements ModelInterface, ArrayAccess, \JsonSerializa
 
 
     /**
-     * Gets data
+     * Gets branchName
      *
-     * @return \Litebase\OpenAPI\Model\TokenShowResponse
+     * @return string|null
      */
-    public function getData()
+    public function getBranchName()
     {
-        return $this->container['data'];
+        return $this->container['branchName'];
     }
 
     /**
-     * Sets data
+     * Sets branchName
      *
-     * @param \Litebase\OpenAPI\Model\TokenShowResponse $data data
+     * @param string|null $branchName branchName
      *
      * @return self
      */
-    public function setData($data)
+    public function setBranchName($branchName)
     {
-        if (is_null($data)) {
-            throw new \InvalidArgumentException('non-nullable data cannot be null');
+        if (is_null($branchName)) {
+            throw new \InvalidArgumentException('non-nullable branchName cannot be null');
         }
-        $this->container['data'] = $data;
+        $this->container['branchName'] = $branchName;
 
         return $this;
     }
 
     /**
-     * Gets message
+     * Gets chunkCount
      *
-     * @return string
+     * @return int|null
      */
-    public function getMessage()
+    public function getChunkCount()
     {
-        return $this->container['message'];
+        return $this->container['chunkCount'];
     }
 
     /**
-     * Sets message
+     * Sets chunkCount
      *
-     * @param string $message Response message
+     * @param int|null $chunkCount chunkCount
      *
      * @return self
      */
-    public function setMessage($message)
+    public function setChunkCount($chunkCount)
     {
-        if (is_null($message)) {
-            throw new \InvalidArgumentException('non-nullable message cannot be null');
+        if (is_null($chunkCount)) {
+            throw new \InvalidArgumentException('non-nullable chunkCount cannot be null');
         }
-        $this->container['message'] = $message;
+        $this->container['chunkCount'] = $chunkCount;
+
+        return $this;
+    }
+
+    /**
+     * Gets databaseId
+     *
+     * @return string|null
+     */
+    public function getDatabaseId()
+    {
+        return $this->container['databaseId'];
+    }
+
+    /**
+     * Sets databaseId
+     *
+     * @param string|null $databaseId databaseId
+     *
+     * @return self
+     */
+    public function setDatabaseId($databaseId)
+    {
+        if (is_null($databaseId)) {
+            throw new \InvalidArgumentException('non-nullable databaseId cannot be null');
+        }
+        $this->container['databaseId'] = $databaseId;
+
+        return $this;
+    }
+
+    /**
+     * Gets databaseName
+     *
+     * @return string|null
+     */
+    public function getDatabaseName()
+    {
+        return $this->container['databaseName'];
+    }
+
+    /**
+     * Sets databaseName
+     *
+     * @param string|null $databaseName databaseName
+     *
+     * @return self
+     */
+    public function setDatabaseName($databaseName)
+    {
+        if (is_null($databaseName)) {
+            throw new \InvalidArgumentException('non-nullable databaseName cannot be null');
+        }
+        $this->container['databaseName'] = $databaseName;
+
+        return $this;
+    }
+
+    /**
+     * Gets importId
+     *
+     * @return int|null
+     */
+    public function getImportId()
+    {
+        return $this->container['importId'];
+    }
+
+    /**
+     * Sets importId
+     *
+     * @param int|null $importId importId
+     *
+     * @return self
+     */
+    public function setImportId($importId)
+    {
+        if (is_null($importId)) {
+            throw new \InvalidArgumentException('non-nullable importId cannot be null');
+        }
+        $this->container['importId'] = $importId;
 
         return $this;
     }
@@ -334,7 +434,7 @@ class GetToken200Response implements ModelInterface, ArrayAccess, \JsonSerializa
     /**
      * Gets status
      *
-     * @return string
+     * @return string|null
      */
     public function getStatus()
     {
@@ -344,7 +444,7 @@ class GetToken200Response implements ModelInterface, ArrayAccess, \JsonSerializa
     /**
      * Sets status
      *
-     * @param string $status Response status
+     * @param string|null $status status
      *
      * @return self
      */
@@ -354,6 +454,33 @@ class GetToken200Response implements ModelInterface, ArrayAccess, \JsonSerializa
             throw new \InvalidArgumentException('non-nullable status cannot be null');
         }
         $this->container['status'] = $status;
+
+        return $this;
+    }
+
+    /**
+     * Gets updatedAt
+     *
+     * @return \DateTime|null
+     */
+    public function getUpdatedAt()
+    {
+        return $this->container['updatedAt'];
+    }
+
+    /**
+     * Sets updatedAt
+     *
+     * @param \DateTime|null $updatedAt Last update timestamp
+     *
+     * @return self
+     */
+    public function setUpdatedAt($updatedAt)
+    {
+        if (is_null($updatedAt)) {
+            throw new \InvalidArgumentException('non-nullable updatedAt cannot be null');
+        }
+        $this->container['updatedAt'] = $updatedAt;
 
         return $this;
     }

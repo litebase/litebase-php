@@ -5,7 +5,7 @@ namespace Litebase\OpenAPI\Model;
 use \ArrayAccess;
 use \Litebase\OpenAPI\ObjectSerializer;
 
-class GetToken200Response implements ModelInterface, ArrayAccess, \JsonSerializable
+class TokenShowResponse implements ModelInterface, ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
@@ -14,7 +14,7 @@ class GetToken200Response implements ModelInterface, ArrayAccess, \JsonSerializa
       *
       * @var string
       */
-    protected static $openAPIModelName = 'getToken_200_response';
+    protected static $openAPIModelName = 'TokenShowResponse';
 
     /**
       * Array of property to type mappings. Used for (de)serialization
@@ -22,9 +22,11 @@ class GetToken200Response implements ModelInterface, ArrayAccess, \JsonSerializa
       * @var string[]
       */
     protected static $openAPITypes = [
-        'data' => '\Litebase\OpenAPI\Model\TokenShowResponse',
-        'message' => 'string',
-        'status' => 'string'
+        'createdAt' => 'string',
+        'description' => 'string',
+        'statements' => '\Litebase\OpenAPI\Model\Statement[]',
+        'tokenId' => 'string',
+        'updatedAt' => 'string'
     ];
 
     /**
@@ -35,9 +37,11 @@ class GetToken200Response implements ModelInterface, ArrayAccess, \JsonSerializa
       * @psalm-var array<string, string|null>
       */
     protected static $openAPIFormats = [
-        'data' => null,
-        'message' => null,
-        'status' => null
+        'createdAt' => null,
+        'description' => null,
+        'statements' => null,
+        'tokenId' => null,
+        'updatedAt' => null
     ];
 
     /**
@@ -46,9 +50,11 @@ class GetToken200Response implements ModelInterface, ArrayAccess, \JsonSerializa
       * @var boolean[]
       */
     protected static array $openAPINullables = [
-        'data' => false,
-        'message' => false,
-        'status' => false
+        'createdAt' => false,
+        'description' => false,
+        'statements' => false,
+        'tokenId' => false,
+        'updatedAt' => false
     ];
 
     /**
@@ -137,9 +143,11 @@ class GetToken200Response implements ModelInterface, ArrayAccess, \JsonSerializa
      * @var string[]
      */
     protected static $attributeMap = [
-        'data' => 'data',
-        'message' => 'message',
-        'status' => 'status'
+        'createdAt' => 'createdAt',
+        'description' => 'description',
+        'statements' => 'statements',
+        'tokenId' => 'tokenId',
+        'updatedAt' => 'updatedAt'
     ];
 
     /**
@@ -148,9 +156,11 @@ class GetToken200Response implements ModelInterface, ArrayAccess, \JsonSerializa
      * @var string[]
      */
     protected static $setters = [
-        'data' => 'setData',
-        'message' => 'setMessage',
-        'status' => 'setStatus'
+        'createdAt' => 'setCreatedAt',
+        'description' => 'setDescription',
+        'statements' => 'setStatements',
+        'tokenId' => 'setTokenId',
+        'updatedAt' => 'setUpdatedAt'
     ];
 
     /**
@@ -159,9 +169,11 @@ class GetToken200Response implements ModelInterface, ArrayAccess, \JsonSerializa
      * @var string[]
      */
     protected static $getters = [
-        'data' => 'getData',
-        'message' => 'getMessage',
-        'status' => 'getStatus'
+        'createdAt' => 'getCreatedAt',
+        'description' => 'getDescription',
+        'statements' => 'getStatements',
+        'tokenId' => 'getTokenId',
+        'updatedAt' => 'getUpdatedAt'
     ];
 
     /**
@@ -221,9 +233,11 @@ class GetToken200Response implements ModelInterface, ArrayAccess, \JsonSerializa
      */
     public function __construct(?array $data = null)
     {
-        $this->setIfExists('data', $data ?? [], null);
-        $this->setIfExists('message', $data ?? [], null);
-        $this->setIfExists('status', $data ?? [], null);
+        $this->setIfExists('createdAt', $data ?? [], null);
+        $this->setIfExists('description', $data ?? [], null);
+        $this->setIfExists('statements', $data ?? [], null);
+        $this->setIfExists('tokenId', $data ?? [], null);
+        $this->setIfExists('updatedAt', $data ?? [], null);
     }
 
     /**
@@ -253,15 +267,6 @@ class GetToken200Response implements ModelInterface, ArrayAccess, \JsonSerializa
     {
         $invalidProperties = [];
 
-        if ($this->container['data'] === null) {
-            $invalidProperties[] = "'data' can't be null";
-        }
-        if ($this->container['message'] === null) {
-            $invalidProperties[] = "'message' can't be null";
-        }
-        if ($this->container['status'] === null) {
-            $invalidProperties[] = "'status' can't be null";
-        }
         return $invalidProperties;
     }
 
@@ -278,82 +283,136 @@ class GetToken200Response implements ModelInterface, ArrayAccess, \JsonSerializa
 
 
     /**
-     * Gets data
+     * Gets createdAt
      *
-     * @return \Litebase\OpenAPI\Model\TokenShowResponse
+     * @return string|null
      */
-    public function getData()
+    public function getCreatedAt()
     {
-        return $this->container['data'];
+        return $this->container['createdAt'];
     }
 
     /**
-     * Sets data
+     * Sets createdAt
      *
-     * @param \Litebase\OpenAPI\Model\TokenShowResponse $data data
+     * @param string|null $createdAt createdAt
      *
      * @return self
      */
-    public function setData($data)
+    public function setCreatedAt($createdAt)
     {
-        if (is_null($data)) {
-            throw new \InvalidArgumentException('non-nullable data cannot be null');
+        if (is_null($createdAt)) {
+            throw new \InvalidArgumentException('non-nullable createdAt cannot be null');
         }
-        $this->container['data'] = $data;
+        $this->container['createdAt'] = $createdAt;
 
         return $this;
     }
 
     /**
-     * Gets message
+     * Gets description
      *
-     * @return string
+     * @return string|null
      */
-    public function getMessage()
+    public function getDescription()
     {
-        return $this->container['message'];
+        return $this->container['description'];
     }
 
     /**
-     * Sets message
+     * Sets description
      *
-     * @param string $message Response message
+     * @param string|null $description description
      *
      * @return self
      */
-    public function setMessage($message)
+    public function setDescription($description)
     {
-        if (is_null($message)) {
-            throw new \InvalidArgumentException('non-nullable message cannot be null');
+        if (is_null($description)) {
+            throw new \InvalidArgumentException('non-nullable description cannot be null');
         }
-        $this->container['message'] = $message;
+        $this->container['description'] = $description;
 
         return $this;
     }
 
     /**
-     * Gets status
+     * Gets statements
      *
-     * @return string
+     * @return \Litebase\OpenAPI\Model\Statement[]|null
      */
-    public function getStatus()
+    public function getStatements()
     {
-        return $this->container['status'];
+        return $this->container['statements'];
     }
 
     /**
-     * Sets status
+     * Sets statements
      *
-     * @param string $status Response status
+     * @param \Litebase\OpenAPI\Model\Statement[]|null $statements statements
      *
      * @return self
      */
-    public function setStatus($status)
+    public function setStatements($statements)
     {
-        if (is_null($status)) {
-            throw new \InvalidArgumentException('non-nullable status cannot be null');
+        if (is_null($statements)) {
+            throw new \InvalidArgumentException('non-nullable statements cannot be null');
         }
-        $this->container['status'] = $status;
+        $this->container['statements'] = $statements;
+
+        return $this;
+    }
+
+    /**
+     * Gets tokenId
+     *
+     * @return string|null
+     */
+    public function getTokenId()
+    {
+        return $this->container['tokenId'];
+    }
+
+    /**
+     * Sets tokenId
+     *
+     * @param string|null $tokenId tokenId
+     *
+     * @return self
+     */
+    public function setTokenId($tokenId)
+    {
+        if (is_null($tokenId)) {
+            throw new \InvalidArgumentException('non-nullable tokenId cannot be null');
+        }
+        $this->container['tokenId'] = $tokenId;
+
+        return $this;
+    }
+
+    /**
+     * Gets updatedAt
+     *
+     * @return string|null
+     */
+    public function getUpdatedAt()
+    {
+        return $this->container['updatedAt'];
+    }
+
+    /**
+     * Sets updatedAt
+     *
+     * @param string|null $updatedAt updatedAt
+     *
+     * @return self
+     */
+    public function setUpdatedAt($updatedAt)
+    {
+        if (is_null($updatedAt)) {
+            throw new \InvalidArgumentException('non-nullable updatedAt cannot be null');
+        }
+        $this->container['updatedAt'] = $updatedAt;
 
         return $this;
     }

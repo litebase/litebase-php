@@ -5,7 +5,7 @@ namespace Litebase\OpenAPI\Model;
 use \ArrayAccess;
 use \Litebase\OpenAPI\ObjectSerializer;
 
-class GetToken200Response implements ModelInterface, ArrayAccess, \JsonSerializable
+class DatabaseExportControllerStoreResponse implements ModelInterface, ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
@@ -14,7 +14,7 @@ class GetToken200Response implements ModelInterface, ArrayAccess, \JsonSerializa
       *
       * @var string
       */
-    protected static $openAPIModelName = 'getToken_200_response';
+    protected static $openAPIModelName = 'DatabaseExportControllerStoreResponse';
 
     /**
       * Array of property to type mappings. Used for (de)serialization
@@ -22,9 +22,13 @@ class GetToken200Response implements ModelInterface, ArrayAccess, \JsonSerializa
       * @var string[]
       */
     protected static $openAPITypes = [
-        'data' => '\Litebase\OpenAPI\Model\TokenShowResponse',
-        'message' => 'string',
-        'status' => 'string'
+        'databaseBranchName' => 'string',
+        'databaseName' => 'string',
+        'expiresAt' => '\DateTime',
+        'id' => 'string',
+        'rangeCount' => 'int',
+        'ranges' => 'int[]',
+        'startedAt' => '\DateTime'
     ];
 
     /**
@@ -35,9 +39,13 @@ class GetToken200Response implements ModelInterface, ArrayAccess, \JsonSerializa
       * @psalm-var array<string, string|null>
       */
     protected static $openAPIFormats = [
-        'data' => null,
-        'message' => null,
-        'status' => null
+        'databaseBranchName' => null,
+        'databaseName' => null,
+        'expiresAt' => 'date-time',
+        'id' => null,
+        'rangeCount' => null,
+        'ranges' => null,
+        'startedAt' => 'date-time'
     ];
 
     /**
@@ -46,9 +54,13 @@ class GetToken200Response implements ModelInterface, ArrayAccess, \JsonSerializa
       * @var boolean[]
       */
     protected static array $openAPINullables = [
-        'data' => false,
-        'message' => false,
-        'status' => false
+        'databaseBranchName' => false,
+        'databaseName' => false,
+        'expiresAt' => false,
+        'id' => false,
+        'rangeCount' => false,
+        'ranges' => false,
+        'startedAt' => false
     ];
 
     /**
@@ -137,9 +149,13 @@ class GetToken200Response implements ModelInterface, ArrayAccess, \JsonSerializa
      * @var string[]
      */
     protected static $attributeMap = [
-        'data' => 'data',
-        'message' => 'message',
-        'status' => 'status'
+        'databaseBranchName' => 'databaseBranchName',
+        'databaseName' => 'databaseName',
+        'expiresAt' => 'expiresAt',
+        'id' => 'id',
+        'rangeCount' => 'rangeCount',
+        'ranges' => 'ranges',
+        'startedAt' => 'startedAt'
     ];
 
     /**
@@ -148,9 +164,13 @@ class GetToken200Response implements ModelInterface, ArrayAccess, \JsonSerializa
      * @var string[]
      */
     protected static $setters = [
-        'data' => 'setData',
-        'message' => 'setMessage',
-        'status' => 'setStatus'
+        'databaseBranchName' => 'setDatabaseBranchName',
+        'databaseName' => 'setDatabaseName',
+        'expiresAt' => 'setExpiresAt',
+        'id' => 'setId',
+        'rangeCount' => 'setRangeCount',
+        'ranges' => 'setRanges',
+        'startedAt' => 'setStartedAt'
     ];
 
     /**
@@ -159,9 +179,13 @@ class GetToken200Response implements ModelInterface, ArrayAccess, \JsonSerializa
      * @var string[]
      */
     protected static $getters = [
-        'data' => 'getData',
-        'message' => 'getMessage',
-        'status' => 'getStatus'
+        'databaseBranchName' => 'getDatabaseBranchName',
+        'databaseName' => 'getDatabaseName',
+        'expiresAt' => 'getExpiresAt',
+        'id' => 'getId',
+        'rangeCount' => 'getRangeCount',
+        'ranges' => 'getRanges',
+        'startedAt' => 'getStartedAt'
     ];
 
     /**
@@ -221,9 +245,13 @@ class GetToken200Response implements ModelInterface, ArrayAccess, \JsonSerializa
      */
     public function __construct(?array $data = null)
     {
-        $this->setIfExists('data', $data ?? [], null);
-        $this->setIfExists('message', $data ?? [], null);
-        $this->setIfExists('status', $data ?? [], null);
+        $this->setIfExists('databaseBranchName', $data ?? [], null);
+        $this->setIfExists('databaseName', $data ?? [], null);
+        $this->setIfExists('expiresAt', $data ?? [], null);
+        $this->setIfExists('id', $data ?? [], null);
+        $this->setIfExists('rangeCount', $data ?? [], null);
+        $this->setIfExists('ranges', $data ?? [], null);
+        $this->setIfExists('startedAt', $data ?? [], null);
     }
 
     /**
@@ -253,15 +281,6 @@ class GetToken200Response implements ModelInterface, ArrayAccess, \JsonSerializa
     {
         $invalidProperties = [];
 
-        if ($this->container['data'] === null) {
-            $invalidProperties[] = "'data' can't be null";
-        }
-        if ($this->container['message'] === null) {
-            $invalidProperties[] = "'message' can't be null";
-        }
-        if ($this->container['status'] === null) {
-            $invalidProperties[] = "'status' can't be null";
-        }
         return $invalidProperties;
     }
 
@@ -278,82 +297,190 @@ class GetToken200Response implements ModelInterface, ArrayAccess, \JsonSerializa
 
 
     /**
-     * Gets data
+     * Gets databaseBranchName
      *
-     * @return \Litebase\OpenAPI\Model\TokenShowResponse
+     * @return string|null
      */
-    public function getData()
+    public function getDatabaseBranchName()
     {
-        return $this->container['data'];
+        return $this->container['databaseBranchName'];
     }
 
     /**
-     * Sets data
+     * Sets databaseBranchName
      *
-     * @param \Litebase\OpenAPI\Model\TokenShowResponse $data data
+     * @param string|null $databaseBranchName databaseBranchName
      *
      * @return self
      */
-    public function setData($data)
+    public function setDatabaseBranchName($databaseBranchName)
     {
-        if (is_null($data)) {
-            throw new \InvalidArgumentException('non-nullable data cannot be null');
+        if (is_null($databaseBranchName)) {
+            throw new \InvalidArgumentException('non-nullable databaseBranchName cannot be null');
         }
-        $this->container['data'] = $data;
+        $this->container['databaseBranchName'] = $databaseBranchName;
 
         return $this;
     }
 
     /**
-     * Gets message
+     * Gets databaseName
      *
-     * @return string
+     * @return string|null
      */
-    public function getMessage()
+    public function getDatabaseName()
     {
-        return $this->container['message'];
+        return $this->container['databaseName'];
     }
 
     /**
-     * Sets message
+     * Sets databaseName
      *
-     * @param string $message Response message
+     * @param string|null $databaseName databaseName
      *
      * @return self
      */
-    public function setMessage($message)
+    public function setDatabaseName($databaseName)
     {
-        if (is_null($message)) {
-            throw new \InvalidArgumentException('non-nullable message cannot be null');
+        if (is_null($databaseName)) {
+            throw new \InvalidArgumentException('non-nullable databaseName cannot be null');
         }
-        $this->container['message'] = $message;
+        $this->container['databaseName'] = $databaseName;
 
         return $this;
     }
 
     /**
-     * Gets status
+     * Gets expiresAt
      *
-     * @return string
+     * @return \DateTime|null
      */
-    public function getStatus()
+    public function getExpiresAt()
     {
-        return $this->container['status'];
+        return $this->container['expiresAt'];
     }
 
     /**
-     * Sets status
+     * Sets expiresAt
      *
-     * @param string $status Response status
+     * @param \DateTime|null $expiresAt expiresAt
      *
      * @return self
      */
-    public function setStatus($status)
+    public function setExpiresAt($expiresAt)
     {
-        if (is_null($status)) {
-            throw new \InvalidArgumentException('non-nullable status cannot be null');
+        if (is_null($expiresAt)) {
+            throw new \InvalidArgumentException('non-nullable expiresAt cannot be null');
         }
-        $this->container['status'] = $status;
+        $this->container['expiresAt'] = $expiresAt;
+
+        return $this;
+    }
+
+    /**
+     * Gets id
+     *
+     * @return string|null
+     */
+    public function getId()
+    {
+        return $this->container['id'];
+    }
+
+    /**
+     * Sets id
+     *
+     * @param string|null $id id
+     *
+     * @return self
+     */
+    public function setId($id)
+    {
+        if (is_null($id)) {
+            throw new \InvalidArgumentException('non-nullable id cannot be null');
+        }
+        $this->container['id'] = $id;
+
+        return $this;
+    }
+
+    /**
+     * Gets rangeCount
+     *
+     * @return int|null
+     */
+    public function getRangeCount()
+    {
+        return $this->container['rangeCount'];
+    }
+
+    /**
+     * Sets rangeCount
+     *
+     * @param int|null $rangeCount rangeCount
+     *
+     * @return self
+     */
+    public function setRangeCount($rangeCount)
+    {
+        if (is_null($rangeCount)) {
+            throw new \InvalidArgumentException('non-nullable rangeCount cannot be null');
+        }
+        $this->container['rangeCount'] = $rangeCount;
+
+        return $this;
+    }
+
+    /**
+     * Gets ranges
+     *
+     * @return int[]|null
+     */
+    public function getRanges()
+    {
+        return $this->container['ranges'];
+    }
+
+    /**
+     * Sets ranges
+     *
+     * @param int[]|null $ranges ranges
+     *
+     * @return self
+     */
+    public function setRanges($ranges)
+    {
+        if (is_null($ranges)) {
+            throw new \InvalidArgumentException('non-nullable ranges cannot be null');
+        }
+        $this->container['ranges'] = $ranges;
+
+        return $this;
+    }
+
+    /**
+     * Gets startedAt
+     *
+     * @return \DateTime|null
+     */
+    public function getStartedAt()
+    {
+        return $this->container['startedAt'];
+    }
+
+    /**
+     * Sets startedAt
+     *
+     * @param \DateTime|null $startedAt startedAt
+     *
+     * @return self
+     */
+    public function setStartedAt($startedAt)
+    {
+        if (is_null($startedAt)) {
+            throw new \InvalidArgumentException('non-nullable startedAt cannot be null');
+        }
+        $this->container['startedAt'] = $startedAt;
 
         return $this;
     }

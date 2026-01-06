@@ -5,7 +5,7 @@ namespace Litebase\OpenAPI\Model;
 use \ArrayAccess;
 use \Litebase\OpenAPI\ObjectSerializer;
 
-class GetToken200Response implements ModelInterface, ArrayAccess, \JsonSerializable
+class ImportChunkStoreRequest implements ModelInterface, ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
@@ -14,7 +14,7 @@ class GetToken200Response implements ModelInterface, ArrayAccess, \JsonSerializa
       *
       * @var string
       */
-    protected static $openAPIModelName = 'getToken_200_response';
+    protected static $openAPIModelName = 'ImportChunkStoreRequest';
 
     /**
       * Array of property to type mappings. Used for (de)serialization
@@ -22,9 +22,9 @@ class GetToken200Response implements ModelInterface, ArrayAccess, \JsonSerializa
       * @var string[]
       */
     protected static $openAPITypes = [
-        'data' => '\Litebase\OpenAPI\Model\TokenShowResponse',
-        'message' => 'string',
-        'status' => 'string'
+        'checksum' => 'string',
+        'chunkData' => 'string',
+        'chunkIndex' => 'int'
     ];
 
     /**
@@ -35,9 +35,9 @@ class GetToken200Response implements ModelInterface, ArrayAccess, \JsonSerializa
       * @psalm-var array<string, string|null>
       */
     protected static $openAPIFormats = [
-        'data' => null,
-        'message' => null,
-        'status' => null
+        'checksum' => null,
+        'chunkData' => null,
+        'chunkIndex' => null
     ];
 
     /**
@@ -46,9 +46,9 @@ class GetToken200Response implements ModelInterface, ArrayAccess, \JsonSerializa
       * @var boolean[]
       */
     protected static array $openAPINullables = [
-        'data' => false,
-        'message' => false,
-        'status' => false
+        'checksum' => false,
+        'chunkData' => false,
+        'chunkIndex' => false
     ];
 
     /**
@@ -137,9 +137,9 @@ class GetToken200Response implements ModelInterface, ArrayAccess, \JsonSerializa
      * @var string[]
      */
     protected static $attributeMap = [
-        'data' => 'data',
-        'message' => 'message',
-        'status' => 'status'
+        'checksum' => 'checksum',
+        'chunkData' => 'chunkData',
+        'chunkIndex' => 'chunkIndex'
     ];
 
     /**
@@ -148,9 +148,9 @@ class GetToken200Response implements ModelInterface, ArrayAccess, \JsonSerializa
      * @var string[]
      */
     protected static $setters = [
-        'data' => 'setData',
-        'message' => 'setMessage',
-        'status' => 'setStatus'
+        'checksum' => 'setChecksum',
+        'chunkData' => 'setChunkData',
+        'chunkIndex' => 'setChunkIndex'
     ];
 
     /**
@@ -159,9 +159,9 @@ class GetToken200Response implements ModelInterface, ArrayAccess, \JsonSerializa
      * @var string[]
      */
     protected static $getters = [
-        'data' => 'getData',
-        'message' => 'getMessage',
-        'status' => 'getStatus'
+        'checksum' => 'getChecksum',
+        'chunkData' => 'getChunkData',
+        'chunkIndex' => 'getChunkIndex'
     ];
 
     /**
@@ -221,9 +221,9 @@ class GetToken200Response implements ModelInterface, ArrayAccess, \JsonSerializa
      */
     public function __construct(?array $data = null)
     {
-        $this->setIfExists('data', $data ?? [], null);
-        $this->setIfExists('message', $data ?? [], null);
-        $this->setIfExists('status', $data ?? [], null);
+        $this->setIfExists('checksum', $data ?? [], null);
+        $this->setIfExists('chunkData', $data ?? [], null);
+        $this->setIfExists('chunkIndex', $data ?? [], null);
     }
 
     /**
@@ -253,14 +253,11 @@ class GetToken200Response implements ModelInterface, ArrayAccess, \JsonSerializa
     {
         $invalidProperties = [];
 
-        if ($this->container['data'] === null) {
-            $invalidProperties[] = "'data' can't be null";
+        if ($this->container['chunkData'] === null) {
+            $invalidProperties[] = "'chunkData' can't be null";
         }
-        if ($this->container['message'] === null) {
-            $invalidProperties[] = "'message' can't be null";
-        }
-        if ($this->container['status'] === null) {
-            $invalidProperties[] = "'status' can't be null";
+        if ($this->container['chunkIndex'] === null) {
+            $invalidProperties[] = "'chunkIndex' can't be null";
         }
         return $invalidProperties;
     }
@@ -278,82 +275,82 @@ class GetToken200Response implements ModelInterface, ArrayAccess, \JsonSerializa
 
 
     /**
-     * Gets data
+     * Gets checksum
      *
-     * @return \Litebase\OpenAPI\Model\TokenShowResponse
+     * @return string|null
      */
-    public function getData()
+    public function getChecksum()
     {
-        return $this->container['data'];
+        return $this->container['checksum'];
     }
 
     /**
-     * Sets data
+     * Sets checksum
      *
-     * @param \Litebase\OpenAPI\Model\TokenShowResponse $data data
+     * @param string|null $checksum checksum
      *
      * @return self
      */
-    public function setData($data)
+    public function setChecksum($checksum)
     {
-        if (is_null($data)) {
-            throw new \InvalidArgumentException('non-nullable data cannot be null');
+        if (is_null($checksum)) {
+            throw new \InvalidArgumentException('non-nullable checksum cannot be null');
         }
-        $this->container['data'] = $data;
+        $this->container['checksum'] = $checksum;
 
         return $this;
     }
 
     /**
-     * Gets message
+     * Gets chunkData
      *
      * @return string
      */
-    public function getMessage()
+    public function getChunkData()
     {
-        return $this->container['message'];
+        return $this->container['chunkData'];
     }
 
     /**
-     * Sets message
+     * Sets chunkData
      *
-     * @param string $message Response message
+     * @param string $chunkData chunkData
      *
      * @return self
      */
-    public function setMessage($message)
+    public function setChunkData($chunkData)
     {
-        if (is_null($message)) {
-            throw new \InvalidArgumentException('non-nullable message cannot be null');
+        if (is_null($chunkData)) {
+            throw new \InvalidArgumentException('non-nullable chunkData cannot be null');
         }
-        $this->container['message'] = $message;
+        $this->container['chunkData'] = $chunkData;
 
         return $this;
     }
 
     /**
-     * Gets status
+     * Gets chunkIndex
      *
-     * @return string
+     * @return int
      */
-    public function getStatus()
+    public function getChunkIndex()
     {
-        return $this->container['status'];
+        return $this->container['chunkIndex'];
     }
 
     /**
-     * Sets status
+     * Sets chunkIndex
      *
-     * @param string $status Response status
+     * @param int $chunkIndex chunkIndex
      *
      * @return self
      */
-    public function setStatus($status)
+    public function setChunkIndex($chunkIndex)
     {
-        if (is_null($status)) {
-            throw new \InvalidArgumentException('non-nullable status cannot be null');
+        if (is_null($chunkIndex)) {
+            throw new \InvalidArgumentException('non-nullable chunkIndex cannot be null');
         }
-        $this->container['status'] = $status;
+        $this->container['chunkIndex'] = $chunkIndex;
 
         return $this;
     }

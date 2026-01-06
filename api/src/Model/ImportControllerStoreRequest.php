@@ -5,7 +5,7 @@ namespace Litebase\OpenAPI\Model;
 use \ArrayAccess;
 use \Litebase\OpenAPI\ObjectSerializer;
 
-class GetToken200Response implements ModelInterface, ArrayAccess, \JsonSerializable
+class ImportControllerStoreRequest implements ModelInterface, ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
@@ -14,7 +14,7 @@ class GetToken200Response implements ModelInterface, ArrayAccess, \JsonSerializa
       *
       * @var string
       */
-    protected static $openAPIModelName = 'getToken_200_response';
+    protected static $openAPIModelName = 'ImportControllerStoreRequest';
 
     /**
       * Array of property to type mappings. Used for (de)serialization
@@ -22,9 +22,9 @@ class GetToken200Response implements ModelInterface, ArrayAccess, \JsonSerializa
       * @var string[]
       */
     protected static $openAPITypes = [
-        'data' => '\Litebase\OpenAPI\Model\TokenShowResponse',
-        'message' => 'string',
-        'status' => 'string'
+        'branchName' => 'string',
+        'chunkCount' => 'int',
+        'databaseName' => 'string'
     ];
 
     /**
@@ -35,9 +35,9 @@ class GetToken200Response implements ModelInterface, ArrayAccess, \JsonSerializa
       * @psalm-var array<string, string|null>
       */
     protected static $openAPIFormats = [
-        'data' => null,
-        'message' => null,
-        'status' => null
+        'branchName' => null,
+        'chunkCount' => null,
+        'databaseName' => null
     ];
 
     /**
@@ -46,9 +46,9 @@ class GetToken200Response implements ModelInterface, ArrayAccess, \JsonSerializa
       * @var boolean[]
       */
     protected static array $openAPINullables = [
-        'data' => false,
-        'message' => false,
-        'status' => false
+        'branchName' => false,
+        'chunkCount' => false,
+        'databaseName' => false
     ];
 
     /**
@@ -137,9 +137,9 @@ class GetToken200Response implements ModelInterface, ArrayAccess, \JsonSerializa
      * @var string[]
      */
     protected static $attributeMap = [
-        'data' => 'data',
-        'message' => 'message',
-        'status' => 'status'
+        'branchName' => 'branchName',
+        'chunkCount' => 'chunkCount',
+        'databaseName' => 'databaseName'
     ];
 
     /**
@@ -148,9 +148,9 @@ class GetToken200Response implements ModelInterface, ArrayAccess, \JsonSerializa
      * @var string[]
      */
     protected static $setters = [
-        'data' => 'setData',
-        'message' => 'setMessage',
-        'status' => 'setStatus'
+        'branchName' => 'setBranchName',
+        'chunkCount' => 'setChunkCount',
+        'databaseName' => 'setDatabaseName'
     ];
 
     /**
@@ -159,9 +159,9 @@ class GetToken200Response implements ModelInterface, ArrayAccess, \JsonSerializa
      * @var string[]
      */
     protected static $getters = [
-        'data' => 'getData',
-        'message' => 'getMessage',
-        'status' => 'getStatus'
+        'branchName' => 'getBranchName',
+        'chunkCount' => 'getChunkCount',
+        'databaseName' => 'getDatabaseName'
     ];
 
     /**
@@ -221,9 +221,9 @@ class GetToken200Response implements ModelInterface, ArrayAccess, \JsonSerializa
      */
     public function __construct(?array $data = null)
     {
-        $this->setIfExists('data', $data ?? [], null);
-        $this->setIfExists('message', $data ?? [], null);
-        $this->setIfExists('status', $data ?? [], null);
+        $this->setIfExists('branchName', $data ?? [], null);
+        $this->setIfExists('chunkCount', $data ?? [], null);
+        $this->setIfExists('databaseName', $data ?? [], null);
     }
 
     /**
@@ -253,14 +253,11 @@ class GetToken200Response implements ModelInterface, ArrayAccess, \JsonSerializa
     {
         $invalidProperties = [];
 
-        if ($this->container['data'] === null) {
-            $invalidProperties[] = "'data' can't be null";
+        if ($this->container['chunkCount'] === null) {
+            $invalidProperties[] = "'chunkCount' can't be null";
         }
-        if ($this->container['message'] === null) {
-            $invalidProperties[] = "'message' can't be null";
-        }
-        if ($this->container['status'] === null) {
-            $invalidProperties[] = "'status' can't be null";
+        if ($this->container['databaseName'] === null) {
+            $invalidProperties[] = "'databaseName' can't be null";
         }
         return $invalidProperties;
     }
@@ -278,82 +275,82 @@ class GetToken200Response implements ModelInterface, ArrayAccess, \JsonSerializa
 
 
     /**
-     * Gets data
+     * Gets branchName
      *
-     * @return \Litebase\OpenAPI\Model\TokenShowResponse
+     * @return string|null
      */
-    public function getData()
+    public function getBranchName()
     {
-        return $this->container['data'];
+        return $this->container['branchName'];
     }
 
     /**
-     * Sets data
+     * Sets branchName
      *
-     * @param \Litebase\OpenAPI\Model\TokenShowResponse $data data
+     * @param string|null $branchName branchName
      *
      * @return self
      */
-    public function setData($data)
+    public function setBranchName($branchName)
     {
-        if (is_null($data)) {
-            throw new \InvalidArgumentException('non-nullable data cannot be null');
+        if (is_null($branchName)) {
+            throw new \InvalidArgumentException('non-nullable branchName cannot be null');
         }
-        $this->container['data'] = $data;
+        $this->container['branchName'] = $branchName;
 
         return $this;
     }
 
     /**
-     * Gets message
+     * Gets chunkCount
      *
-     * @return string
+     * @return int
      */
-    public function getMessage()
+    public function getChunkCount()
     {
-        return $this->container['message'];
+        return $this->container['chunkCount'];
     }
 
     /**
-     * Sets message
+     * Sets chunkCount
      *
-     * @param string $message Response message
+     * @param int $chunkCount chunkCount
      *
      * @return self
      */
-    public function setMessage($message)
+    public function setChunkCount($chunkCount)
     {
-        if (is_null($message)) {
-            throw new \InvalidArgumentException('non-nullable message cannot be null');
+        if (is_null($chunkCount)) {
+            throw new \InvalidArgumentException('non-nullable chunkCount cannot be null');
         }
-        $this->container['message'] = $message;
+        $this->container['chunkCount'] = $chunkCount;
 
         return $this;
     }
 
     /**
-     * Gets status
+     * Gets databaseName
      *
      * @return string
      */
-    public function getStatus()
+    public function getDatabaseName()
     {
-        return $this->container['status'];
+        return $this->container['databaseName'];
     }
 
     /**
-     * Sets status
+     * Sets databaseName
      *
-     * @param string $status Response status
+     * @param string $databaseName databaseName
      *
      * @return self
      */
-    public function setStatus($status)
+    public function setDatabaseName($databaseName)
     {
-        if (is_null($status)) {
-            throw new \InvalidArgumentException('non-nullable status cannot be null');
+        if (is_null($databaseName)) {
+            throw new \InvalidArgumentException('non-nullable databaseName cannot be null');
         }
-        $this->container['status'] = $status;
+        $this->container['databaseName'] = $databaseName;
 
         return $this;
     }
