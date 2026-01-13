@@ -12,6 +12,7 @@ use Litebase\OpenAPI\API\ClusterStatusApi;
 use Litebase\OpenAPI\API\DatabaseApi;
 use Litebase\OpenAPI\API\DatabaseBackupApi;
 use Litebase\OpenAPI\API\DatabaseBranchApi;
+use Litebase\OpenAPI\API\DatabaseBranchSettingsApi;
 use Litebase\OpenAPI\API\DatabaseExportApi;
 use Litebase\OpenAPI\API\DatabaseExportEndApi;
 use Litebase\OpenAPI\API\DatabaseExportPartApi;
@@ -105,6 +106,11 @@ class ApiClient
     public function databaseBranch(): DatabaseBranchApi
     {
         return new DatabaseBranchApi($this->getHttpClient(), $this->config);
+    }
+
+    public function databaseBranchSettings(): DatabaseBranchSettingsApi
+    {
+        return new DatabaseBranchSettingsApi($this->getHttpClient(), $this->config);
     }
 
     public function databaseExport(): DatabaseExportApi

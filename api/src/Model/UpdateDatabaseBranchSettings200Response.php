@@ -5,7 +5,7 @@ namespace Litebase\OpenAPI\Model;
 use \ArrayAccess;
 use \Litebase\OpenAPI\ObjectSerializer;
 
-class DatabaseShowResponse implements ModelInterface, ArrayAccess, \JsonSerializable
+class UpdateDatabaseBranchSettings200Response implements ModelInterface, ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
@@ -14,7 +14,7 @@ class DatabaseShowResponse implements ModelInterface, ArrayAccess, \JsonSerializ
       *
       * @var string
       */
-    protected static $openAPIModelName = 'DatabaseShowResponse';
+    protected static $openAPIModelName = 'updateDatabaseBranchSettings_200_response';
 
     /**
       * Array of property to type mappings. Used for (de)serialization
@@ -22,13 +22,9 @@ class DatabaseShowResponse implements ModelInterface, ArrayAccess, \JsonSerializ
       * @var string[]
       */
     protected static $openAPITypes = [
-        'branchName' => 'string',
-        'createdAt' => '\DateTime',
-        'databaseId' => 'string',
-        'databaseName' => 'string',
-        'id' => 'int',
-        'updatedAt' => '\DateTime',
-        'url' => 'string'
+        'data' => 'object',
+        'message' => 'string',
+        'status' => 'string'
     ];
 
     /**
@@ -39,13 +35,9 @@ class DatabaseShowResponse implements ModelInterface, ArrayAccess, \JsonSerializ
       * @psalm-var array<string, string|null>
       */
     protected static $openAPIFormats = [
-        'branchName' => null,
-        'createdAt' => 'date-time',
-        'databaseId' => null,
-        'databaseName' => null,
-        'id' => null,
-        'updatedAt' => 'date-time',
-        'url' => null
+        'data' => null,
+        'message' => null,
+        'status' => null
     ];
 
     /**
@@ -54,13 +46,9 @@ class DatabaseShowResponse implements ModelInterface, ArrayAccess, \JsonSerializ
       * @var boolean[]
       */
     protected static array $openAPINullables = [
-        'branchName' => false,
-        'createdAt' => false,
-        'databaseId' => false,
-        'databaseName' => false,
-        'id' => false,
-        'updatedAt' => false,
-        'url' => false
+        'data' => false,
+        'message' => false,
+        'status' => false
     ];
 
     /**
@@ -149,13 +137,9 @@ class DatabaseShowResponse implements ModelInterface, ArrayAccess, \JsonSerializ
      * @var string[]
      */
     protected static $attributeMap = [
-        'branchName' => 'branchName',
-        'createdAt' => 'createdAt',
-        'databaseId' => 'databaseId',
-        'databaseName' => 'databaseName',
-        'id' => 'id',
-        'updatedAt' => 'updatedAt',
-        'url' => 'url'
+        'data' => 'data',
+        'message' => 'message',
+        'status' => 'status'
     ];
 
     /**
@@ -164,13 +148,9 @@ class DatabaseShowResponse implements ModelInterface, ArrayAccess, \JsonSerializ
      * @var string[]
      */
     protected static $setters = [
-        'branchName' => 'setBranchName',
-        'createdAt' => 'setCreatedAt',
-        'databaseId' => 'setDatabaseId',
-        'databaseName' => 'setDatabaseName',
-        'id' => 'setId',
-        'updatedAt' => 'setUpdatedAt',
-        'url' => 'setUrl'
+        'data' => 'setData',
+        'message' => 'setMessage',
+        'status' => 'setStatus'
     ];
 
     /**
@@ -179,13 +159,9 @@ class DatabaseShowResponse implements ModelInterface, ArrayAccess, \JsonSerializ
      * @var string[]
      */
     protected static $getters = [
-        'branchName' => 'getBranchName',
-        'createdAt' => 'getCreatedAt',
-        'databaseId' => 'getDatabaseId',
-        'databaseName' => 'getDatabaseName',
-        'id' => 'getId',
-        'updatedAt' => 'getUpdatedAt',
-        'url' => 'getUrl'
+        'data' => 'getData',
+        'message' => 'getMessage',
+        'status' => 'getStatus'
     ];
 
     /**
@@ -245,13 +221,9 @@ class DatabaseShowResponse implements ModelInterface, ArrayAccess, \JsonSerializ
      */
     public function __construct(?array $data = null)
     {
-        $this->setIfExists('branchName', $data ?? [], null);
-        $this->setIfExists('createdAt', $data ?? [], null);
-        $this->setIfExists('databaseId', $data ?? [], null);
-        $this->setIfExists('databaseName', $data ?? [], null);
-        $this->setIfExists('id', $data ?? [], null);
-        $this->setIfExists('updatedAt', $data ?? [], null);
-        $this->setIfExists('url', $data ?? [], null);
+        $this->setIfExists('data', $data ?? [], null);
+        $this->setIfExists('message', $data ?? [], null);
+        $this->setIfExists('status', $data ?? [], null);
     }
 
     /**
@@ -281,6 +253,15 @@ class DatabaseShowResponse implements ModelInterface, ArrayAccess, \JsonSerializ
     {
         $invalidProperties = [];
 
+        if ($this->container['data'] === null) {
+            $invalidProperties[] = "'data' can't be null";
+        }
+        if ($this->container['message'] === null) {
+            $invalidProperties[] = "'message' can't be null";
+        }
+        if ($this->container['status'] === null) {
+            $invalidProperties[] = "'status' can't be null";
+        }
         return $invalidProperties;
     }
 
@@ -297,190 +278,82 @@ class DatabaseShowResponse implements ModelInterface, ArrayAccess, \JsonSerializ
 
 
     /**
-     * Gets branchName
+     * Gets data
      *
-     * @return string|null
+     * @return object
      */
-    public function getBranchName()
+    public function getData()
     {
-        return $this->container['branchName'];
+        return $this->container['data'];
     }
 
     /**
-     * Sets branchName
+     * Sets data
      *
-     * @param string|null $branchName branchName
+     * @param object $data Return value from .DatabaseBranchSettingsUpdateResponse()
      *
      * @return self
      */
-    public function setBranchName($branchName)
+    public function setData($data)
     {
-        if (is_null($branchName)) {
-            throw new \InvalidArgumentException('non-nullable branchName cannot be null');
+        if (is_null($data)) {
+            throw new \InvalidArgumentException('non-nullable data cannot be null');
         }
-        $this->container['branchName'] = $branchName;
+        $this->container['data'] = $data;
 
         return $this;
     }
 
     /**
-     * Gets createdAt
+     * Gets message
      *
-     * @return \DateTime|null
+     * @return string
      */
-    public function getCreatedAt()
+    public function getMessage()
     {
-        return $this->container['createdAt'];
+        return $this->container['message'];
     }
 
     /**
-     * Sets createdAt
+     * Sets message
      *
-     * @param \DateTime|null $createdAt Creation timestamp
+     * @param string $message Response message
      *
      * @return self
      */
-    public function setCreatedAt($createdAt)
+    public function setMessage($message)
     {
-        if (is_null($createdAt)) {
-            throw new \InvalidArgumentException('non-nullable createdAt cannot be null');
+        if (is_null($message)) {
+            throw new \InvalidArgumentException('non-nullable message cannot be null');
         }
-        $this->container['createdAt'] = $createdAt;
+        $this->container['message'] = $message;
 
         return $this;
     }
 
     /**
-     * Gets databaseId
+     * Gets status
      *
-     * @return string|null
+     * @return string
      */
-    public function getDatabaseId()
+    public function getStatus()
     {
-        return $this->container['databaseId'];
+        return $this->container['status'];
     }
 
     /**
-     * Sets databaseId
+     * Sets status
      *
-     * @param string|null $databaseId databaseId
+     * @param string $status Response status
      *
      * @return self
      */
-    public function setDatabaseId($databaseId)
+    public function setStatus($status)
     {
-        if (is_null($databaseId)) {
-            throw new \InvalidArgumentException('non-nullable databaseId cannot be null');
+        if (is_null($status)) {
+            throw new \InvalidArgumentException('non-nullable status cannot be null');
         }
-        $this->container['databaseId'] = $databaseId;
-
-        return $this;
-    }
-
-    /**
-     * Gets databaseName
-     *
-     * @return string|null
-     */
-    public function getDatabaseName()
-    {
-        return $this->container['databaseName'];
-    }
-
-    /**
-     * Sets databaseName
-     *
-     * @param string|null $databaseName databaseName
-     *
-     * @return self
-     */
-    public function setDatabaseName($databaseName)
-    {
-        if (is_null($databaseName)) {
-            throw new \InvalidArgumentException('non-nullable databaseName cannot be null');
-        }
-        $this->container['databaseName'] = $databaseName;
-
-        return $this;
-    }
-
-    /**
-     * Gets id
-     *
-     * @return int|null
-     */
-    public function getId()
-    {
-        return $this->container['id'];
-    }
-
-    /**
-     * Sets id
-     *
-     * @param int|null $id id
-     *
-     * @return self
-     */
-    public function setId($id)
-    {
-        if (is_null($id)) {
-            throw new \InvalidArgumentException('non-nullable id cannot be null');
-        }
-        $this->container['id'] = $id;
-
-        return $this;
-    }
-
-    /**
-     * Gets updatedAt
-     *
-     * @return \DateTime|null
-     */
-    public function getUpdatedAt()
-    {
-        return $this->container['updatedAt'];
-    }
-
-    /**
-     * Sets updatedAt
-     *
-     * @param \DateTime|null $updatedAt Last update timestamp
-     *
-     * @return self
-     */
-    public function setUpdatedAt($updatedAt)
-    {
-        if (is_null($updatedAt)) {
-            throw new \InvalidArgumentException('non-nullable updatedAt cannot be null');
-        }
-        $this->container['updatedAt'] = $updatedAt;
-
-        return $this;
-    }
-
-    /**
-     * Gets url
-     *
-     * @return string|null
-     */
-    public function getUrl()
-    {
-        return $this->container['url'];
-    }
-
-    /**
-     * Sets url
-     *
-     * @param string|null $url url
-     *
-     * @return self
-     */
-    public function setUrl($url)
-    {
-        if (is_null($url)) {
-            throw new \InvalidArgumentException('non-nullable url cannot be null');
-        }
-        $this->container['url'] = $url;
+        $this->container['status'] = $status;
 
         return $this;
     }

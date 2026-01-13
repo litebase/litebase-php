@@ -27,7 +27,6 @@ class DatabaseStoreResponse implements ModelInterface, ArrayAccess, \JsonSeriali
         'databaseId' => 'string',
         'databaseName' => 'string',
         'id' => 'int',
-        'settings' => '\Litebase\OpenAPI\Model\DatabaseSettings',
         'updatedAt' => '\DateTime',
         'url' => 'string'
     ];
@@ -45,7 +44,6 @@ class DatabaseStoreResponse implements ModelInterface, ArrayAccess, \JsonSeriali
         'databaseId' => null,
         'databaseName' => null,
         'id' => null,
-        'settings' => null,
         'updatedAt' => 'date-time',
         'url' => null
     ];
@@ -61,7 +59,6 @@ class DatabaseStoreResponse implements ModelInterface, ArrayAccess, \JsonSeriali
         'databaseId' => false,
         'databaseName' => false,
         'id' => false,
-        'settings' => false,
         'updatedAt' => false,
         'url' => false
     ];
@@ -157,7 +154,6 @@ class DatabaseStoreResponse implements ModelInterface, ArrayAccess, \JsonSeriali
         'databaseId' => 'databaseId',
         'databaseName' => 'databaseName',
         'id' => 'id',
-        'settings' => 'settings',
         'updatedAt' => 'updatedAt',
         'url' => 'url'
     ];
@@ -173,7 +169,6 @@ class DatabaseStoreResponse implements ModelInterface, ArrayAccess, \JsonSeriali
         'databaseId' => 'setDatabaseId',
         'databaseName' => 'setDatabaseName',
         'id' => 'setId',
-        'settings' => 'setSettings',
         'updatedAt' => 'setUpdatedAt',
         'url' => 'setUrl'
     ];
@@ -189,7 +184,6 @@ class DatabaseStoreResponse implements ModelInterface, ArrayAccess, \JsonSeriali
         'databaseId' => 'getDatabaseId',
         'databaseName' => 'getDatabaseName',
         'id' => 'getId',
-        'settings' => 'getSettings',
         'updatedAt' => 'getUpdatedAt',
         'url' => 'getUrl'
     ];
@@ -256,7 +250,6 @@ class DatabaseStoreResponse implements ModelInterface, ArrayAccess, \JsonSeriali
         $this->setIfExists('databaseId', $data ?? [], null);
         $this->setIfExists('databaseName', $data ?? [], null);
         $this->setIfExists('id', $data ?? [], null);
-        $this->setIfExists('settings', $data ?? [], null);
         $this->setIfExists('updatedAt', $data ?? [], null);
         $this->setIfExists('url', $data ?? [], null);
     }
@@ -434,33 +427,6 @@ class DatabaseStoreResponse implements ModelInterface, ArrayAccess, \JsonSeriali
             throw new \InvalidArgumentException('non-nullable id cannot be null');
         }
         $this->container['id'] = $id;
-
-        return $this;
-    }
-
-    /**
-     * Gets settings
-     *
-     * @return \Litebase\OpenAPI\Model\DatabaseSettings|null
-     */
-    public function getSettings()
-    {
-        return $this->container['settings'];
-    }
-
-    /**
-     * Sets settings
-     *
-     * @param \Litebase\OpenAPI\Model\DatabaseSettings|null $settings settings
-     *
-     * @return self
-     */
-    public function setSettings($settings)
-    {
-        if (is_null($settings)) {
-            throw new \InvalidArgumentException('non-nullable settings cannot be null');
-        }
-        $this->container['settings'] = $settings;
 
         return $this;
     }

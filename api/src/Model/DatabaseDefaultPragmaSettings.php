@@ -5,7 +5,7 @@ namespace Litebase\OpenAPI\Model;
 use \ArrayAccess;
 use \Litebase\OpenAPI\ObjectSerializer;
 
-class DatabaseShowResponse implements ModelInterface, ArrayAccess, \JsonSerializable
+class DatabaseDefaultPragmaSettings implements ModelInterface, ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
@@ -14,7 +14,7 @@ class DatabaseShowResponse implements ModelInterface, ArrayAccess, \JsonSerializ
       *
       * @var string
       */
-    protected static $openAPIModelName = 'DatabaseShowResponse';
+    protected static $openAPIModelName = 'DatabaseDefaultPragmaSettings';
 
     /**
       * Array of property to type mappings. Used for (de)serialization
@@ -22,13 +22,7 @@ class DatabaseShowResponse implements ModelInterface, ArrayAccess, \JsonSerializ
       * @var string[]
       */
     protected static $openAPITypes = [
-        'branchName' => 'string',
-        'createdAt' => '\DateTime',
-        'databaseId' => 'string',
-        'databaseName' => 'string',
-        'id' => 'int',
-        'updatedAt' => '\DateTime',
-        'url' => 'string'
+        'foreignKeys' => 'string'
     ];
 
     /**
@@ -39,13 +33,7 @@ class DatabaseShowResponse implements ModelInterface, ArrayAccess, \JsonSerializ
       * @psalm-var array<string, string|null>
       */
     protected static $openAPIFormats = [
-        'branchName' => null,
-        'createdAt' => 'date-time',
-        'databaseId' => null,
-        'databaseName' => null,
-        'id' => null,
-        'updatedAt' => 'date-time',
-        'url' => null
+        'foreignKeys' => null
     ];
 
     /**
@@ -54,13 +42,7 @@ class DatabaseShowResponse implements ModelInterface, ArrayAccess, \JsonSerializ
       * @var boolean[]
       */
     protected static array $openAPINullables = [
-        'branchName' => false,
-        'createdAt' => false,
-        'databaseId' => false,
-        'databaseName' => false,
-        'id' => false,
-        'updatedAt' => false,
-        'url' => false
+        'foreignKeys' => false
     ];
 
     /**
@@ -149,13 +131,7 @@ class DatabaseShowResponse implements ModelInterface, ArrayAccess, \JsonSerializ
      * @var string[]
      */
     protected static $attributeMap = [
-        'branchName' => 'branchName',
-        'createdAt' => 'createdAt',
-        'databaseId' => 'databaseId',
-        'databaseName' => 'databaseName',
-        'id' => 'id',
-        'updatedAt' => 'updatedAt',
-        'url' => 'url'
+        'foreignKeys' => 'foreignKeys'
     ];
 
     /**
@@ -164,13 +140,7 @@ class DatabaseShowResponse implements ModelInterface, ArrayAccess, \JsonSerializ
      * @var string[]
      */
     protected static $setters = [
-        'branchName' => 'setBranchName',
-        'createdAt' => 'setCreatedAt',
-        'databaseId' => 'setDatabaseId',
-        'databaseName' => 'setDatabaseName',
-        'id' => 'setId',
-        'updatedAt' => 'setUpdatedAt',
-        'url' => 'setUrl'
+        'foreignKeys' => 'setForeignKeys'
     ];
 
     /**
@@ -179,13 +149,7 @@ class DatabaseShowResponse implements ModelInterface, ArrayAccess, \JsonSerializ
      * @var string[]
      */
     protected static $getters = [
-        'branchName' => 'getBranchName',
-        'createdAt' => 'getCreatedAt',
-        'databaseId' => 'getDatabaseId',
-        'databaseName' => 'getDatabaseName',
-        'id' => 'getId',
-        'updatedAt' => 'getUpdatedAt',
-        'url' => 'getUrl'
+        'foreignKeys' => 'getForeignKeys'
     ];
 
     /**
@@ -229,6 +193,21 @@ class DatabaseShowResponse implements ModelInterface, ArrayAccess, \JsonSerializ
         return self::$openAPIModelName;
     }
 
+    public const FOREIGN_KEYS_ON = 'ON';
+    public const FOREIGN_KEYS_OFF = 'OFF';
+
+    /**
+     * Gets allowable values of the enum
+     *
+     * @return string[]
+     */
+    public function getForeignKeysAllowableValues()
+    {
+        return [
+            self::FOREIGN_KEYS_ON,
+            self::FOREIGN_KEYS_OFF,
+        ];
+    }
 
     /**
      * Associative array for storing property values
@@ -245,13 +224,7 @@ class DatabaseShowResponse implements ModelInterface, ArrayAccess, \JsonSerializ
      */
     public function __construct(?array $data = null)
     {
-        $this->setIfExists('branchName', $data ?? [], null);
-        $this->setIfExists('createdAt', $data ?? [], null);
-        $this->setIfExists('databaseId', $data ?? [], null);
-        $this->setIfExists('databaseName', $data ?? [], null);
-        $this->setIfExists('id', $data ?? [], null);
-        $this->setIfExists('updatedAt', $data ?? [], null);
-        $this->setIfExists('url', $data ?? [], null);
+        $this->setIfExists('foreignKeys', $data ?? [], null);
     }
 
     /**
@@ -281,6 +254,18 @@ class DatabaseShowResponse implements ModelInterface, ArrayAccess, \JsonSerializ
     {
         $invalidProperties = [];
 
+        if ($this->container['foreignKeys'] === null) {
+            $invalidProperties[] = "'foreignKeys' can't be null";
+        }
+        $allowedValues = $this->getForeignKeysAllowableValues();
+        if (!is_null($this->container['foreignKeys']) && !in_array($this->container['foreignKeys'], $allowedValues, true)) {
+            $invalidProperties[] = sprintf(
+                "invalid value '%s' for 'foreignKeys', must be one of '%s'",
+                $this->container['foreignKeys'],
+                implode("', '", $allowedValues)
+            );
+        }
+
         return $invalidProperties;
     }
 
@@ -297,190 +282,38 @@ class DatabaseShowResponse implements ModelInterface, ArrayAccess, \JsonSerializ
 
 
     /**
-     * Gets branchName
+     * Gets foreignKeys
      *
-     * @return string|null
+     * @return string
      */
-    public function getBranchName()
+    public function getForeignKeys()
     {
-        return $this->container['branchName'];
+        return $this->container['foreignKeys'];
     }
 
     /**
-     * Sets branchName
+     * Sets foreignKeys
      *
-     * @param string|null $branchName branchName
+     * @param string $foreignKeys foreignKeys
      *
      * @return self
      */
-    public function setBranchName($branchName)
+    public function setForeignKeys($foreignKeys)
     {
-        if (is_null($branchName)) {
-            throw new \InvalidArgumentException('non-nullable branchName cannot be null');
+        if (is_null($foreignKeys)) {
+            throw new \InvalidArgumentException('non-nullable foreignKeys cannot be null');
         }
-        $this->container['branchName'] = $branchName;
-
-        return $this;
-    }
-
-    /**
-     * Gets createdAt
-     *
-     * @return \DateTime|null
-     */
-    public function getCreatedAt()
-    {
-        return $this->container['createdAt'];
-    }
-
-    /**
-     * Sets createdAt
-     *
-     * @param \DateTime|null $createdAt Creation timestamp
-     *
-     * @return self
-     */
-    public function setCreatedAt($createdAt)
-    {
-        if (is_null($createdAt)) {
-            throw new \InvalidArgumentException('non-nullable createdAt cannot be null');
+        $allowedValues = $this->getForeignKeysAllowableValues();
+        if (!in_array($foreignKeys, $allowedValues, true)) {
+            throw new \InvalidArgumentException(
+                sprintf(
+                    "Invalid value '%s' for 'foreignKeys', must be one of '%s'",
+                    $foreignKeys,
+                    implode("', '", $allowedValues)
+                )
+            );
         }
-        $this->container['createdAt'] = $createdAt;
-
-        return $this;
-    }
-
-    /**
-     * Gets databaseId
-     *
-     * @return string|null
-     */
-    public function getDatabaseId()
-    {
-        return $this->container['databaseId'];
-    }
-
-    /**
-     * Sets databaseId
-     *
-     * @param string|null $databaseId databaseId
-     *
-     * @return self
-     */
-    public function setDatabaseId($databaseId)
-    {
-        if (is_null($databaseId)) {
-            throw new \InvalidArgumentException('non-nullable databaseId cannot be null');
-        }
-        $this->container['databaseId'] = $databaseId;
-
-        return $this;
-    }
-
-    /**
-     * Gets databaseName
-     *
-     * @return string|null
-     */
-    public function getDatabaseName()
-    {
-        return $this->container['databaseName'];
-    }
-
-    /**
-     * Sets databaseName
-     *
-     * @param string|null $databaseName databaseName
-     *
-     * @return self
-     */
-    public function setDatabaseName($databaseName)
-    {
-        if (is_null($databaseName)) {
-            throw new \InvalidArgumentException('non-nullable databaseName cannot be null');
-        }
-        $this->container['databaseName'] = $databaseName;
-
-        return $this;
-    }
-
-    /**
-     * Gets id
-     *
-     * @return int|null
-     */
-    public function getId()
-    {
-        return $this->container['id'];
-    }
-
-    /**
-     * Sets id
-     *
-     * @param int|null $id id
-     *
-     * @return self
-     */
-    public function setId($id)
-    {
-        if (is_null($id)) {
-            throw new \InvalidArgumentException('non-nullable id cannot be null');
-        }
-        $this->container['id'] = $id;
-
-        return $this;
-    }
-
-    /**
-     * Gets updatedAt
-     *
-     * @return \DateTime|null
-     */
-    public function getUpdatedAt()
-    {
-        return $this->container['updatedAt'];
-    }
-
-    /**
-     * Sets updatedAt
-     *
-     * @param \DateTime|null $updatedAt Last update timestamp
-     *
-     * @return self
-     */
-    public function setUpdatedAt($updatedAt)
-    {
-        if (is_null($updatedAt)) {
-            throw new \InvalidArgumentException('non-nullable updatedAt cannot be null');
-        }
-        $this->container['updatedAt'] = $updatedAt;
-
-        return $this;
-    }
-
-    /**
-     * Gets url
-     *
-     * @return string|null
-     */
-    public function getUrl()
-    {
-        return $this->container['url'];
-    }
-
-    /**
-     * Sets url
-     *
-     * @param string|null $url url
-     *
-     * @return self
-     */
-    public function setUrl($url)
-    {
-        if (is_null($url)) {
-            throw new \InvalidArgumentException('non-nullable url cannot be null');
-        }
-        $this->container['url'] = $url;
+        $this->container['foreignKeys'] = $foreignKeys;
 
         return $this;
     }
