@@ -476,7 +476,7 @@ class DatabaseBackupApi
      *
      * @throws \Litebase\OpenAPI\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
-     * @return \Litebase\OpenAPI\Model\DeleteDatabaseBackup200Response|\Litebase\OpenAPI\Model\ErrorResponse|\Litebase\OpenAPI\Model\ErrorResponse|\Litebase\OpenAPI\Model\ErrorResponse
+     * @return \Litebase\OpenAPI\Model\DeleteDatabaseBackup200Response|\Litebase\OpenAPI\Model\ErrorResponse|\Litebase\OpenAPI\Model\ErrorResponse|\Litebase\OpenAPI\Model\ErrorResponse|\Litebase\OpenAPI\Model\ErrorResponse
      */
     public function deleteDatabaseBackup($databaseName, $branchName, $timestamp, string $contentType = self::contentTypes['deleteDatabaseBackup'][0])
     {
@@ -496,7 +496,7 @@ class DatabaseBackupApi
      *
      * @throws \Litebase\OpenAPI\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
-     * @return array of \Litebase\OpenAPI\Model\DeleteDatabaseBackup200Response|\Litebase\OpenAPI\Model\ErrorResponse|\Litebase\OpenAPI\Model\ErrorResponse|\Litebase\OpenAPI\Model\ErrorResponse, HTTP status code, HTTP response headers (array of strings)
+     * @return array of \Litebase\OpenAPI\Model\DeleteDatabaseBackup200Response|\Litebase\OpenAPI\Model\ErrorResponse|\Litebase\OpenAPI\Model\ErrorResponse|\Litebase\OpenAPI\Model\ErrorResponse|\Litebase\OpenAPI\Model\ErrorResponse, HTTP status code, HTTP response headers (array of strings)
      */
     public function deleteDatabaseBackupWithHttpInfo($databaseName, $branchName, $timestamp, string $contentType = self::contentTypes['deleteDatabaseBackup'][0])
     {
@@ -529,6 +529,12 @@ class DatabaseBackupApi
                 case 200:
                     return $this->handleResponseWithDataType(
                         '\Litebase\OpenAPI\Model\DeleteDatabaseBackup200Response',
+                        $request,
+                        $response,
+                    );
+                case 400:
+                    return $this->handleResponseWithDataType(
+                        '\Litebase\OpenAPI\Model\ErrorResponse',
                         $request,
                         $response,
                     );
@@ -578,6 +584,14 @@ class DatabaseBackupApi
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
                         '\Litebase\OpenAPI\Model\DeleteDatabaseBackup200Response',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
+                case 400:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\Litebase\OpenAPI\Model\ErrorResponse',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);

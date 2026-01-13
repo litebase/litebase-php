@@ -29,7 +29,6 @@ class DatabaseBranchStoreResponse implements ModelInterface, ArrayAccess, \JsonS
         'id' => 'int',
         'name' => 'string',
         'parentName' => 'string',
-        'settings' => '\Litebase\OpenAPI\Model\BranchSettings',
         'updatedAt' => '\DateTime'
     ];
 
@@ -48,7 +47,6 @@ class DatabaseBranchStoreResponse implements ModelInterface, ArrayAccess, \JsonS
         'id' => null,
         'name' => null,
         'parentName' => null,
-        'settings' => null,
         'updatedAt' => 'date-time'
     ];
 
@@ -65,7 +63,6 @@ class DatabaseBranchStoreResponse implements ModelInterface, ArrayAccess, \JsonS
         'id' => false,
         'name' => false,
         'parentName' => false,
-        'settings' => false,
         'updatedAt' => false
     ];
 
@@ -162,7 +159,6 @@ class DatabaseBranchStoreResponse implements ModelInterface, ArrayAccess, \JsonS
         'id' => 'id',
         'name' => 'name',
         'parentName' => 'parentName',
-        'settings' => 'settings',
         'updatedAt' => 'updatedAt'
     ];
 
@@ -179,7 +175,6 @@ class DatabaseBranchStoreResponse implements ModelInterface, ArrayAccess, \JsonS
         'id' => 'setId',
         'name' => 'setName',
         'parentName' => 'setParentName',
-        'settings' => 'setSettings',
         'updatedAt' => 'setUpdatedAt'
     ];
 
@@ -196,7 +191,6 @@ class DatabaseBranchStoreResponse implements ModelInterface, ArrayAccess, \JsonS
         'id' => 'getId',
         'name' => 'getName',
         'parentName' => 'getParentName',
-        'settings' => 'getSettings',
         'updatedAt' => 'getUpdatedAt'
     ];
 
@@ -264,7 +258,6 @@ class DatabaseBranchStoreResponse implements ModelInterface, ArrayAccess, \JsonS
         $this->setIfExists('id', $data ?? [], null);
         $this->setIfExists('name', $data ?? [], null);
         $this->setIfExists('parentName', $data ?? [], null);
-        $this->setIfExists('settings', $data ?? [], null);
         $this->setIfExists('updatedAt', $data ?? [], null);
     }
 
@@ -495,33 +488,6 @@ class DatabaseBranchStoreResponse implements ModelInterface, ArrayAccess, \JsonS
             throw new \InvalidArgumentException('non-nullable parentName cannot be null');
         }
         $this->container['parentName'] = $parentName;
-
-        return $this;
-    }
-
-    /**
-     * Gets settings
-     *
-     * @return \Litebase\OpenAPI\Model\BranchSettings|null
-     */
-    public function getSettings()
-    {
-        return $this->container['settings'];
-    }
-
-    /**
-     * Sets settings
-     *
-     * @param \Litebase\OpenAPI\Model\BranchSettings|null $settings settings
-     *
-     * @return self
-     */
-    public function setSettings($settings)
-    {
-        if (is_null($settings)) {
-            throw new \InvalidArgumentException('non-nullable settings cannot be null');
-        }
-        $this->container['settings'] = $settings;
 
         return $this;
     }

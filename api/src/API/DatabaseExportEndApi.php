@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Litebase Server API
  *
@@ -118,7 +117,7 @@ class DatabaseExportEndApi
      *
      * @throws \Litebase\OpenAPI\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
-     * @return object|\Litebase\OpenAPI\Model\ErrorResponse|\Litebase\OpenAPI\Model\ErrorResponse|\Litebase\OpenAPI\Model\ErrorResponse|\Litebase\OpenAPI\Model\ErrorResponse
+     * @return \Litebase\OpenAPI\Model\CreateDatabaseExportEnd200Response|\Litebase\OpenAPI\Model\ErrorResponse|\Litebase\OpenAPI\Model\ErrorResponse|\Litebase\OpenAPI\Model\ErrorResponse|\Litebase\OpenAPI\Model\ErrorResponse
      */
     public function createDatabaseExportEnd($databaseName, $branchName, $exportId, $body, string $contentType = self::contentTypes['createDatabaseExportEnd'][0])
     {
@@ -139,7 +138,7 @@ class DatabaseExportEndApi
      *
      * @throws \Litebase\OpenAPI\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
-     * @return array of object|\Litebase\OpenAPI\Model\ErrorResponse|\Litebase\OpenAPI\Model\ErrorResponse|\Litebase\OpenAPI\Model\ErrorResponse|\Litebase\OpenAPI\Model\ErrorResponse, HTTP status code, HTTP response headers (array of strings)
+     * @return array of \Litebase\OpenAPI\Model\CreateDatabaseExportEnd200Response|\Litebase\OpenAPI\Model\ErrorResponse|\Litebase\OpenAPI\Model\ErrorResponse|\Litebase\OpenAPI\Model\ErrorResponse|\Litebase\OpenAPI\Model\ErrorResponse, HTTP status code, HTTP response headers (array of strings)
      */
     public function createDatabaseExportEndWithHttpInfo($databaseName, $branchName, $exportId, $body, string $contentType = self::contentTypes['createDatabaseExportEnd'][0])
     {
@@ -168,10 +167,10 @@ class DatabaseExportEndApi
             $statusCode = $response->getStatusCode();
 
 
-            switch ($statusCode) {
+            switch($statusCode) {
                 case 200:
                     return $this->handleResponseWithDataType(
-                        'object',
+                        '\Litebase\OpenAPI\Model\CreateDatabaseExportEnd200Response',
                         $request,
                         $response,
                     );
@@ -201,7 +200,7 @@ class DatabaseExportEndApi
                     );
             }
 
-
+            
 
             if ($statusCode < 200 || $statusCode > 299) {
                 throw new ApiException(
@@ -217,7 +216,7 @@ class DatabaseExportEndApi
             }
 
             return $this->handleResponseWithDataType(
-                'object',
+                '\Litebase\OpenAPI\Model\CreateDatabaseExportEnd200Response',
                 $request,
                 $response,
             );
@@ -226,7 +225,7 @@ class DatabaseExportEndApi
                 case 200:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        'object',
+                        '\Litebase\OpenAPI\Model\CreateDatabaseExportEnd200Response',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
@@ -264,7 +263,7 @@ class DatabaseExportEndApi
                     $e->setResponseObject($data);
                     throw $e;
             }
-
+        
 
             throw $e;
         }
@@ -310,7 +309,7 @@ class DatabaseExportEndApi
      */
     public function createDatabaseExportEndAsyncWithHttpInfo($databaseName, $branchName, $exportId, $body, string $contentType = self::contentTypes['createDatabaseExportEnd'][0])
     {
-        $returnType = 'object';
+        $returnType = '\Litebase\OpenAPI\Model\CreateDatabaseExportEnd200Response';
         $request = $this->createDatabaseExportEndRequest($databaseName, $branchName, $exportId, $body, $contentType);
 
         return $this->client
@@ -429,7 +428,7 @@ class DatabaseExportEndApi
 
 
         $headers = $this->headerSelector->selectHeaders(
-            ['application/json',],
+            ['application/json', ],
             $contentType,
             $multipart
         );
@@ -456,6 +455,7 @@ class DatabaseExportEndApi
                 }
                 // for HTTP post (form)
                 $httpBody = new MultipartStream($multipartContents);
+
             } elseif (stripos($headers['Content-Type'], 'application/json') !== false) {
                 # if Content-Type contains "application/json", json_encode the form parameters
                 $httpBody = \GuzzleHttp\Utils::jsonEncode($formParams);
@@ -550,8 +550,8 @@ class DatabaseExportEndApi
         string $rangeCode,
         int $statusCode
     ): bool {
-        $left = (int) ($rangeCode[0] . '00');
-        $right = (int) ($rangeCode[0] . '99');
+        $left = (int) ($rangeCode[0].'00');
+        $right = (int) ($rangeCode[0].'99');
 
         return $statusCode >= $left && $statusCode <= $right;
     }
